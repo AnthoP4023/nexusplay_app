@@ -105,7 +105,7 @@ include 'functions/fun_search.php';
                                     $<?php echo number_format($precio_juego, 2); ?>
                                 </span>
 
-                                <form method="POST" action="/nexusplay/controladores/carrito_add.php" class="add-cart-form">
+                                <form method="POST" action="controladores/carrito_add.php" class="add-cart-form">
                                     <input type="hidden" name="juego_id" value="<?php echo $juego['id']; ?>">
                                     <button type="submit" class="btn btn-primary btn-cart">
                                         <i class="fas fa-shopping-cart"></i> Añadir

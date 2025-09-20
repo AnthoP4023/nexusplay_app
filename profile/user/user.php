@@ -176,7 +176,7 @@ include '../../controladores/cont_user_profile.php';
                             <i class="fas fa-gamepad"></i>
                             <h3>¡Bienvenido a NexusPlay!</h3>
                             <p>Aún no has realizado ninguna compra. Explora nuestra tienda y encuentra tus juegos favoritos.</p>
-                            <a href="/nexusplay/index.php" class="btn btn-primary">
+                            <a href="../../index.php" class="btn btn-primary">
                                 <i class="fas fa-gamepad"></i> Explorar Juegos
                             </a>
                         </div>

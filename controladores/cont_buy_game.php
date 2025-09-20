@@ -3,8 +3,8 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once __DIR__ . '/../config_db/database.php';
-require_once __DIR__ . '/../functions/fun_auth.php';
+require_once __DIR__ . '../../config_db/database.php';
+require_once __DIR__ . '../../functions/fun_auth.php';
 
 if (!isLoggedIn()) {
     header('Location: auth/login.php');
@@ -275,16 +275,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_compra'])) {
 
 function getGameImagePath($imagen) {
     if (empty($imagen) || $imagen === 'default.jpg') {
-        return '/nexusplay/images/juegos/default.jpg';
+        return '/images/juegos/default.jpg';
     }
     
-    $ruta = '/nexusplay/images/juegos/' . $imagen;
+    $ruta = '/images/juegos/' . $imagen;
     $ruta_fisica = $_SERVER['DOCUMENT_ROOT'] . $ruta;
     
     if (file_exists($ruta_fisica)) {
         return $ruta;
     }
     
-    return '/nexusplay/images/juegos/default.jpg';
+    return '/images/juegos/default.jpg';
 }
 ?>

@@ -3,16 +3,16 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once __DIR__ . '/../config_db/database.php';
-require_once __DIR__ . '/../functions/fun_auth.php';
+require_once __DIR__ . '../../config_db/database.php';
+require_once __DIR__ . '../../functions/fun_auth.php';
 
 if (!isLoggedIn()) {
-    header('Location: ../auth/login.php');
+    header('Location: /auth/login.php');
     exit();
 }
 
 if (isAdmin()) {
-    header('Location: /nexusplay/profile/admin/admin.php');
+    header('Location: /profile/admin/admin.php');
     exit();
 }
 
@@ -42,16 +42,16 @@ try {
         $imagen_bd = $user_data['imagen_perfil'];
         
         if (!empty($imagen_bd) && $imagen_bd !== 'default-avatar.png') {
-            $ruta_imagen = '/nexusplay/images/users/' . $imagen_bd;
+            $ruta_imagen = '/images/users/' . $imagen_bd;
             $ruta_fisica = $_SERVER['DOCUMENT_ROOT'] . $ruta_imagen;
             
             if (file_exists($ruta_fisica)) {
                 $perfil_img = $ruta_imagen;
             } else {
-                $perfil_img = '/nexusplay/images/users/default-avatar.png';
+                $perfil_img = '/images/users/default-avatar.png';
             }
         } else {
-            $perfil_img = '/nexusplay/images/users/default-avatar.png';
+            $perfil_img = '/images/users/default-avatar.png';
         }
 
         $_SESSION['imagen_perfil'] = $perfil_img;

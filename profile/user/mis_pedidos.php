@@ -122,7 +122,7 @@ include '../../controladores/cont_user_profile.php';
                                 <i class="fas fa-box-open"></i>
                                 <h3>No tienes pedidos aún</h3>
                                 <p>Explora nuestra tienda y realiza tu primera compra</p>
-                                <a href="/nexusplay/index.php" class="btn btn-primary">
+                                <a href="../../index.php" class="btn btn-primary">
                                     <i class="fas fa-gamepad"></i> Explorar Juegos
                                 </a>
                             </div>

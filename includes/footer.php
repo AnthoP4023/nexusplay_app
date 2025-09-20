@@ -40,9 +40,9 @@ $current_year = date('Y');
             <div class="footer-section">
                 <h4>Plataformas</h4>
                 <ul>
-                    <li><a href="search.php?plataforma=1&categoria=&precio=">PC Gaming</a></li>
-                    <li><a href="search.php?plataforma=2&categoria=&precio=">PlayStation</a></li>
-                    <li><a href="search.php?plataforma=3&categoria=&precio=">Xbox</a></li>
+                    <li><a href="/search.php?plataforma=1&categoria=&precio=">PC Gaming</a></li>
+                    <li><a href="/search.php?plataforma=2&categoria=&precio=">PlayStation</a></li>
+                    <li><a href="/search.php?plataforma=3&categoria=&precio=">Xbox</a></li>
                 </ul>
             </div>
 

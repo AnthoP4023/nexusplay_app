@@ -1,3 +1,3 @@
 <?php
-header("Location: /nexusplay/auth/login.php");
+header("Location: /auth/login.php");
 exit;

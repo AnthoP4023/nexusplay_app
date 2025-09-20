@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once __DIR__ . '/../config_db/database.php';
-require_once __DIR__ . '/../functions/fun_auth.php';
-require_once __DIR__ . '/../functions/fun_profile.php';
+require_once __DIR__ . '../../config_db/database.php';
+require_once __DIR__ . '../../functions/fun_auth.php';
+require_once __DIR__ . '../../functions/fun_profile.php';
 
 if (isset($_SESSION['user_id'])) {
     $perfil_img = loadUserProfileImage($conn, $_SESSION['user_id']);

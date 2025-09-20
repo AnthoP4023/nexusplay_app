@@ -3,9 +3,9 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once __DIR__ . '/../config_db/database.php';
-require_once __DIR__ . '/../functions/fun_auth.php';
-require_once __DIR__ . '/../functions/fun_game_code.php';
+require_once __DIR__ . '../../config_db/database.php';
+require_once __DIR__ . '../../functions/fun_auth.php';
+require_once __DIR__ . '../../functions/fun_game_code.php';
 
 if (!isLoggedIn()) {
     header('Location: auth/login.php');

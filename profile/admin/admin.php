@@ -40,7 +40,7 @@ include '../../controladores/cont_profile.php';
                             </div>
                             
                             <div class="admin-actions">
-                                <a href="/panel-control/login.php" class="btn-admin-panel" target="_blank">
+                                <a href="/panel-admin/panel_login.php" class="btn-admin-panel" target="_blank">
                                     <i class="fas fa-cogs"></i> Panel de Control
                                 </a>
                             </div>

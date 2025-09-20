@@ -3,7 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once __DIR__ . '/../config_db/database.php';
+require_once __DIR__ . '../../config_db/database.php';
 
 if (!isset($_SESSION['carrito'])) {
     $_SESSION['carrito'] = array();

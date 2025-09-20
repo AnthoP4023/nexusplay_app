@@ -1,7 +1,7 @@
 body {
     background: 
         linear-gradient(rgba(0, 0, 0, 0.700), rgba(0, 0, 0, 0.700)), 
-        url('/nexusplay/images/Logo/fondo1.jpg') no-repeat center center fixed;
+        url('/images/Logo/fondo1.jpg') no-repeat center center fixed;
     background-size: cover; 
     font-family: 'Arial', sans-serif;
     margin: 0;

@@ -116,7 +116,7 @@ include '../../controladores/cont_user_profile.php';
                                 <i class="fas fa-star"></i>
                                 <h3>No has escrito reseñas</h3>
                                 <p>Compra juegos y comparte tu experiencia con otros usuarios</p>
-                                <a href="/nexusplay/index.php" class="btn btn-primary">
+                                <a href="../../index.php" class="btn btn-primary">
                                     <i class="fas fa-gamepad"></i> Explorar Juegos
                                 </a>
                             </div>
