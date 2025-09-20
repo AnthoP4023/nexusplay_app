@@ -1,0 +1,774 @@
+body {
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.700), rgba(0, 0, 0, 0.700)), 
+        url('/nexusplay/images/Logo/fondo1.jpg') no-repeat center center fixed;
+    background-size: cover; 
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.main-content {
+    margin-top: 100px;
+    padding: 2rem 0;
+    min-height: calc(100vh - 200px);
+}
+
+.codes-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1rem;
+}
+
+.success-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.success-icon {
+    margin-bottom: 1rem;
+}
+
+.success-icon i {
+    font-size: 4rem;
+    color: #10b981;
+    animation: successPulse 2s ease-in-out infinite;
+}
+
+@keyframes successPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.success-header h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.success-header p {
+    font-size: 1.2rem;
+    color: #10b981;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.order-info {
+    margin-bottom: 3rem;
+}
+
+.order-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    background: #1a1a1a;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #333;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.detail-item i {
+    font-size: 1.5rem;
+    color: #2563eb;
+    width: 24px;
+    text-align: center;
+}
+
+.detail-item .label {
+    display: block;
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 0.25rem;
+}
+
+.detail-item .value {
+    display: block;
+    font-size: 1.2rem;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.codes-section {
+    margin-bottom: 3rem;
+}
+
+.codes-section h2 {
+    font-size: 2rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.codes-section h2 i {
+    color: #f59e0b;
+}
+
+.codes-info {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+}
+
+.games-codes {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.game-code-card {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 120px 1fr 350px;
+    gap: 2rem;
+    align-items: center;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.game-code-card.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.game-code-card:hover {
+    border-color: #444;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.game-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+.game-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.game-info h3 {
+    font-size: 1.4rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.game-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.game-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.game-meta i {
+    width: 16px;
+    text-align: center;
+    color: #666;
+}
+
+.game-meta .price {
+    color: #10b981;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.code-section {
+    background: #2a2a2a;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #444;
+    margin-left: -50px;
+    max-width: fit-content;
+}
+
+.code-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #f59e0b;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.code-container {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.game-code {
+    flex: 1;
+    padding: 0.75rem;
+    background: #333;
+    border: 1px solid #555;
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-align: center;
+    cursor: text;
+}
+
+.game-code:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.copy-btn {
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(45deg, #2563eb, #3b82f6);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.copy-btn:hover {
+    background: linear-gradient(45deg, #1d4ed8, #2563eb);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+    transform: translateY(-1px);
+}
+
+.copy-btn.copied {
+    background: linear-gradient(45deg, #10b981, #34d399);
+    transform: scale(1.05);
+}
+
+.code-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #10b981;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.instructions-section {
+    margin-bottom: 3rem;
+}
+
+.instructions-section h2 {
+    font-size: 2rem;
+    color: #ffffff;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.instructions-section h2 i {
+    color: #8b5cf6;
+}
+
+.instructions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.instruction-card {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.instruction-card:hover {
+    border-color: #8b5cf6;
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.1);
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, #8b5cf6, #a78bfa);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 auto 1.5rem;
+}
+
+.instruction-card h4 {
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.instruction-card p {
+    color: #888;
+    line-height: 1.5;
+}
+
+.support-section {
+    margin-bottom: 3rem;
+}
+
+.support-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    border: 1px solid #444;
+    border-radius: 16px;
+    padding: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.support-card i {
+    font-size: 3rem;
+    color: #f59e0b;
+    flex-shrink: 0;
+}
+
+.support-card h3 {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.support-card p {
+    color: #888;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.support-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.final-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #2563eb, #3b82f6);
+    color: white;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #1d4ed8, #2563eb);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #444;
+    color: #ffffff;
+    border: 1px solid #555;
+}
+
+.btn-secondary:hover {
+    background: #555;
+    border-color: #666;
+    transform: translateY(-1px);
+}
+
+.btn-support {
+    background: linear-gradient(45deg, #f59e0b, #fbbf24);
+    color: #1a1a1a;
+    font-weight: 700;
+}
+
+.btn-support:hover {
+    background: linear-gradient(45deg, #d97706, #f59e0b);
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 1024px) {
+    .game-code-card {
+        grid-template-columns: 100px 1fr;
+        gap: 1.5rem;
+    }
+    
+    .code-section {
+        grid-column: 1 / -1;
+        margin-top: 1rem;
+        margin-top: -170px;
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-top: 80px;
+        padding: 1rem 0;
+    }
+    
+    .codes-container {
+        padding: 0 1rem;
+    }
+    
+    .success-header {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .success-header h1 {
+        font-size: 2rem;
+    }
+    
+    .success-header p {
+        font-size: 1rem;
+    }
+    
+    .success-icon i {
+        font-size: 3rem;
+    }
+    
+    .order-details {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .codes-section h2,
+    .instructions-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .game-code-card {
+        grid-template-columns: 80px 1fr;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .game-image {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .game-info h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .code-section {
+        padding: 1rem;
+    }
+    
+    .code-container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .copy-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .instructions-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .instruction-card {
+        padding: 1.5rem;
+    }
+    
+    .support-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+        padding: 2rem;
+    }
+    
+    .support-actions {
+        justify-content: center;
+    }
+    
+    .final-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .codes-container{
+        padding: 0 10px;
+        margin: 0;
+    }
+
+    .success-header {
+        padding: 1rem;
+    }
+    
+    .success-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .order-details {
+        padding: 1rem;
+    }
+    
+    .detail-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .game-code-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 1rem;
+    }
+    
+    .game-image {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+    }
+    
+    .game-meta {
+        align-items: center;
+    }
+
+    .code-section{
+        padding: 1rem;
+        margin-top: 5px;
+        margin-left: 30px
+    }
+    
+    .step-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+    
+    .instruction-card {
+        padding: 1rem;
+    }
+    
+    .support-card i {
+        font-size: 2rem;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.game-code-card {
+    animation: slideInUp 0.6s ease-out forwards;
+}
+
+@media print {
+    .main-content {
+        margin-top: 0;
+    }
+    
+    .support-section,
+    .instructions-section,
+    .final-actions {
+        display: none;
+    }
+    
+    .success-header {
+        background: none;
+        border: 1px solid #000;
+        color: #000;
+    }
+    
+    .game-code-card {
+        border: 1px solid #000;
+        background: #fff;
+        color: #000;
+        page-break-inside: avoid;
+        margin-bottom: 1rem;
+    }
+    
+    .game-code {
+        border: 1px solid #000;
+        background: #f5f5f5;
+        color: #000;
+    }
+    
+    .copy-btn {
+        display: none;
+    }
+    
+    .code-status {
+        color: #000;
+    }
+}
+
+.game-code-card.expired {
+    opacity: 0.7;
+    border-color: #ef4444;
+}
+
+.game-code-card.expired .code-section {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.game-code-card.used .game-code {
+    text-decoration: line-through;
+    background: #2a2a2a;
+}
+
+.game-code:hover {
+    border-color: #2563eb;
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
+}
+
+.instruction-card:hover .step-number {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+}
+
+[data-tooltip] {
+    position: relative;
+    cursor: help;
+}
+
+[data-tooltip]:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a1a;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #444;
+    z-index: 1000;
+}
+
+[data-tooltip]:hover:before {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading .copy-btn {
+    background: #666;
+}
+
+.game-code-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #2563eb, #8b5cf6, #f59e0b, #10b981);
+    border-radius: 16px 16px 0 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.game-code-card:hover::before {
+    opacity: 1;
+}
+
+::selection {
+    background: rgba(37, 99, 235, 0.3);
+    color: #fff;
+}
+
+::-moz-selection {
+    background: rgba(37, 99, 235, 0.3);
+    color: #fff;
+}

@@ -1,0 +1,429 @@
+body {
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.700), rgba(0, 0, 0, 0.700)), 
+        url('/nexusplay/images/Logo/fondo2.jpg') no-repeat center center fixed;
+    background-size: cover; 
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.card-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.card-header h1 {
+    font-size: 1.8rem;
+    text-align: center;
+    color: #10b956;
+}
+
+.card-preview {
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.credit-card {
+    justify-items: center;
+}
+
+.card-front {
+    width: 390px;
+    background: linear-gradient(135deg, #10b956, #54d334, #7ede6a);
+    border-radius: 15px;
+    padding: 25px;
+    color: white;
+    position: relative;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.credit-card:hover .card-front {
+    transform: rotateY(-5deg) rotateX(5deg);
+}
+
+.card-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.card-logo i {
+    font-size: 1.8rem;
+}
+
+.card-logo span {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.card-number {
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    font-family: 'Courier New', monospace;
+}
+
+.card-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.card-holder, .card-expiry {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.label {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    font-weight: 500;
+}
+
+.value {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.card-form {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(74, 74, 74, 0.3);
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.form-section h3 {
+    color: #10b956;
+    margin: 0 0 25px 0;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: #bbb;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px 12px 45px;
+    background: rgba(45, 45, 45, 0.8);
+    border: 2px solid rgba(74, 74, 74, 0.3);
+    border-radius: 10px;
+    color: #e5e5e5;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    border-color: #10b956;
+    background: rgba(45, 45, 45, 0.95);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(16, 185, 86, 0.1);
+}
+
+.form-group input.error {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 54%;
+    color: #888;
+    font-size: 1.1rem;
+    pointer-events: none;
+}
+
+.form-group:focus-within .input-icon {
+    color: #10b956;
+}
+
+.error-message {
+    color: #ef4444;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.error-message::before {
+    content: '⚠';
+    font-size: 0.9rem;
+}
+
+.security-info {
+    background: rgba(16, 185, 86, 0.1);
+    border: 1px solid rgba(16, 185, 86, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 30px 0;
+}
+
+.security-badge {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.security-badge i {
+    font-size: 2rem;
+    color: #10b956;
+}
+
+.security-text h4 {
+    color: #10b956;
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+}
+
+.security-text p {
+    color: #bbb;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    flex: 1;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #10b956, #7ede6a);
+    color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 86, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #56cb20, #227a1a);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 86, 0.4);
+}
+
+.btn-secondary {
+    background: rgba(74, 74, 74, 0.5);
+    color: #e5e5e5;
+    border: 1px solid rgba(74, 74, 74, 0.3);
+}
+
+.btn-secondary:hover {
+    background: rgba(74, 74, 74, 0.7);
+    border-color: #10b956;
+    color: white;
+}
+
+.card-benefits {
+    grid-column: 1 / -1;
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(74, 74, 74, 0.3);
+    border-radius: 15px;
+    padding: 30px;
+    margin-top: 20px;
+}
+
+.card-benefits h3 {
+    color: #10b956;
+    margin: 0 0 20px 0;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-benefits ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.card-benefits li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #bbb;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.card-benefits li i {
+    color: #10b956;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 25px;
+    animation: slideInDown 0.3s ease;
+}
+
+.message-success {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.message-error {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 992px) {
+    .card-preview {
+        order: -1;
+    }
+    
+    .card-front {
+        padding: 20px;
+    }
+    
+    .card-number {
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+    }
+
+    .card-content {
+        display: flow-root;
+        margin-bottom: 0;
+
+    }
+
+    .card-preview {
+        align-items: flex-start;
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-container {
+        padding: 15px;
+    }
+    
+    .card-header h1 {
+        font-size: 2rem;
+    }
+    
+    .card-form {
+        padding: 20px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .credit-card {
+        height: 160px;
+    }
+    
+    .card-benefits ul {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-container{
+        padding: 50px 15px;
+        padding-bottom: 0;
+    }
+
+    .card-preview {
+    align-items: flex-start;
+    padding: 0;
+    }
+
+    .card-benefits{
+        margin-top: 0;
+    }
+
+    .btn-primary{
+        max-width: 320px;
+    }
+    
+    .credit-card {
+        height: 150px;
+        padding: 15px;
+    }
+    
+    .card-front {
+        padding: 15px;
+        width: 280px;
+        height: 120px;
+    }
+    
+    .card-number {
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+    
+    .form-group input {
+        padding: 10px 12px 10px 40px;
+    }
+}

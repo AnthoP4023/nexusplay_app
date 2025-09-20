@@ -1,0 +1,563 @@
+body {
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.700), rgba(0, 0, 0, 0.700)), 
+        url('/nexusplay/images/Logo/fondo1.jpg') no-repeat center center fixed;
+    background-size: cover; 
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.main-content {
+    margin-top: 70px;
+    padding: 20px 0;
+    min-height: calc(100vh - 200px);
+}
+
+.checkout-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.checkout-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.checkout-header h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.checkout-header p {
+    color: #888;
+    font-size: 1.1rem;
+}
+
+.message {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.message-success {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid #10b981;
+    color: #10b981;
+}
+
+.message-error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid #ef4444;
+    color: #ef4444;
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+    margin-bottom: 2rem;
+}
+
+.order-summary {
+    background: #1a1a1a;
+    border-radius: 12px;
+    padding: 2rem;
+    height: fit-content;
+    border: 1px solid #333;
+}
+
+.order-summary h2 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 1rem;
+}
+
+.order-items {
+    margin-bottom: 2rem;
+}
+
+.order-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.item-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.item-details h4 {
+    color: #ffffff;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.item-quantity,
+.item-price {
+    color: #888;
+    font-size: 0.9rem;
+    margin: 0.125rem 0;
+}
+
+.item-total {
+    text-align: right;
+}
+
+.item-total strong {
+    color: #10b981;
+    font-size: 1.1rem;
+}
+
+.order-totals {
+    border-top: 2px solid #333;
+    padding-top: 1rem;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    color: #cccccc;
+}
+
+.total-final {
+    border-top: 1px solid #444;
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.total-final span {
+    color: #ffffff;
+}
+
+.payment-section {
+    background: #1a1a1a;
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid #333;
+}
+
+.payment-section h2 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 1rem;
+}
+
+.payment-option {
+    margin-bottom: 1.5rem;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.payment-option:hover {
+    border-color: #444;
+}
+
+.payment-option input[type="radio"] {
+    display: none;
+}
+
+.payment-option input[type="radio"]:checked + .payment-label {
+    background: rgba(37, 99, 235, 0.1);
+    border-color: #2563eb;
+}
+
+.payment-option input[type="radio"]:disabled + .payment-label {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.payment-label {
+    display: block;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    background: #222;
+}
+
+.payment-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.payment-header i {
+    font-size: 1.2rem;
+    color: #2563eb;
+}
+
+.balance {
+    margin-left: auto;
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.insufficient-funds {
+    margin-top: 0.75rem;
+    color: #ef4444;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.payment-details {
+    padding: 1.5rem;
+    background: #2a2a2a;
+    border-top: 1px solid #333;
+}
+
+.saved-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.saved-card {
+    background: #333;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.saved-card input[type="radio"] {
+    display: none;
+}
+
+.saved-card input[type="radio"]:checked + .card-option {
+    background: rgba(37, 99, 235, 0.2);
+    border-color: #2563eb;
+}
+
+.card-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    color: #ffffff;
+}
+
+.card-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.card-option i {
+    color: #2563eb;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    color: #cccccc;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-group input[type="text"] {
+    padding: 0.75rem;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background: #333;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input[type="text"]:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.form-group input[type="text"]::placeholder {
+    color: #666;
+}
+
+.checkbox-label {
+    display: flex !important;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    color: #cccccc !important;
+    font-weight: 400 !important;
+    margin-bottom: 0 !important;
+}
+
+.checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #444;
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.3s ease;
+    background: #333;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+    content: "✓";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    align-items: center;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #2563eb, #3b82f6);
+    color: white;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #1d4ed8, #2563eb);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #444;
+    color: #ffffff;
+    border: 1px solid #555;
+    font-size: 15px;
+}
+
+.btn-secondary:hover {
+    background: #555;
+    border-color: #666;
+    transform: translateY(-1px);
+}
+
+.btn-purchase {
+    flex: 1;
+    font-size: 15px;
+    padding: 5px 20px;
+    font-weight: 700;
+}
+
+@media (max-width: 1115px) {
+    .checkout-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .checkout-container {
+        padding: 0 1rem;
+    }
+
+    .btn-secondary {
+        padding: 15px 50px;
+        font-size: 15px;
+    }
+    .btn-purchase{
+        padding: 15px 13px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-top: 60px;
+        padding: 1rem 0;
+    }
+    
+    .checkout-header h1 {
+        font-size: 2rem;
+    }
+    
+    .order-summary,
+    .payment-section {
+        padding: 1.5rem;
+    }
+    
+    .order-item {
+        grid-template-columns: 60px 1fr;
+        gap: 0.75rem;
+    }
+    
+    .item-total {
+        grid-column: 2;
+        text-align: left;
+        margin-top: 0.5rem;
+    }
+    
+    .item-image {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .btn-secondary {
+        padding: 15px 50px;
+    }
+    .btn-purchase{
+        padding: 15px 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .checkout-header h1 {
+        font-size: 1.5rem;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .checkout-header p {
+        font-size: 1rem;
+    }
+    
+    .order-summary,
+    .payment-section {
+        padding: 1rem;
+    }
+    
+    .payment-header {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .balance {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+    
+    .btn-purchase {
+        max-width: fit-content;
+    }
+}
+
+.payment-details {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 500px;
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}

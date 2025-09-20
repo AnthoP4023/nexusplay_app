@@ -1,0 +1,467 @@
+.config-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 10px;
+}
+
+.config-section {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(74, 74, 74, 0.3);
+    border-radius: 12px;
+    padding: 25px;
+    transition: all 0.3s ease;
+    animation: slideInUp 0.3s ease;
+}
+
+.config-section:hover {
+    border-color: #10b956;
+    box-shadow: 0 8px 20px rgba(16, 185, 86, 0.1);
+}
+
+.config-header {
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(74, 74, 74, 0.3);
+    padding-bottom: 15px;
+}
+
+.config-header h3 {
+    color: #e5e5e5;
+    font-size: 1.3rem;
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.config-header h3 i {
+    color: #10b956;
+    font-size: 1.2rem;
+}
+
+.config-header p {
+    color: #888;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.config-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    color: #e5e5e5;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-group label i {
+    color: #10b956;
+    width: 16px;
+    text-align: center;
+}
+
+.form-group input {
+    background: rgba(45, 45, 45, 0.8);
+    border: 1px solid rgba(74, 74, 74, 0.5);
+    border-radius: 8px;
+    padding: 12px 15px;
+    color: #e5e5e5;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #10b956;
+    box-shadow: 0 0 10px rgba(16, 185, 86, 0.3);
+    background: rgba(45, 45, 45, 0.9);
+}
+
+.form-group input::placeholder {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.password-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input input {
+    padding-right: 45px;
+    width: 100%;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    background: transparent;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding: 5px;
+}
+
+.toggle-password:hover {
+    color: #10b956;
+}
+
+.toggle-password:focus-visible {
+    outline: 2px solid #10b956;
+    outline-offset: 2px;
+}
+
+.password-help {
+    color: #888;
+    font-size: 0.8rem;
+    margin-top: 4px;
+}
+
+.profile-image-section {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.current-image {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: rgba(45, 45, 45, 0.5);
+    border-radius: 12px;
+    border: 1px solid rgba(74, 74, 74, 0.3);
+}
+
+.profile-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #10b956;
+    box-shadow: 0 4px 12px rgba(16, 185, 86, 0.3);
+}
+
+.image-info h4 {
+    color: #e5e5e5;
+    margin: 0 0 8px 0;
+    font-size: 1rem;
+}
+
+.image-guidelines {
+    color: #888;
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.image-guidelines i {
+    color: #10b956;
+    margin-right: 5px;
+}
+
+.image-upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.file-input-container {
+    position: relative;
+}
+
+.file-input-container input[type="file"] {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+}
+
+.file-input-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 20px;
+    background: linear-gradient(45deg, rgba(16, 185, 86, 0.1), rgba(52, 211, 153, 0.1));
+    border: 2px dashed #10b956;
+    border-radius: 12px;
+    color: #e5e5e5;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    min-height: 60px;
+}
+
+.file-input-label:hover {
+    background: linear-gradient(45deg, rgba(16, 185, 86, 0.2), rgba(52, 211, 153, 0.2));
+    border-color: #34d399;
+    transform: translateY(-2px);
+}
+
+.file-input-label i {
+    font-size: 1.2rem;
+    color: #10b956;
+}
+
+.file-name {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: rgba(16, 185, 86, 0.1);
+    border-radius: 6px;
+    color: #10b956;
+    font-size: 0.9rem;
+    display: none;
+    word-break: break-all;
+}
+
+.image-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: rgba(45, 45, 45, 0.5);
+    border-radius: 12px;
+    border: 1px solid rgba(16, 185, 86, 0.3);
+}
+
+.image-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #10b956;
+    box-shadow: 0 4px 15px rgba(16, 185, 86, 0.4);
+}
+
+.preview-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 140px;
+    justify-content: center;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.btn-green {
+    background: linear-gradient(45deg, #10b956, #7ede6a);
+    color: white;
+    box-shadow: 0 4px 15px  rgb(46 235 37 / 55%);
+}
+
+
+.btn-green:hover:not(:disabled) {
+    background: linear-gradient(45deg, #56cb20, #227a1a);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(98, 164, 70, 0.675);
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #10b956, #7ede6a);
+    color: white;
+    box-shadow: 0 4px 15px rgb(46 235 37 / 55%);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(45deg, #56cb20, #227a1a);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgb(46 235 37 / 55%);
+}
+
+.message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    animation: slideInDown 0.3s ease;
+}
+
+.message.success {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.message.error {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.form-group input:valid {
+    border-color: #10b956;
+}
+
+.form-group input:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: #ef4444;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .config-container {
+        gap: 20px;
+        padding: 10px;
+    }
+
+    .config-section {
+        padding: 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .config-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .btn {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .current-image {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .profile-preview {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .file-input-label {
+        padding: 12px 16px;
+        font-size: 0.9rem;
+    }
+    
+    .preview-actions {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .config-section {
+        padding: 15px;
+    }
+
+    .config-header {
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+    }
+
+    .config-header h3 {
+        font-size: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .form-group {
+        gap: 6px;
+    }
+
+    .form-group input {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    .password-input input {
+        padding-right: 40px;
+    }
+
+    .toggle-password {
+        right: 10px;
+    }
+
+    .message {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.85rem;
+        max-width: fit-content;
+        align-self: center;
+    }
+
+    .btn-primary{
+        max-width: none;
+    }
+
+    .btn:disabled {
+        max-width: fit-content;
+        align-self: center;
+    }
+}
