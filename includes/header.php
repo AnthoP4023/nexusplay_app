@@ -119,7 +119,7 @@ if (function_exists('getCartItemCount')) {
 
                         <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'administrador'): ?>
                             <a href="/profile/admin/admin.php"><i class="fas fa-id-card"></i> Perfil Admin</a>
-                            <a href="/panel-admin/panel-login.php" class="admin" target="_blank"><i class="fas fa-cogs"></i> Panel Admin</a>
+                            <a href="/panel-admin/panel_login.php" class="admin" target="_blank"><i class="fas fa-cogs"></i> Panel Admin</a>
                         <?php else: ?>
                             <a href="/profile/user/user.php"><i class="fas fa-id-card"></i> Mi Perfil</a>
                             <a href="/profile/user/mis_pedidos.php" class="pedidos"><i class="fas fa-box"></i> Mis Pedidos</a>
