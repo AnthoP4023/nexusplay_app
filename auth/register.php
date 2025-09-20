@@ -46,8 +46,8 @@ include("../controladores/cont_register.php");
                         <div class="terms-container">
                             <input type="checkbox" id="terms" name="terms" required>
                             <label for="terms">
-                                Estoy de acuerdo con los <a href="../pages/terms.php" target="_blank">Terms</a> 
-                                and <a href="../pages/privacy.php" target="_blank">Privacy policy</a>
+                                Estoy de acuerdo con los <a href="#" target="_blank">Terms</a> 
+                                and <a href="#" target="_blank">Privacy policy</a>
                             </label>
                         </div>
                         
