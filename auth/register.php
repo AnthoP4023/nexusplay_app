@@ -1,5 +1,5 @@
 <?php 
-require_once '../config_DB/database.php';
+require_once '../config_db/database.php';
 require_once '../functions/fun_auth.php';
 include("../controladores/cont_register.php"); 
 ?>
