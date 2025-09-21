@@ -10,8 +10,6 @@ body {
         url('/images/Logo/fondo3.jpg') no-repeat center center fixed;
     background-size: cover; 
     font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
 }
 
 body::before {
@@ -32,7 +30,6 @@ body::before {
     margin: 20px auto;
     padding: 40px;
     border-radius: 20px;
-    border: 2px solid rgba(37, 99, 235, 0.3);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
     animation: fadeInUp 0.8s ease-out;
 }

@@ -12,6 +12,7 @@ body {
     max-width: 1200px;
     padding: 20px;
     color: #e5e5e5;
+    align-self: center;
 }
 
 .recharge-header {
@@ -326,7 +327,10 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    justify-self: center;
+}
+
+.btn-primary{
+    box-shadow: 0 4px 15px rgba(80, 235, 37, 0.4);
 }
 
 .btn-recharge:hover {
