@@ -19,7 +19,6 @@ $mensaje_tipo = '';
 try {
     $saldo_cartera = getUserWallet($conn, $user_id);
 
-    // Obtener tarjetas guardadas
     $stmt = $conn->prepare("
         SELECT id, RIGHT(AES_DECRYPT(numero_tarjeta, 'clave_cifrado_segura'), 4) AS ultimos_4, alias
         FROM tarjetas
@@ -39,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_recarga'])) 
     $custom_amount = $_POST['custom_amount'] ?? '';
     $metodo_pago = $_POST['metodo_pago'] ?? '';
 
-    // Determinar monto final
     if ($monto_recarga === 'custom') {
         $monto_final = floatval($custom_amount);
     } else {
@@ -51,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_recarga'])) 
         $mensaje_tipo = 'error';
     } else {
         try {
-            // Guardar nueva tarjeta si corresponde
             if ($metodo_pago === 'nueva_tarjeta' && !empty($_POST['guardar_tarjeta'])) {
                 $numero_tarjeta = $_POST['numero_tarjeta'];
                 $fecha_expiracion = $_POST['fecha_expiracion'];
@@ -62,14 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_recarga'])) 
                 saveUserCard($conn, $user_id, $numero_tarjeta, $fecha_expiracion, $cvv, $nombre_titular, $alias);
             }
 
-            // Realizar recarga
             $descripcion = "Recarga de cartera - $" . number_format($monto_final, 2);
             rechargeWallet($conn, $user_id, $monto_final, $descripcion);
 
             $mensaje = "¡Recarga exitosa! Se han agregado $" . number_format($monto_final, 2) . " a tu cartera.";
             $mensaje_tipo = 'success';
 
-            // Actualizar saldo local
             $saldo_cartera += $monto_final;
 
         } catch (Exception $e) {
