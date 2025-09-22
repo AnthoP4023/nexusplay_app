@@ -112,7 +112,7 @@ if (isset($_SESSION['card_message'])) {
                                         <div class="tarjeta-header">
                                             <div class="tarjeta-tipo">
                                                 <i class="fas fa-credit-card"></i>
-                                                <span><?php echo htmlspecialchars($tarjeta['alias'] ?: 'Tarjeta'); ?></span>
+                                                <span><?php echo htmlspecialchars($tarjeta['alias'] ?: 'Tarjeta ****' . $tarjeta['ultimos_4']); ?></span>
                                             </div>
                                         </div>
                                         <div class="tarjeta-number">

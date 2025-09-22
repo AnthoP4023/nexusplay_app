@@ -109,7 +109,7 @@ include '../../controladores/cont_profile.php';
                                         <div class="tarjeta-header">
                                             <div class="tarjeta-tipo">
                                                 <i class="fas fa-credit-card"></i>
-                                                <span><?php echo htmlspecialchars($tarjeta['alias'] ?: 'Tarjeta'); ?></span>
+                                                <span><?php echo htmlspecialchars($tarjeta['display_name']); ?></span>
                                             </div>
                                         </div>
                                         <div class="tarjeta-number">

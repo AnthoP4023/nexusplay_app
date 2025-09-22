@@ -111,9 +111,15 @@ try {
     $movimientos_result = $stmt_movimientos->get_result();
 
     $stmt_tarjetas = $conn->prepare("
-        SELECT id, RIGHT(AES_DECRYPT(numero_tarjeta, 'clave_cifrado_segura'), 4) as ultimos_4,
-               fecha_expiracion, alias, fecha_registro
-        FROM tarjetas 
+        SELECT id,
+            RIGHT(AES_DECRYPT(numero_tarjeta, 'clave_cifrado_segura'), 4) AS ultimos_4,
+            fecha_expiracion,
+            CASE 
+                WHEN alias IS NOT NULL AND alias != '' THEN alias
+                ELSE CONCAT('Tarjeta ****', RIGHT(AES_DECRYPT(numero_tarjeta, 'clave_cifrado_segura'), 4))
+            END AS display_name,
+            fecha_registro
+        FROM tarjetas
         WHERE usuario_id = ?
         ORDER BY fecha_registro DESC
     ");
