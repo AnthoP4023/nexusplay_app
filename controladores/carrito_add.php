@@ -4,31 +4,10 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 require_once __DIR__ . '../../config_db/database.php';
+require_once __DIR__ . '../functions/fun_cart.php';
 
 if (!isset($_SESSION['carrito'])) {
     $_SESSION['carrito'] = array();
-}
-
-function syncCarritoWithDB($conn, $user_id) {
-    $_SESSION['carrito'] = array();
-    $stmt = $conn->prepare("
-        SELECT c.juego_id, c.cantidad, j.titulo, j.precio, j.imagen
-        FROM carrito c
-        JOIN juegos j ON c.juego_id = j.id
-        WHERE c.usuario_id = ?
-    ");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    while ($row = $result->fetch_assoc()) {
-        $_SESSION['carrito'][$row['juego_id']] = [
-            'id' => $row['juego_id'],
-            'titulo' => $row['titulo'],
-            'precio' => $row['precio'],
-            'imagen' => $row['imagen'],
-            'cantidad' => $row['cantidad']
-        ];
-    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['juego_id'])) {
