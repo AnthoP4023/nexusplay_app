@@ -78,8 +78,8 @@ if (!empty($params)) {
         $usuarios = [];
         while ($row = $result->fetch_assoc()) {
             $row['avatar'] = !empty($row['imagen_perfil']) && $row['imagen_perfil'] !== 'default-avatar.png' 
-                ? '/nexusplay/images/users/' . $row['imagen_perfil']
-                : '/nexusplay/images/users/default-avatar.png';
+                ? '../../images/users/' . $row['imagen_perfil']
+                : '../../images/users/default-avatar.png';
             $usuarios[] = $row;
         }
         
@@ -139,8 +139,8 @@ function getUsuarioById($id) {
         if ($result->num_rows > 0) {
             $usuario = $result->fetch_assoc();
             $usuario['avatar'] = !empty($usuario['imagen_perfil']) && $usuario['imagen_perfil'] !== 'default-avatar.png' 
-                ? '/nexusplay/images/users/' . $usuario['imagen_perfil']
-                : '/nexusplay/images/users/default-avatar.png';
+                ? '../../images/users/' . $usuario['imagen_perfil']
+                : '../../images/users/default-avatar.png';
             return $usuario;
         }
         return null;

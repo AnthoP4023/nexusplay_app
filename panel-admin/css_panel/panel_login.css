@@ -6,7 +6,7 @@
 
 body {
     background: linear-gradient(rgba(0, 0, 0, 0.082), rgba(0, 0, 0, 0.115)), 
-    url('/../images/Logo/fondo4.jpg') no-repeat center center fixed;
+    url('../../images/Logo/fondo4.jpg') no-repeat center center fixed;
     background-size: cover;
     font-family: 'Arial', sans-serif;
     display: flex;

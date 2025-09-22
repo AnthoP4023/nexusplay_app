@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../functions_panel/fun_auth_panel.php';
-require_once __DIR__ . '/../../config_db/database.php';
+require_once __DIR__ . '../../functions_panel/fun_auth_panel.php';
+require_once __DIR__ . '../../../config_db/database.php';
 
 if (!isPanelAdminLoggedIn()) {
     header('Location: panel_login.php');
@@ -23,14 +23,14 @@ try {
         $imagen_bd = $admin_data['imagen_perfil'];
         
         if (!empty($imagen_bd) && $imagen_bd !== 'default-avatar.png') {
-            $admin_avatar = '/nexusplay/images/users/' . $imagen_bd;
+            $admin_avatar = '../../images/users/' . $imagen_bd;
         } else {
-            $admin_avatar = '/nexusplay/images/users/default-avatar.png';
+            $admin_avatar = '../../images/users/default-avatar.png';
         }
     } else {
-        $admin_avatar = '/nexusplay/images/users/default-avatar.png';
+        $admin_avatar = '../../images/users/default-avatar.png';
     }
 } catch (Exception $e) {
-    $admin_avatar = '/nexusplay/images/users/default-avatar.png';
+    $admin_avatar = '../../images/users/default-avatar.png';
 }
 ?>

@@ -32,7 +32,6 @@ try {
     $admin_data = obtenerDatosAdmin($admin_id);
     error_log("Debug: Después de llamar obtenerDatosAdmin, resultado: " . ($admin_data ? 'Datos obtenidos' : 'Sin datos'));
     
-    // Debug adicional para verificar la variable
     echo "<!-- DEBUG CONTROLADOR: admin_data = " . print_r($admin_data, true) . " -->";
     echo "<!-- DEBUG: Es array? " . (is_array($admin_data) ? 'SI' : 'NO') . " -->";
     echo "<!-- DEBUG: Está vacío? " . (empty($admin_data) ? 'SI' : 'NO') . " -->";
@@ -46,7 +45,7 @@ try {
             'email' => '',
             'nombre' => '',
             'apellido' => '',
-            'imagen_url' => '/nexusplay/images/users/default-avatar.png',
+            'imagen_url' => '../../images/users/default-avatar.png',
             'fecha_registro' => date('Y-m-d H:i:s')
         ];
     } else {
@@ -61,7 +60,7 @@ try {
         'email' => '',
         'nombre' => '',
         'apellido' => '',
-        'imagen_url' => '/nexusplay/images/users/default-avatar.png',
+        'imagen_url' => '../../images/users/default-avatar.png',
         'fecha_registro' => date('Y-m-d H:i:s')
     ];
 }

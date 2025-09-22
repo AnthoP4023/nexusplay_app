@@ -146,13 +146,14 @@ body {
     background: rgba(26, 26, 26, 0.98);
     border: 1px solid rgba(74, 74, 74, 0.3);
     border-radius: 12px;
-    overflow: hidden;
+    overflow-x: auto;  
     margin-bottom: 20px;
 }
 
 .usuarios-table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 1000px;  
 }
 
 .usuarios-table thead {
@@ -340,10 +341,10 @@ body {
     }
     
     .usuarios-table-container {
-        overflow-x: auto;
+        overflow-x: auto;  
     }
     
     .usuarios-table {
-        min-width: 800px;
+        min-width: 800px; 
     }
 }

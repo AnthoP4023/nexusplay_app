@@ -40,7 +40,6 @@ function getUsuariosDelMes() {
     }
 }
 
-// Listado de usuarios paginado (sin búsqueda ni filtro)
 function getUsuarios($page = 1, $limit = 20) {
     global $conn;
     $offset = ($page - 1) * $limit;
@@ -61,8 +60,8 @@ function getUsuarios($page = 1, $limit = 20) {
         $usuarios = [];
         while ($row = $result->fetch_assoc()) {
             $row['avatar'] = !empty($row['imagen_perfil']) && $row['imagen_perfil'] !== 'default-avatar.png'
-                ? '/nexusplay/images/users/' . $row['imagen_perfil']
-                : '/nexusplay/images/users/default-avatar.png';
+                ? '../../images/users/' . $row['imagen_perfil']
+                : '../../images/users/default-avatar.png';
             $usuarios[] = $row;
         }
 
@@ -73,7 +72,6 @@ function getUsuarios($page = 1, $limit = 20) {
     }
 }
 
-// Conteo total de usuarios (para paginación)
 function getTotalUsuariosCount() {
     global $conn;
     try {
@@ -99,8 +97,8 @@ function getUsuarioById($id) {
         if ($result->num_rows > 0) {
             $usuario = $result->fetch_assoc();
             $usuario['avatar'] = !empty($usuario['imagen_perfil']) && $usuario['imagen_perfil'] !== 'default-avatar.png'
-                ? '/nexusplay/images/users/' . $usuario['imagen_perfil']
-                : '/nexusplay/images/users/default-avatar.png';
+                ? '../../images/users/' . $usuario['imagen_perfil']
+                : '../../images/users/default-avatar.png';
             return $usuario;
         }
         return null;

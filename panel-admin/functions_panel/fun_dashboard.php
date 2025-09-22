@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../config_db/database.php';
+require_once __DIR__ . '../../../config_db/database.php';
 
 function getDashboardStats() {
     global $conn;

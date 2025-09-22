@@ -9,7 +9,7 @@ require_once __DIR__ . '/controlador_panel/cont_dashboard.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Panel de Administrador - NexusPlay</title>
-    <link rel="stylesheet" href="/nexusplay/assests/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../../assests/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="css_panel/header.css">
     <link rel="stylesheet" href="css_panel/dashboard.css">
 </head>
@@ -162,7 +162,7 @@ require_once __DIR__ . '/controlador_panel/cont_dashboard.php';
                         <?php if (!empty($top_games)): ?>
                             <?php foreach (array_slice($top_games, 0, 5) as $game): ?>
                                 <div class="game-item">
-                                    <img src="/nexusplay/images/juegos/<?php echo htmlspecialchars($game['imagen'] ?? 'default-game.jpg'); ?>" 
+                                    <img src="../../images/juegos/<?php echo htmlspecialchars($game['imagen'] ?? 'default-game.jpg'); ?>" 
                                          alt="<?php echo htmlspecialchars($game['titulo']); ?>" 
                                          class="game-image">
                                     <div class="game-details">
@@ -197,7 +197,7 @@ require_once __DIR__ . '/controlador_panel/cont_dashboard.php';
                         <?php if (!empty($top_users)): ?>
                             <?php foreach (array_slice($top_users, 0, 5) as $user): ?>
                                 <div class="user-item">
-                                    <img src="/nexusplay/images/users/<?php echo htmlspecialchars($user['imagen_perfil'] ?? 'default-avatar.png'); ?>" 
+                                    <img src="../../images/users/<?php echo htmlspecialchars($user['imagen_perfil'] ?? 'default-avatar.png'); ?>" 
                                          alt="<?php echo htmlspecialchars($user['username']); ?>" 
                                          class="user-avatar">
                                     <div class="user-details">
@@ -246,10 +246,8 @@ require_once __DIR__ . '/controlador_panel/cont_dashboard.php';
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                 observer.observe(card);
-            });
+            });.game-item
             
-            setInterval(updateTime, 1000);
-
             const hoverElements = document.querySelectorAll('.stat-card, .order-item, .category-item, .game-item, .user-item');
             
             hoverElements.forEach(element => {

@@ -41,16 +41,16 @@ function obtenerDatosAdmin($admin_id) {
         
         $imagen_bd = isset($admin['imagen_perfil']) ? $admin['imagen_perfil'] : 'default-avatar.png';
         if (!empty($imagen_bd) && $imagen_bd !== 'default-avatar.png') {
-            $ruta_imagen = '/nexusplay/images/users/' . $imagen_bd;
+            $ruta_imagen = '../../images/users/' . $imagen_bd;
             $ruta_fisica = $_SERVER['DOCUMENT_ROOT'] . $ruta_imagen;
             
             if (file_exists($ruta_fisica)) {
                 $admin['imagen_url'] = $ruta_imagen;
             } else {
-                $admin['imagen_url'] = '/nexusplay/images/users/default-avatar.png';
+                $admin['imagen_url'] = '../../images/users/default-avatar.png';
             }
         } else {
-            $admin['imagen_url'] = '/nexusplay/images/users/default-avatar.png';
+            $admin['imagen_url'] = '../../images/users/default-avatar.png';
         }
         
         error_log("Debug: Datos finales a retornar: " . print_r($admin, true));
@@ -133,7 +133,7 @@ function actualizarAvatarAdmin($admin_id, $file) {
         return ['success' => false, 'message' => 'El archivo es muy grande. Máximo 5MB'];
     }
     
-    $upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/nexusplay/images/users/';
+    $upload_dir = $_SERVER['DOCUMENT_ROOT'] . '../../images/users/';
     
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);

@@ -9,7 +9,7 @@ require_once __DIR__ . '/controlador_panel/cont_configuraciones.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuraciones - Panel de Administrador - NexusPlay</title>
-    <link rel="stylesheet" href="/nexusplay/assests/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../../assests/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="css_panel/header.css">
     <link rel="stylesheet" href="css_panel/configuraciones.css">
 </head>
@@ -51,7 +51,7 @@ require_once __DIR__ . '/controlador_panel/cont_configuraciones.php';
                             <?php $avatar_data = obtenerDatosAdmin($_SESSION['panel_admin_id']); ?>
                             <div class="avatar-section">
                                 <div class="current-avatar">
-                                    <img src="<?php echo $avatar_data ? htmlspecialchars($avatar_data['imagen_url']) : '/nexusplay/images/users/default-avatar.png'; ?>" alt="Avatar Admin" id="avatarPreview">
+                                    <img src="<?php echo $avatar_data ? htmlspecialchars($avatar_data['imagen_url']) : '../../images/users/default-avatar.png'; ?>" alt="Avatar Admin" id="avatarPreview">
                                 </div>
                                 <div class="avatar-info">
                                     <h3>Foto de Perfil</h3>

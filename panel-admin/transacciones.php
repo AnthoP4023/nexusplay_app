@@ -20,7 +20,7 @@ $total_paginas = ceil($total_transacciones / $por_pagina);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transacciones - Panel Admin</title>
-    <link rel="stylesheet" href="/nexusplay/assests/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../../assests/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="css_panel/header.css">
     <link rel="stylesheet" href="css_panel/transacciones.css">
 </head>
