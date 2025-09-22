@@ -22,7 +22,7 @@ function loadUserProfileImage($conn, $user_id) {
                     return '/images/users/default-avatar.png';
                 }
             } else {
-                return '/images/users//default-avatar.png';
+                return '/images/users/default-avatar.png';
             }
         } else {
             return '/images/users/default-avatar.png';

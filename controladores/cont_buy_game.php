@@ -202,7 +202,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_compra'])) {
                 throw new Exception("Método de pago no válido");
             }
             
-            // Crear el pedido
             $stmt_pedido = $conn->prepare("
                 INSERT INTO pedidos (usuario_id, total, estado, metodo_pago, fecha_pedido)
                 VALUES (?, ?, 'completado', ?, NOW())
@@ -211,7 +210,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_compra'])) {
             $stmt_pedido->execute();
             $pedido_id = $conn->insert_id;
             
-            // Procesar cada juego del carrito
             foreach ($carrito_items as $item) {
                 for ($i = 0; $i < $item['cantidad']; $i++) {
                     $stmt_codigo = $conn->prepare("
@@ -247,7 +245,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_compra'])) {
                 }
             }
             
-            // Limpiar carrito
             unset($_SESSION['carrito']);
             if (isLoggedIn()) {
                 $stmt_clear_cart = $conn->prepare("DELETE FROM carrito WHERE usuario_id = ?");

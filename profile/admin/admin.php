@@ -71,7 +71,6 @@ include '../../controladores/cont_profile.php';
                     </div>
                 </div>
 
-                <!-- Tabs de Navegación Desktop -->
                 <div class="admin-tabs desktop-tabs">
                     <a href="admin.php" class="tab-btn active">
                         <i class="fas fa-chart-bar"></i> Estadísticas

@@ -23,7 +23,7 @@ $total_resultados = 0;
 $sql = "SELECT j.id, j.titulo, j.descripcion, j.imagen, j.precio, j.desarrollador FROM juegos j WHERE 1=1";
 
 if (!empty($search_query)) {
-    $sql .= " AND j.titulo LIKE '%$search_query%'";  //Vulnerabilidad SQLi
+    $sql .= " AND j.titulo LIKE '%$search_query%'";
 }
 
 if (!empty($plataforma_id)) {

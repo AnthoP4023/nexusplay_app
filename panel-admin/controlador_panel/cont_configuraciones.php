@@ -3,7 +3,6 @@ require_once __DIR__ . '/../functions_panel/fun_auth_panel.php';
 require_once __DIR__ . '/../functions_panel/fun_configuraciones.php';
 require_once __DIR__ . '/../../config_db/database.php';
 
-// Verificar que el admin está logueado
 if (!isPanelAdminLoggedIn()) {
     header('Location: panel_login.php');
     exit();
@@ -12,12 +11,10 @@ renewPanelSession();
 
 $admin_id = $_SESSION['panel_admin_id'];
 
-// Inicializar mensajes
 $success_message = $_SESSION['config_success'] ?? '';
 $error_message = $_SESSION['config_error'] ?? '';
 unset($_SESSION['config_success'], $_SESSION['config_error']);
 
-// Obtener datos del admin
 $admin_data = obtenerDatosAdmin($admin_id) ?: [
     'username' => '',
     'email' => '',
@@ -27,10 +24,8 @@ $admin_data = obtenerDatosAdmin($admin_id) ?: [
     'fecha_registro' => date('Y-m-d H:i:s')
 ];
 
-// Procesar POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    // Actualizar perfil
     if (isset($_POST['update_profile'])) {
         $username = trim($_POST['username']);
         $email    = trim($_POST['email']);
@@ -52,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Cambiar contraseña
     if (isset($_POST['change_password'])) {
         $current = trim($_POST['current_password']);
         $new     = trim($_POST['new_password']);
@@ -74,7 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Actualizar avatar
     if (isset($_POST['update_avatar']) && isset($_FILES['avatar'])) {
         $result = actualizarAvatarAdmin($admin_id, $_FILES['avatar']);
         $_SESSION['config_success'] = $result['success'] ? 'Foto de perfil actualizada correctamente' : '';
