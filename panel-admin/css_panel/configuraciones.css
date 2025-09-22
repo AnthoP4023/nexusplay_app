@@ -257,9 +257,15 @@ body {
     border-top: 1px solid rgba(74, 74, 74, 0.3);
 }
 
-@media (max-width: 768px) {
+
+@media (max-width: 1024px) {
+    .form-actions{
+        padding: 20px 0;
+    }
+}
+
+@media (max-width: 870px) {
     .main-content {
-        margin-left: 0;
         padding: 20px;
     }
     
@@ -281,8 +287,9 @@ body {
     }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 780px) {
     .main-content {
         margin-left: 0;
+        padding: 20px;
     }
 }
