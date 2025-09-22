@@ -154,7 +154,7 @@ include 'controladores/cont_index.php';
                                     </div>
                                     <div class="game-price">
                                         <span class="current-price">$<?php echo number_format($juego['precio'], 2); ?></span>
-                                        <form method="POST" action="/nexusplay/controladores/cont_cart.php" class="add-cart-form">
+                                        <form method="POST" action="controladores/cont_cart.php" class="add-cart-form">
                                             <input type="hidden" name="juego_id" value="<?php echo $juego['id']; ?>">
                                             <input type="hidden" name="return_url" value="/nexusplay/index.php">
                                             <button type="submit" class="btn btn-primary btn-cart">
