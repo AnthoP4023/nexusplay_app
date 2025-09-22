@@ -1,12 +1,11 @@
 <?php
-// Ya se asume que se llama database.php antes, que contiene:
-// mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-// $conn = new mysqli(...);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-session_start();
 require_once '../config_db/database.php';
 
-// Función para obtener transacciones (vulnerable a SQLi)
 function getTransacciones($pagina = 1, $por_pagina = 20, $tipo = '', $fecha = '', $busqueda = '') {
     global $conn;
     $offset = ($pagina - 1) * $por_pagina;
@@ -26,7 +25,6 @@ function getTransacciones($pagina = 1, $por_pagina = 20, $tipo = '', $fecha = ''
     }
 
     if (!empty($busqueda)) {
-        // Vulnerable a SQLi, no escapar, para provocar Fatal error
         $where .= " AND (u.username LIKE '%$busqueda%' OR mc.descripcion LIKE '%$busqueda%')";
     }
 
@@ -38,11 +36,10 @@ function getTransacciones($pagina = 1, $por_pagina = 20, $tipo = '', $fecha = ''
             ORDER BY mc.fecha ASC
             LIMIT $por_pagina OFFSET $offset";
 
-    $result = $conn->query($sql); // Aquí se lanzará Fatal error si el SQL es inválido
+    $result = $conn->query($sql); 
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
-// Función para contar transacciones (vulnerable a SQLi)
 function getTotalTransacciones($tipo = '', $fecha = '', $busqueda = '') {
     global $conn;
     $where = "WHERE 1=1";
@@ -69,12 +66,11 @@ function getTotalTransacciones($tipo = '', $fecha = '', $busqueda = '') {
             JOIN usuarios u ON c.usuario_id = u.id
             $where";
 
-    $result = $conn->query($sql); // Fatal error si SQL inválido
+    $result = $conn->query($sql);
     $row = $result->fetch_assoc();
     return $row['total'];
 }
 
-// Función para estadísticas de transacciones
 function getEstadisticasTransacciones() {
     global $conn;
 
@@ -98,7 +94,6 @@ function getEstadisticasTransacciones() {
     ];
 }
 
-// Función para obtener detalle de una transacción
 function getDetalleTransaccion($id) {
     global $conn;
 
@@ -115,7 +110,6 @@ function getDetalleTransaccion($id) {
     return $result->fetch_assoc();
 }
 
-// Función para exportar transacciones a CSV
 function exportarTransaccionesCSV($busqueda = '') {
     $transacciones = getTransacciones(1, 10000, '', '', $busqueda);
     header('Content-Type: text/csv');
