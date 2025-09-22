@@ -52,13 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_recarga'])) 
             if ($metodo_pago === 'nueva_tarjeta' && !empty($_POST['guardar_tarjeta'])) {
                 $numero_tarjeta = $_POST['numero_tarjeta'];
                 $fecha_expiracion = $_POST['fecha_expiracion'];
-                $cvv = $_POST['cvv'];
-                $nombre_titular = $_POST['nombre_titular'];
+                $nombre_titular = $_POST['nombre_titular']; // nombre real del titular
                 $alias = $_POST['alias_tarjeta'] ?? null;
 
-                saveUserCard($conn, $user_id, $numero_tarjeta, $fecha_expiracion, $cvv, $nombre_titular, $alias);
+                saveUserCard($conn, $user_id, $numero_tarjeta, $fecha_expiracion, $nombre_titular, $alias);
             }
-
+            
             $descripcion = "Recarga de cartera - $" . number_format($monto_final, 2);
             rechargeWallet($conn, $user_id, $monto_final, $descripcion);
 
