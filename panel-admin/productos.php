@@ -45,7 +45,7 @@ require_once 'controlador_panel/cont_productos.php';
             <?php foreach($productos as $producto): ?>
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="/nexusplay/images/juegos/<?php echo $producto['imagen']; ?>" alt="<?php echo htmlspecialchars($producto['titulo']); ?>">
+                        <img src="../../images/juegos/<?php echo $producto['imagen']; ?>" alt="<?php echo htmlspecialchars($producto['titulo']); ?>">
                     </div>
                     <div class="product-info">
                         <h3><?php echo htmlspecialchars($producto['titulo']); ?></h3>
