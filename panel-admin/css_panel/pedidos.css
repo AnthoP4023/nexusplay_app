@@ -1,0 +1,415 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d, #1a1a1a);
+    color: #e5e5e5;
+    min-height: 100vh;
+}
+
+.main-content {
+    min-height: calc(100vh - 60px);
+}
+
+.panel-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-header {
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    color: #2563eb;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 0;
+}
+
+.page-header h1 i {
+    color: #2563eb;
+}
+
+.filters-section {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(74, 74, 74, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.filter-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-group select,
+.filter-group input[type="date"] {
+    background: rgba(45, 45, 45, 0.8);
+    border: 1px solid rgba(74, 74, 74, 0.5);
+    border-radius: 8px;
+    padding: 10px 15px;
+    color: #e5e5e5;
+    font-size: 14px;
+}
+
+.search-box {
+    position: relative;
+    flex-grow: 1;
+    max-width: 300px;
+}
+
+.search-box input {
+    width: 100%;
+    background: rgba(45, 45, 45, 0.8);
+    border: 1px solid rgba(74, 74, 74, 0.5);
+    border-radius: 8px;
+    padding: 10px 15px 10px 40px;
+    color: #e5e5e5;
+    font-size: 14px;
+}
+
+.search-box i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(74, 74, 74, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.stat-info h3 {
+    color: #e5e5e5;
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+.stat-info p {
+    color: #888;
+    margin: 5px 0 0 0;
+    font-size: 0.9rem;
+}
+
+.pedidos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pedido-card {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(74, 74, 74, 0.3);
+    border-radius: 12px;
+    padding: 25px;
+    transition: all 0.3s ease;
+}
+
+.pedido-card:hover {
+    border-color: #2563eb;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1);
+}
+
+.pedido-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.pedido-info h3 {
+    color: #e5e5e5;
+    margin: 0 0 5px 0;
+    font-size: 1.3rem;
+}
+
+.pedido-usuario {
+    color: #2563eb;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+}
+
+.pedido-fecha {
+    color: #888;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.completado {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-badge.pendiente {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-badge.cancelado {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.pedido-details {
+    color: #bbb;
+    margin-bottom: 20px;
+}
+
+.pedido-details p {
+    margin: 8px 0;
+    font-size: 0.9rem;
+}
+
+.pedido-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(74, 74, 74, 0.3);
+}
+
+.pedido-total {
+    font-size: 1.5rem;
+    color: #2563eb;
+    font-weight: 700;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-buttons button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-view {
+    background: rgba(107, 114, 128, 0.2);
+    color: #9ca3af;
+    border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+.btn-view:hover {
+    background: rgba(107, 114, 128, 0.3);
+    color: #d1d5db;
+}
+
+.btn-complete {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.btn-complete:hover {
+    background: rgba(16, 185, 129, 0.3);
+}
+
+.btn-cancel {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-cancel:hover {
+    background: rgba(239, 68, 68, 0.3);
+}
+
+.no-data {
+    text-align: center;
+    padding: 60px 20px;
+    color: #888;
+}
+
+.no-data i {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    color: #444;
+}
+
+.no-data h3 {
+    color: #666;
+    margin: 0 0 10px 0;
+}
+
+.action-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.action-modal-content {
+    background: #2d2d2d;
+    margin: 15% auto;
+    padding: 25px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    color: #fff;
+    border: 2px solid #007bff;
+}
+
+#completeModal .action-modal-content {
+    border-color: #28a745;
+}
+
+#cancelModal .action-modal-content {
+    border-color: #dc3545;
+}
+
+.action-modal h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #007bff;
+}
+
+#completeModal h3 {
+    color: #28a745;
+}
+
+#cancelModal h3 {
+    color: #dc3545;
+}
+
+.action-modal p {
+    color: #ccc;
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.action-buttons button {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel-action {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-confirm-complete {
+    background: #28a745;
+    color: white;
+}
+
+.btn-confirm-cancel {
+    background: #dc3545;
+    color: white;
+}
+
+.action-buttons button:hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .filter-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-box {
+        max-width: none;
+    }
+    
+    .stats-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .pedido-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .pedido-actions {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+    
+    .action-buttons {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}
