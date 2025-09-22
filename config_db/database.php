@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
-$username = "root";
-$password = "";
-$database = "prueba3";
+$username = "denji";
+$password = "denji123";
+$database = "nexusplay_db";
 $port = 3306;
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
