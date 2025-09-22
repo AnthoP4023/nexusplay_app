@@ -141,9 +141,9 @@ include '../../controladores/cont_profile.php';
                                 <i class="fas fa-credit-card"></i>
                                 <h3>No tienes tarjetas registradas</h3>
                                 <p>Agrega una tarjeta para realizar compras más fácilmente</p>
-                                <button class="btn btn-primary">
+                                <a href="../../agg_card.php" class="btn btn-primary">
                                     <i class="fas fa-plus"></i> Agregar Tarjeta
-                                </button>
+                                </a>
                             </div>
                         <?php endif; ?>
                     </div>

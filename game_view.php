@@ -148,7 +148,7 @@ include 'controladores/cont_game_view.php';
             <div class="game-sidebar">
                 <div class="purchase-card">
                     <div class="game-price"><?php echo formatGamePrice($game['precio']); ?></div>
-                    <form method="POST" action="controladores/carrito_add.php" class="add-to-cart-form">
+                    <form method="POST" action="controladores/cont_cart.php" class="add-to-cart-form">
                         <input type="hidden" name="juego_id" value="<?php echo $game['id']; ?>">
                         <button type="submit" class="btn-add-cart">
                             <i class="fas fa-shopping-cart"></i>
