@@ -5,6 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 require_once __DIR__ . '../../config_db/database.php';
 require_once __DIR__ . '../../functions/fun_auth.php';
+require_once __DIR__ . '../functions/fun_agg_cart.php';
 
 if (!isLoggedIn()) {
     header('Location: auth/login.php');

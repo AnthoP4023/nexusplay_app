@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['juego_id'])) {
                     $stmt_insert->execute();
                 }
                 
-                syncCarritoWithDB($conn, $user_id);
+                loadCartFromDatabase($conn, $user_id);
             } else {
                 if (isset($_SESSION['carrito'][$juego_id])) {
                     $_SESSION['carrito'][$juego_id]['cantidad'] += $cantidad;
