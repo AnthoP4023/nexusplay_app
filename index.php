@@ -73,7 +73,8 @@ include 'controladores/cont_index.php';
                                     <p class="game-platform"><?php echo htmlspecialchars($juego['categoria_nombre']); ?></p>
                                     <div class="game-price">
                                         <span class="current-price">$<?php echo number_format($juego['precio'], 2); ?></span>
-                                        <form method="POST" action="controladores/carrito_add.php" class="add-cart-form">
+                                        <form method="POST" action="/nexusplay/controladores/cont_cart.php" class="add-cart-form">
+                                            <input type="hidden" name="add_to_cart" value="1">
                                             <input type="hidden" name="juego_id" value="<?php echo $juego['id']; ?>">
                                             <button type="submit" class="btn btn-primary btn-cart">
                                                 <i class="fas fa-shopping-cart"></i> Añadir
