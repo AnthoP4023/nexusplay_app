@@ -5,7 +5,7 @@ function getTransacciones($pagina = 1, $por_pagina = 20, $tipo = '', $fecha = ''
 
     $where = "WHERE 1=1";
 
-   if (!empty($tipo)) {
+    if (!empty($tipo)) {
         $where .= " AND mc.tipo = '$tipo'";
     }
 
@@ -35,8 +35,17 @@ function getTransacciones($pagina = 1, $por_pagina = 20, $tipo = '', $fecha = ''
             ORDER BY mc.fecha ASC
             LIMIT $por_pagina OFFSET $offset";
 
-    $result = $conn->query($sql) or die($conn->error);
-    return $result->fetch_all(MYSQLI_ASSOC);
+    try {
+        $result = $conn->query($sql);
+        if ($result === false) {
+            error_log("Error SQL en getTransacciones: " . $conn->error . " - SQL: $sql");
+            return [];
+        }
+        return $result->fetch_all(MYSQLI_ASSOC);
+    } catch (Exception $e) {
+        error_log("Excepción en getTransacciones: " . $e->getMessage() . " - SQL: $sql");
+        return [];
+    }
 }
 
 function getTotalTransacciones($tipo = '', $fecha = '', $busqueda = '') {
@@ -71,9 +80,18 @@ function getTotalTransacciones($tipo = '', $fecha = '', $busqueda = '') {
             JOIN usuarios u ON c.usuario_id = u.id
             $where";
 
-    $result = $conn->query($sql) or die($conn->error);
-    $row = $result->fetch_assoc();
-    return $row['total'];
+    try {
+        $result = $conn->query($sql);
+        if ($result === false) {
+            error_log("Error SQL en getTotalTransacciones: " . $conn->error . " - SQL: $sql");
+            return 0;
+        }
+        $row = $result->fetch_assoc();
+        return $row['total'] ?? 0;
+    } catch (Exception $e) {
+        error_log("Excepción en getTotalTransacciones: " . $e->getMessage() . " - SQL: $sql");
+        return 0;
+    }
 }
 
 function getEstadisticasTransacciones() {
