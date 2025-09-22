@@ -40,49 +40,31 @@ function getUsuariosDelMes() {
     }
 }
 
-function getUsuarios($page = 1, $limit = 20, $search = '', $tipo = '') {
+function getUsuarios($page = 1, $limit = 20) {
     global $conn;
     $offset = ($page - 1) * $limit;
-    
-    try {
-        $where = "WHERE 1=1";
-        $params = [];
-        $types = "";
-        
-        if (!empty($search)) {
-            $where .= " AND (username LIKE ? OR email LIKE ?)";
-            $searchParam = "%$search%";
-            $params[] = $searchParam;
-            $params[] = $searchParam;
-            $types .= "ss";
-        }
-        
-        if (!empty($tipo)) {
-            $where .= " AND tipo_user_id = ?";
-            $params[] = $tipo;
-            $types .= "i";
-        }
-        
-        $sql = "SELECT id, username, email, tipo_user_id, saldo, fecha_registro, imagen_perfil 
-        FROM usuarios $where 
-        ORDER BY fecha_registro DESC 
-        LIMIT $limit OFFSET $offset";
 
-$stmt = $conn->prepare($sql);
-if (!empty($params)) {
-    $stmt->bind_param(substr($types, 0, -2), ...array_slice($params, 0, -2)); 
-}
+    try {
+        $sql = "SELECT u.id, u.username, u.email, u.tipo_user_id, u.fecha_registro, u.imagen_perfil,
+               IFNULL(c.saldo, 0) AS saldo
+        FROM usuarios u
+        LEFT JOIN carteras c ON u.id = c.usuario_id
+        ORDER BY u.fecha_registro DESC
+        LIMIT ? OFFSET ?";
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $limit, $offset);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         $usuarios = [];
         while ($row = $result->fetch_assoc()) {
-            $row['avatar'] = !empty($row['imagen_perfil']) && $row['imagen_perfil'] !== 'default-avatar.png' 
+            $row['avatar'] = !empty($row['imagen_perfil']) && $row['imagen_perfil'] !== 'default-avatar.png'
                 ? '../../images/users/' . $row['imagen_perfil']
                 : '../../images/users/default-avatar.png';
             $usuarios[] = $row;
         }
-        
+
         return $usuarios;
     } catch (Exception $e) {
         error_log("Error en getUsuarios: " . $e->getMessage());
@@ -90,37 +72,13 @@ if (!empty($params)) {
     }
 }
 
-function getTotalUsuariosCount($search = '', $tipo = '') {
+function getTotalUsuariosCount() {
     global $conn;
-    
     try {
-        $where = "WHERE 1=1";
-        $params = [];
-        $types = "";
-        
-        if (!empty($search)) {
-            $where .= " AND (username LIKE ? OR email LIKE ?)";
-            $searchParam = "%$search%";
-            $params[] = $searchParam;
-            $params[] = $searchParam;
-            $types .= "ss";
-        }
-        
-        if (!empty($tipo)) {
-            $where .= " AND tipo_user_id = ?";
-            $params[] = $tipo;
-            $types .= "i";
-        }
-        
-        $sql = "SELECT COUNT(*) as total FROM usuarios $where";
-        
+        $sql = "SELECT COUNT(*) as total FROM usuarios";
         $stmt = $conn->prepare($sql);
-        if (!empty($params)) {
-            $stmt->bind_param($types, ...$params);
-        }
         $stmt->execute();
         $result = $stmt->get_result();
-        
         return $result->fetch_assoc()['total'];
     } catch (Exception $e) {
         error_log("Error en getTotalUsuariosCount: " . $e->getMessage());
@@ -135,10 +93,10 @@ function getUsuarioById($id) {
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         if ($result->num_rows > 0) {
             $usuario = $result->fetch_assoc();
-            $usuario['avatar'] = !empty($usuario['imagen_perfil']) && $usuario['imagen_perfil'] !== 'default-avatar.png' 
+            $usuario['avatar'] = !empty($usuario['imagen_perfil']) && $usuario['imagen_perfil'] !== 'default-avatar.png'
                 ? '../../images/users/' . $usuario['imagen_perfil']
                 : '../../images/users/default-avatar.png';
             return $usuario;
@@ -150,7 +108,44 @@ function getUsuarioById($id) {
     }
 }
 
+function updateUsuario($id, $datos) {
+    global $conn;
+    try {
+        $fields = [];
+        $params = [];
+        $types = "";
+
+        foreach ($datos as $field => $value) {
+            $fields[] = "$field = ?";
+            $params[] = $value;
+            $types .= is_int($value) ? "i" : "s";
+        }
+
+        $params[] = $id;
+        $types .= "i";
+
+        $sql = "UPDATE usuarios SET " . implode(", ", $fields) . " WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param($types, ...$params);
+        return $stmt->execute();
+    } catch (Exception $e) {
+        error_log("Error en updateUsuario: " . $e->getMessage());
+        return false;
+    }
+}
+
+function deleteUsuario($id) {
+    global $conn;
+    try {
+        $stmt = $conn->prepare("DELETE FROM usuarios WHERE id = ? AND tipo_user_id = 1");
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
+    } catch (Exception $e) {
+        error_log("Error en deleteUsuario: " . $e->getMessage());
+        return false;
+    }
+}
+
 function formatCurrency($amount) {
     return '$' . number_format($amount, 2, '.', ',');
 }
-?>
