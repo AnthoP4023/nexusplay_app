@@ -1,3 +1,13 @@
+body {
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.700), rgba(0, 0, 0, 0.700)), 
+        url('/images/Logo/fondo5.jpg') no-repeat center center fixed;
+    background-size: cover; 
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
 .main-content {
     min-height: 100vh;
     color: #ffffff;
@@ -20,12 +30,13 @@
 }
 
 .game-hero-compact {
-    background: rgba(255, 255, 255, 0.05);
+    background: #88888859;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 30px;
-    backdrop-filter: blur(10px);
 }
+
+
 
 .game-hero-grid {
     display: grid;
@@ -120,11 +131,10 @@
 }
 
 .game-description-section {
-    background: rgba(255, 255, 255, 0.03);
+    background: #88888859;;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 30px;
-    backdrop-filter: blur(10px);
 }
 
 .game-description-section h2 {
@@ -148,11 +158,10 @@
 }
 
 .purchase-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: #88888859;;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 30px;
-    backdrop-filter: blur(10px);
     text-align: center;
 }
 
@@ -188,11 +197,10 @@
 }
 
 .rating-stats-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: #88888859;;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 25px;
-    backdrop-filter: blur(10px);
 }
 
 .rating-stats-card h3 {
@@ -275,11 +283,10 @@
 }
 
 .reviews-section {
-    background: rgba(255, 255, 255, 0.03);
+    background: #88888859;;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 30px;
-    backdrop-filter: blur(10px);
 }
 
 .reviews-header {

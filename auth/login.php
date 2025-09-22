@@ -31,7 +31,7 @@
                         <div class="error"><?php echo $error; ?></div>
                     <?php endif; ?>
                     <form method="POST">
-                        <input type="text" name="username" placeholder="👤 Usuario o Email" autocomplete="username" required>
+                        <input type="text" name="username" placeholder="👤 Usuario" autocomplete="username" required>
                         <input type="password" name="password" placeholder="🔒 Contraseña">
                         <button type="submit">Iniciar Sesión</button>
                     </form>
