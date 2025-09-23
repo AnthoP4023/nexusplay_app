@@ -76,46 +76,43 @@ include 'functions/fun_search.php';
                 if ($total_resultados === 1) echo ' single-result';
                 elseif ($total_resultados === 2) echo ' few-results';
             ?>">
-                <?php while ($juego = $juegos_result->fetch_assoc()): ?>
-                    <div class="game-card">
-                        <div class="game-image">
-                            <img src="images/juegos/<?php echo $juego['imagen']?>" 
-                                alt="<?php echo htmlspecialchars($juego['titulo']); ?>">
-                            <div class="game-overlay">
-                                <a href="game_view.php?id=<?php echo $juego['id']; ?>" class="btn-overlay">
-                                    Ver detalles
-                                </a>
-                            </div>
-                        </div>
+                <?php foreach ($juegos_result as $juego): ?>
+    <div class="game-card">
+        <div class="game-image">
+            <img src="images/juegos/<?php echo $juego['imagen']?>" 
+                alt="<?php echo htmlspecialchars($juego['titulo']); ?>">
+            <div class="game-overlay">
+                <a href="game_view.php?id=<?php echo $juego['id']; ?>" class="btn-overlay">
+                    Ver detalles
+                </a>
+            </div>
+        </div>
 
-                        <div class="game-info">
-                            <h3><?php echo highlightSearchTerm($juego['titulo'], $search_query); ?></h3>
-                            <p class="game-developer"><?php echo htmlspecialchars($juego['desarrollador'] ?? 'Sin desarrollador'); ?></p>
-                            <p class="game-description">
-                                <?php echo htmlspecialchars($juego['descripcion'] ?? ''); ?>
-                            </p>
+        <div class="game-info">
+            <h3><?php echo highlightSearchTerm($juego['titulo'], $search_query); ?></h3>
+            <p class="game-developer"><?php echo htmlspecialchars($juego['desarrollador'] ?? 'Sin desarrollador'); ?></p>
+            <p class="game-description">
+                <?php echo htmlspecialchars($juego['descripcion'] ?? ''); ?>
+            </p>
 
-                            <div class="game-price">
-                                <?php 
-                                $precio_juego = (isset($juego['precio']) && is_numeric($juego['precio'])) 
-                                    ? (float)$juego['precio'] 
-                                    : 0;
-                                ?>
-                                <span class="current-price">
-                                    $<?php echo number_format($precio_juego, 2); ?>
-                                </span>
+            <div class="game-price">
+                <?php $precio_juego = (isset($juego['precio']) && is_numeric($juego['precio'])) ? (float)$juego['precio'] : 0; ?>
+                <span class="current-price">
+                    $<?php echo number_format($precio_juego, 2); ?>
+                </span>
 
-                                <form method="POST" action="controladores/cont_cart.php" class="add-cart-form">
-                                    <input type="hidden" name="juego_id" value="<?php echo $juego['id']; ?>">
-                                    <input type="hidden" name="return_url" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
-                                    <button type="submit" class="btn btn-primary btn-cart">
-                                        <i class="fas fa-shopping-cart"></i> Añadir
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                <?php endwhile; ?>
+                <form method="POST" action="controladores/cont_cart.php" class="add-cart-form">
+                    <input type="hidden" name="juego_id" value="<?php echo $juego['id']; ?>">
+                    <input type="hidden" name="return_url" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
+                    <button type="submit" class="btn btn-primary btn-cart">
+                        <i class="fas fa-shopping-cart"></i> Añadir
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
+
             </div>
         <?php endif; ?>
     </div>
