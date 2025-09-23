@@ -6,7 +6,6 @@ if (session_status() == PHP_SESSION_NONE) {
 require_once __DIR__ . '../../functions/fun_auth.php';
 require_once __DIR__ . '../../functions/fun_config_user.php';
 
-// Redirección si no está logueado o si es admin
 if (!isLoggedIn()) {
     header('Location: ../auth/login.php');
     exit();
@@ -19,7 +18,6 @@ if (isAdmin()) {
 
 $user_id = $_SESSION['user_id'];
 
-// Mensajes de sesión
 $password_message = $_SESSION['password_message'] ?? '';
 $password_message_type = $_SESSION['password_message_type'] ?? '';
 $profile_message = $_SESSION['profile_message'] ?? '';
@@ -27,12 +25,10 @@ $profile_message_type = $_SESSION['profile_message_type'] ?? '';
 $image_message = $_SESSION['image_message'] ?? '';
 $image_message_type = $_SESSION['image_message_type'] ?? '';
 
-// Limpiar mensajes
 unset($_SESSION['password_message'], $_SESSION['password_message_type']);
 unset($_SESSION['profile_message'], $_SESSION['profile_message_type']);
 unset($_SESSION['image_message'], $_SESSION['image_message_type']);
 
-// Obtener datos del usuario
 $user_data = getUserData($user_id);
 if (!$user_data) {
     die("Usuario no encontrado.");
@@ -40,15 +36,12 @@ if (!$user_data) {
 $_SESSION['username'] = $user_data['username'];
 $_SESSION['imagen_perfil'] = $user_data['perfil_img'];
 
-// Obtener estadísticas y saldo
 $user_stats = getUserStats($user_id);
 $stats = $user_stats['stats'];
 $saldo_cartera = $user_stats['saldo_cartera'];
 
-// Procesar formularios
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Cambiar contraseña
     if (isset($_POST['change_password'])) {
         $current_password = $_POST['current_password'] ?? '';
         $new_password = $_POST['new_password'] ?? '';
@@ -77,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Actualizar perfil
     if (isset($_POST['update_profile'])) {
         $new_username = trim($_POST['username'] ?? '');
         $new_email = trim($_POST['email'] ?? '');
@@ -110,7 +102,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Actualizar imagen de perfil
     if (isset($_POST['update_profile_image'])) {
         if (isset($_FILES['profile_image'])) {
             $result = updateUserProfileImage($user_id, $_FILES['profile_image']);

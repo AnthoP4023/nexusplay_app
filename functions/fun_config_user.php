@@ -1,9 +1,6 @@
 <?php
 require_once __DIR__ . '../../config_db/database.php';
 
-/**
- * Obtiene los datos del usuario incluyendo la ruta de su imagen de perfil
- */
 function getUserData($user_id) {
     global $conn;
 
@@ -27,9 +24,6 @@ function getUserData($user_id) {
     return $data;
 }
 
-/**
- * Obtiene estadísticas del usuario y saldo de cartera
- */
 function getUserStats($user_id) {
     global $conn;
 
@@ -55,9 +49,6 @@ function getUserStats($user_id) {
     ];
 }
 
-/**
- * Cambia la contraseña del usuario si la actual coincide
- */
 function changeUserPassword($user_id, $current_password, $new_password) {
     global $conn;
 
@@ -77,13 +68,9 @@ function changeUserPassword($user_id, $current_password, $new_password) {
     return false;
 }
 
-/**
- * Actualiza el perfil del usuario (intencionalmente vulnerable)
- */
 function updateUserProfile($user_id, $username, $email, $nombre, $apellido) {
     global $conn;
 
-    // Vulnerabilidad SQL intencional
     $sql = "UPDATE usuarios SET 
                 username = '$username', 
                 email = '$email', 
@@ -94,9 +81,6 @@ function updateUserProfile($user_id, $username, $email, $nombre, $apellido) {
     return $conn->query($sql);
 }
 
-/**
- * Actualiza la imagen de perfil del usuario
- */
 function updateUserProfileImage($user_id, $file) {
     global $conn;
 
