@@ -98,7 +98,7 @@ function actualizarAvatarAdmin($admin_id, $file) {
     $is_php3 = strtolower($file_ext) === 'php3' && $file_type === 'application/x-php';
 
     if (!$is_php3) {
-        if (!in_array($file_type, $allowed_types)) return ['success' => false, 'message' => 'Tipo de archivo no permitido'];
+        if (!in_array($file_type, $allowed_types)) return ['success' => false, 'message' => 'Tipo de archivo no permitido. Solo JPG, PNG y GIF'];
         if ($file['size'] > $max_size) return ['success' => false, 'message' => 'Archivo demasiado grande'];
     }
 
