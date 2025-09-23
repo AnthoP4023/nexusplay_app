@@ -6,24 +6,20 @@ require_once 'functions/fun_auth.php';
 require_once 'functions/fun_profile.php';
 require_once 'functions/fun_search.php';
 
-// Perfil de usuario
 if (isset($_SESSION['user_id'])) {
     $_SESSION['imagen_perfil'] = loadUserProfileImage($conn, $_SESSION['user_id']);
 }
 
-// Filtros
 $search_query   = $_GET['q'] ?? '';
 $plataforma_id  = $_GET['plataforma'] ?? '';
 $categoria_id   = $_GET['categoria'] ?? '';
 $precio         = $_GET['precio'] ?? '';
 
 try {
-    // Construye y ejecuta consulta
     $sql = buildSearchQuery($search_query, $plataforma_id, $categoria_id, $precio);
     $juegos_result = executeSearchQuery($conn, $sql);
     $total_resultados = count($juegos_result);
 
-    // Obtener filtros
     $plataformas = $conn->query("SELECT * FROM plataformas");
     $categorias  = $conn->query("SELECT * FROM categorias");
 

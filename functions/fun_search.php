@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../config_db/database.php';
 
-// Resalta término de búsqueda
 if (!function_exists('highlightSearchTerm')) {
     function highlightSearchTerm($text, $term) {
         if (empty($term)) return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
@@ -15,7 +14,6 @@ if (!function_exists('highlightSearchTerm')) {
     }
 }
 
-// Construye consulta SQL según filtros
 if (!function_exists('buildSearchQuery')) {
     function buildSearchQuery($search_query = '', $plataforma_id = '', $categoria_id = '', $precio = '') {
         $sql = "SELECT j.id, j.titulo, j.descripcion, j.imagen, j.precio, j.desarrollador 
@@ -38,7 +36,6 @@ if (!function_exists('buildSearchQuery')) {
     }
 }
 
-// Ejecuta la consulta y devuelve resultados como array
 if (!function_exists('executeSearchQuery')) {
     function executeSearchQuery($conn, $sql) {
         try {
