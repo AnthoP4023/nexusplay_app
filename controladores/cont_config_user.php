@@ -6,6 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 require_once __DIR__ . '../../functions/fun_auth.php';
 require_once __DIR__ . '../../functions/fun_config_user.php';
 
+// Redirección si no está logueado o si es admin
 if (!isLoggedIn()) {
     header('Location: ../auth/login.php');
     exit();
@@ -31,21 +32,27 @@ unset($_SESSION['password_message'], $_SESSION['password_message_type']);
 unset($_SESSION['profile_message'], $_SESSION['profile_message_type']);
 unset($_SESSION['image_message'], $_SESSION['image_message_type']);
 
-// Obtener datos del usuario y estadísticas
+// Obtener datos del usuario
 $user_data = getUserData($user_id);
-$stats_data = getUserStats($user_id);
-$perfil_img = $user_data['perfil_img'];
-$stats = $stats_data['stats'];
-$saldo_cartera = $stats_data['saldo_cartera'];
+if (!$user_data) {
+    die("Usuario no encontrado.");
+}
+$_SESSION['username'] = $user_data['username'];
+$_SESSION['imagen_perfil'] = $user_data['perfil_img'];
+
+// Obtener estadísticas y saldo
+$user_stats = getUserStats($user_id);
+$stats = $user_stats['stats'];
+$saldo_cartera = $user_stats['saldo_cartera'];
 
 // Procesar formularios
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Cambiar contraseña
     if (isset($_POST['change_password'])) {
-        $current_password = $_POST['current_password'];
-        $new_password = $_POST['new_password'];
-        $confirm_password = $_POST['confirm_password'];
+        $current_password = $_POST['current_password'] ?? '';
+        $new_password = $_POST['new_password'] ?? '';
+        $confirm_password = $_POST['confirm_password'] ?? '';
 
         if (empty($current_password) || empty($new_password) || empty($confirm_password)) {
             $_SESSION['password_message'] = 'Todos los campos de contraseña son obligatorios';
@@ -61,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['password_message'] = 'Contraseña cambiada exitosamente';
                 $_SESSION['password_message_type'] = 'success';
             } else {
-                $_SESSION['password_message'] = 'Error al cambiar la contraseña';
+                $_SESSION['password_message'] = 'Contraseña actual incorrecta o error en la base de datos';
                 $_SESSION['password_message_type'] = 'error';
             }
         }
@@ -72,10 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Actualizar perfil
     if (isset($_POST['update_profile'])) {
-        $new_username = trim($_POST['username']);
-        $new_email    = trim($_POST['email']);
-        $new_nombre   = trim($_POST['nombre']);
-        $new_apellido = trim($_POST['apellido']);
+        $new_username = trim($_POST['username'] ?? '');
+        $new_email = trim($_POST['email'] ?? '');
+        $new_nombre = trim($_POST['nombre'] ?? '');
+        $new_apellido = trim($_POST['apellido'] ?? '');
 
         if (empty($new_username) || empty($new_email) || empty($new_nombre) || empty($new_apellido)) {
             $_SESSION['profile_message'] = 'Todos los campos del perfil son obligatorios';
@@ -87,8 +94,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (updateUserProfile($user_id, $new_username, $new_email, $new_nombre, $new_apellido)) {
                 $_SESSION['profile_message'] = 'Perfil actualizado exitosamente';
                 $_SESSION['profile_message_type'] = 'success';
+
                 $_SESSION['username'] = $new_username;
                 $user_data['username'] = $new_username;
+                $user_data['email'] = $new_email;
+                $user_data['nombre'] = $new_nombre;
+                $user_data['apellido'] = $new_apellido;
             } else {
                 $_SESSION['profile_message'] = 'Error al actualizar el perfil';
                 $_SESSION['profile_message_type'] = 'error';
@@ -101,13 +112,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Actualizar imagen de perfil
     if (isset($_POST['update_profile_image'])) {
-        if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
+        if (isset($_FILES['profile_image'])) {
             $result = updateUserProfileImage($user_id, $_FILES['profile_image']);
             if ($result['success']) {
                 $_SESSION['image_message'] = 'Imagen de perfil actualizada exitosamente';
                 $_SESSION['image_message_type'] = 'success';
-                $perfil_img = '/images/users/' . $result['filename'];
-                $_SESSION['imagen_perfil'] = $perfil_img;
+                $_SESSION['imagen_perfil'] = '/images/users/' . $result['filename'];
+                $user_data['imagen_perfil'] = $result['filename'];
             } else {
                 $_SESSION['image_message'] = $result['message'];
                 $_SESSION['image_message_type'] = 'error';
