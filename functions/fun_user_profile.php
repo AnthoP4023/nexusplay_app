@@ -1,11 +1,9 @@
 <?php
-
 require_once __DIR__ . '../../config_db/database.php';
 
 function getUserData($user_id) {
     global $conn;
-    $stmt = $conn->prepare("SELECT username, email, nombre, apellido, imagen_perfil, fecha_registro 
-                            FROM usuarios WHERE id = ?");
+    $stmt = $conn->prepare("SELECT username, email, nombre, apellido, imagen_perfil, fecha_registro FROM usuarios WHERE id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $data = $stmt->get_result()->fetch_assoc();
@@ -38,12 +36,12 @@ function getUserOrders($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    return $stmt->get_result(); // 👈 devolvemos mysqli_result
 }
 
 function getUserStats($user_id) {
     global $conn;
-    $stmt = $conn->prepare("
+    $stmt_stats = $conn->prepare("
         SELECT 
             COUNT(p.id) as total_pedidos,
             SUM(CASE WHEN p.estado='completado' THEN p.total ELSE 0 END) as total_gastado,
@@ -53,9 +51,9 @@ function getUserStats($user_id) {
         FROM pedidos p
         WHERE p.usuario_id = ?
     ");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $stats = $stmt->get_result()->fetch_assoc();
+    $stmt_stats->bind_param("i", $user_id);
+    $stmt_stats->execute();
+    $stats = $stmt_stats->get_result()->fetch_assoc();
 
     $stmt_cartera = $conn->prepare("SELECT saldo FROM carteras WHERE usuario_id = ?");
     $stmt_cartera->bind_param("i", $user_id);
@@ -80,7 +78,7 @@ function getUserMovements($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    return $stmt->get_result(); // 👈 devolvemos mysqli_result
 }
 
 function getUserCards($user_id) {
@@ -88,13 +86,13 @@ function getUserCards($user_id) {
     $stmt = $conn->prepare("
         SELECT id, RIGHT(AES_DECRYPT(numero_tarjeta, 'clave_cifrado_segura'), 4) as ultimos_4,
                fecha_expiracion, alias, fecha_registro
-        FROM tarjetas 
+        FROM tarjetas
         WHERE usuario_id = ?
         ORDER BY fecha_registro DESC
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    return $stmt->get_result(); // 👈 devolvemos mysqli_result
 }
 
 function getUserReviews($user_id) {
@@ -109,5 +107,6 @@ function getUserReviews($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    return $stmt->get_result(); // 👈 devolvemos mysqli_result
 }
+?>
