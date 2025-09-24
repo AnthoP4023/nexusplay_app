@@ -24,7 +24,7 @@ include 'controladores/cont_agg_card.php';
                 <p>Guarda tu tarjeta de forma segura y recarga tu saldo</p>
             </div>
 
-            <!-- Contenedor de mensajes PHP -->
+            <!-- Contenedor de mensajes PHP y JS -->
             <div id="js-message-container">
                 <?php if(!empty($mensaje)): ?>
                     <div class="message <?php echo $mensaje_tipo === 'success' ? 'message-success' : 'message-error'; ?>">
@@ -57,14 +57,14 @@ include 'controladores/cont_agg_card.php';
                     </div>
                 </div>
 
-                <!-- FORMULARIO CORREGIDO -->
-                <form method="POST" class="card-form">
+                <!-- FORMULARIO -->
+                <form method="POST" class="card-form" id="recargaForm">
                     <div class="form-section">
                         <h3><i class="fas fa-info-circle"></i> Información de la Recarga</h3>
 
                         <div class="form-group">
                             <label for="monto_recarga">Monto a recargar</label>
-                            <select id="monto_recarga" name="monto_recarga" required>
+                            <select id="monto_recarga" name="monto_recarga">
                                 <option value="">-- Selecciona un monto --</option>
                                 <option value="5">5 USD</option>
                                 <option value="10">10 USD</option>
@@ -75,7 +75,7 @@ include 'controladores/cont_agg_card.php';
 
                         <div class="form-group">
                             <label for="metodo_pago">Método de pago</label>
-                            <select id="metodo_pago" name="metodo_pago" required>
+                            <select id="metodo_pago" name="metodo_pago">
                                 <option value="">-- Escoge un método --</option>
                                 <option value="tarjeta_guardada">Tarjeta guardada</option>
                                 <option value="nueva_tarjeta">Usar nueva tarjeta</option>
@@ -119,12 +119,56 @@ include 'controladores/cont_agg_card.php';
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const monto = document.getElementById('monto_recarga');
         const metodo_pago = document.getElementById('metodo_pago');
         const nuevaTarjetaSection = document.getElementById('nueva_tarjeta_section');
+        const form = document.getElementById('recargaForm');
+        const messageContainer = document.getElementById('js-message-container');
 
         // Mostrar sección de nueva tarjeta según selección
         metodo_pago.addEventListener('change', () => {
             nuevaTarjetaSection.style.display = metodo_pago.value === 'nueva_tarjeta' ? 'block' : 'none';
+        });
+
+        // Validación del formulario
+        form.addEventListener('submit', function(e) {
+            messageContainer.innerHTML = '';
+            let isValid = true;
+
+            const showError = (msg) => {
+                const div = document.createElement('div');
+                div.className = 'message message-error';
+                div.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
+                messageContainer.appendChild(div);
+            };
+
+            if (!monto.value) {
+                showError('Debes seleccionar un monto a recargar');
+                isValid = false;
+            }
+
+            if (!metodo_pago.value) {
+                showError('Debes seleccionar un método de pago');
+                isValid = false;
+            }
+
+            if (metodo_pago.value === 'nueva_tarjeta') {
+                const numero = document.getElementById('numero_tarjeta').value.trim();
+                const fecha = document.getElementById('fecha_expiracion').value.trim();
+                const cvv = document.getElementById('cvv').value.trim();
+                const titular = document.getElementById('nombre_titular').value.trim();
+
+                if (!numero) { showError('Ingresa el número de tarjeta'); isValid = false; }
+                if (!fecha) { showError('Ingresa la fecha de expiración'); isValid = false; }
+                if (!cvv) { showError('Ingresa el CVV'); isValid = false; }
+                if (!titular) { showError('Ingresa el nombre del titular'); isValid = false; }
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+                const firstInvalid = form.querySelector('select:invalid, input:invalid');
+                if (firstInvalid) firstInvalid.focus();
+            }
         });
     });
     </script>
