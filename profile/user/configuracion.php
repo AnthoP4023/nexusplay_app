@@ -25,7 +25,7 @@ include '../../controladores/cont_config_user.php';
                     <div class="user-info-container">
                         <div class="avatar-section">
                             <div class="user-avatar">
-                                <img src="<?php echo htmlspecialchars($_SESSION['imagen_perfil']); ?>" alt="Mi Perfil" class="avatar-img">
+                                <img src="<?php echo htmlspecialchars($perfil_img); ?>" alt="Mi Perfil" class="avatar-img">
                             </div>
                         </div>
                         
@@ -56,12 +56,24 @@ include '../../controladores/cont_config_user.php';
                 </div>
 
                 <div class="user-tabs desktop-tabs">
-                    <a href="user.php" class="tab-btn"><i class="fas fa-chart-line"></i> Resumen</a>
-                    <a href="mis_pedidos.php" class="tab-btn"><i class="fas fa-box"></i> Mis Pedidos</a>
-                    <a href="mi_cartera.php" class="tab-btn"><i class="fas fa-wallet"></i> Mi Cartera</a>
-                    <a href="mis_tarjetas.php" class="tab-btn"><i class="fas fa-credit-card"></i> Mis Tarjetas</a>
-                    <a href="mis_resenas.php" class="tab-btn"><i class="fas fa-star"></i> Mis Reseñas</a>
-                    <a href="configuracion.php" class="tab-btn active"><i class="fa-solid fa-gear"></i> Configuraciones</a>
+                    <a href="user.php" class="tab-btn">
+                        <i class="fas fa-chart-line"></i> Resumen
+                    </a>
+                    <a href="mis_pedidos.php" class="tab-btn">
+                        <i class="fas fa-box"></i> Mis Pedidos
+                    </a>
+                    <a href="mi_cartera.php" class="tab-btn">
+                        <i class="fas fa-wallet"></i> Mi Cartera
+                    </a>
+                    <a href="mis_tarjetas.php" class="tab-btn">
+                        <i class="fas fa-credit-card"></i> Mis Tarjetas
+                    </a>
+                    <a href="mis_resenas.php" class="tab-btn">
+                        <i class="fas fa-star"></i> Mis Reseñas
+                    </a>
+                    <a href="configuracion.php" class="tab-btn active">
+                        <i class="fa-solid fa-gear"></i> Configuraciones
+                    </a>
                 </div>
 
                 <div class="mobile-selector">
@@ -79,49 +91,33 @@ include '../../controladores/cont_config_user.php';
                     <h2 class="section-title">Configuraciones de Cuenta</h2>
                     
                     <div class="config-container">
-
-                        <!-- Mensajes generales -->
-                        <?php if (!empty($_SESSION['profile_message'])): ?>
-                            <div class="message <?php echo $_SESSION['profile_message_type']; ?>">
-                                <i class="fas <?php echo $_SESSION['profile_message_type'] === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
-                                <?php echo htmlspecialchars($_SESSION['profile_message']); ?>
-                            </div>
-                            <?php unset($_SESSION['profile_message'], $_SESSION['profile_message_type']); ?>
-                        <?php endif; ?>
-
-                        <?php if (!empty($_SESSION['password_message'])): ?>
-                            <div class="message <?php echo $_SESSION['password_message_type']; ?>">
-                                <i class="fas <?php echo $_SESSION['password_message_type'] === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
-                                <?php echo htmlspecialchars($_SESSION['password_message']); ?>
-                            </div>
-                            <?php unset($_SESSION['password_message'], $_SESSION['password_message_type']); ?>
-                        <?php endif; ?>
-
-                        <?php if (!empty($_SESSION['image_message'])): ?>
-                            <div class="message <?php echo $_SESSION['image_message_type']; ?>">
-                                <i class="fas <?php echo $_SESSION['image_message_type'] === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
-                                <?php echo htmlspecialchars($_SESSION['image_message']); ?>
-                            </div>
-                            <?php unset($_SESSION['image_message'], $_SESSION['image_message_type']); ?>
-                        <?php endif; ?>
-
-                        <!-- Información Personal -->
                         <div class="config-section">
                             <div class="config-header">
                                 <h3><i class="fas fa-user-edit"></i> Información Personal</h3>
                                 <p>Actualiza tus datos personales</p>
                             </div>
                             
+                            <?php if (!empty($profile_message)): ?>
+                                <div class="message <?php echo $profile_message_type; ?>">
+                                    <i class="fas <?php echo $profile_message_type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
+                                    <?php echo htmlspecialchars($profile_message); ?>
+                                </div>
+                            <?php endif; ?>
+                            
                             <form method="POST" class="config-form">
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label for="username"><i class="fas fa-user"></i> Nombre de Usuario</label>
+                                        <label for="username">
+                                            <i class="fas fa-user"></i> Nombre de Usuario
+                                        </label>
                                         <input type="text" id="username" name="username" 
                                                value="<?php echo htmlspecialchars($user_data['username']); ?>" 
                                                placeholder="Ingresa tu nombre de usuario" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="email"><i class="fas fa-envelope"></i> Correo Electrónico</label>
+                                        <label for="email">
+                                            <i class="fas fa-envelope"></i> Correo Electrónico
+                                        </label>
                                         <input type="email" id="email" name="email" 
                                                value="<?php echo htmlspecialchars($user_data['email']); ?>" 
                                                placeholder="Ingresa tu correo electrónico" required>
@@ -130,13 +126,17 @@ include '../../controladores/cont_config_user.php';
                                 
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label for="nombre"><i class="fas fa-id-badge"></i> Nombre</label>
+                                        <label for="nombre">
+                                            <i class="fas fa-id-badge"></i> Nombre
+                                        </label>
                                         <input type="text" id="nombre" name="nombre" 
                                                value="<?php echo htmlspecialchars($user_data['nombre']); ?>" 
                                                placeholder="Ingresa tu nombre" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="apellido"><i class="fas fa-id-badge"></i> Apellido</label>
+                                        <label for="apellido">
+                                            <i class="fas fa-id-badge"></i> Apellido
+                                        </label>
                                         <input type="text" id="apellido" name="apellido" 
                                                value="<?php echo htmlspecialchars($user_data['apellido']); ?>" 
                                                placeholder="Ingresa tu apellido" required>
@@ -149,16 +149,22 @@ include '../../controladores/cont_config_user.php';
                             </form>
                         </div>
 
-                        <!-- Imagen de Perfil -->
                         <div class="config-section">
                             <div class="config-header">
                                 <h3><i class="fas fa-camera"></i> Imagen de Perfil</h3>
                                 <p>Cambia tu foto de perfil</p>
                             </div>
                             
+                            <?php if (!empty($image_message)): ?>
+                                <div class="message <?php echo $image_message_type; ?>">
+                                    <i class="fas <?php echo $image_message_type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
+                                    <?php echo htmlspecialchars($image_message); ?>
+                                </div>
+                            <?php endif; ?>
+                            
                             <div class="profile-image-section">
                                 <div class="current-image">
-                                    <img src="<?php echo htmlspecialchars($_SESSION['imagen_perfil']); ?>" alt="Imagen actual" id="currentProfileImage" class="profile-preview">
+                                    <img src="<?php echo htmlspecialchars($perfil_img); ?>" alt="Imagen actual" id="currentProfileImage" class="profile-preview">
                                     <div class="image-info">
                                         <h4>Imagen Actual</h4>
                                         <p class="image-guidelines">
@@ -196,18 +202,27 @@ include '../../controladores/cont_config_user.php';
                             </div>
                         </div>
 
-                        <!-- Seguridad de la Cuenta -->
                         <div class="config-section">
                             <div class="config-header">
                                 <h3><i class="fas fa-lock"></i> Seguridad de la Cuenta</h3>
                                 <p>Cambia tu contraseña para mantener tu cuenta segura</p>
                             </div>
                             
+                            <?php if (!empty($password_message)): ?>
+                                <div class="message <?php echo $password_message_type; ?>">
+                                    <i class="fas <?php echo $password_message_type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
+                                    <?php echo htmlspecialchars($password_message); ?>
+                                </div>
+                            <?php endif; ?>
+                            
                             <form method="POST" class="config-form">
                                 <div class="form-group">
-                                    <label for="current_password"><i class="fas fa-key"></i> Contraseña Actual</label>
+                                    <label for="current_password">
+                                        <i class="fas fa-key"></i> Contraseña Actual
+                                    </label>
                                     <div class="password-input">
-                                        <input type="password" id="current_password" name="current_password" placeholder="Ingresa tu contraseña actual" required>
+                                        <input type="password" id="current_password" name="current_password" 
+                                               placeholder="Ingresa tu contraseña actual" required>
                                         <button type="button" class="toggle-password" onclick="togglePassword('current_password')">
                                             <i class="fas fa-eye" id="current_password_icon"></i>
                                         </button>
@@ -216,9 +231,12 @@ include '../../controladores/cont_config_user.php';
                                 
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label for="new_password"><i class="fas fa-lock"></i> Nueva Contraseña</label>
+                                        <label for="new_password">
+                                            <i class="fas fa-lock"></i> Nueva Contraseña
+                                        </label>
                                         <div class="password-input">
-                                            <input type="password" id="new_password" name="new_password" placeholder="Ingresa tu nueva contraseña" required>
+                                            <input type="password" id="new_password" name="new_password" 
+                                                   placeholder="Ingresa tu nueva contraseña" required>
                                             <button type="button" class="toggle-password" onclick="togglePassword('new_password')">
                                                 <i class="fas fa-eye" id="new_password_icon"></i>
                                             </button>
@@ -226,9 +244,12 @@ include '../../controladores/cont_config_user.php';
                                         <small class="password-help">Mínimo 6 caracteres</small>
                                     </div>
                                     <div class="form-group">
-                                        <label for="confirm_password"><i class="fas fa-lock"></i> Confirmar Contraseña</label>
+                                        <label for="confirm_password">
+                                            <i class="fas fa-lock"></i> Confirmar Contraseña
+                                        </label>
                                         <div class="password-input">
-                                            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirma tu nueva contraseña" required>
+                                            <input type="password" id="confirm_password" name="confirm_password" 
+                                                   placeholder="Confirma tu nueva contraseña" required>
                                             <button type="button" class="toggle-password" onclick="togglePassword('confirm_password')">
                                                 <i class="fas fa-eye" id="confirm_password_icon"></i>
                                             </button>
@@ -241,7 +262,6 @@ include '../../controladores/cont_config_user.php';
                                 </button>
                             </form>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -250,84 +270,109 @@ include '../../controladores/cont_config_user.php';
     
     <?php include '../../includes/footer.php'; ?>
 
-<script>
-function navigateToSection(url) {
-    if (url) window.location.href = url;
-}
-
-function togglePassword(fieldId) {
-    const field = document.getElementById(fieldId);
-    const icon = document.getElementById(fieldId + '_icon');
-    if (field.type === 'password') {
-        field.type = 'text';
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
-    } else {
-        field.type = 'password';
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
-    }
-}
-
-// Validación de contraseña
-document.getElementById('confirm_password').addEventListener('input', function() {
-    const newPassword = document.getElementById('new_password').value;
-    this.setCustomValidity(newPassword !== this.value ? 'Las contraseñas no coinciden' : '');
-});
-
-document.getElementById('new_password').addEventListener('input', function() {
-    this.setCustomValidity(this.value.length > 0 && this.value.length < 6 ? 'La contraseña debe tener al menos 6 caracteres' : '');
-});
-
-// Imagen de perfil
-document.addEventListener('DOMContentLoaded', function() {
-    const fileInput = document.getElementById('profileImageInput');
-    const fileName = document.getElementById('fileName');
-    const imagePreview = document.getElementById('imagePreview');
-    const previewContainer = document.getElementById('imagePreviewContainer');
-    const uploadBtn = document.getElementById('uploadBtn');
-    const cancelBtn = document.getElementById('cancelPreview');
-    const msgDiv = document.getElementById('imageErrorMessage');
-
-    function resetFileInput() {
-        if (fileInput) fileInput.value = '';
-        if (fileName) { fileName.textContent = ''; fileName.style.display = 'none'; }
-        if (previewContainer) previewContainer.style.display = 'none';
-        if (uploadBtn) uploadBtn.disabled = true;
-        if (msgDiv) msgDiv.innerHTML = '';
-    }
-
-    if (fileInput) {
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            msgDiv.innerHTML = '';
-
-            if (!file) { resetFileInput(); return; }
-
-            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-            if (!allowedTypes.includes(file.type)) {
-                msgDiv.innerHTML = '<div class="message error"><i class="fas fa-exclamation-circle"></i> Solo se permiten archivos de imagen (JPG, JPEG, PNG, GIF)</div>';
-                resetFileInput(); return;
+    <script>
+        function navigateToSection(url) {
+            if (url) {
+                window.location.href = url;
             }
+        }
 
-            if (file.size > 5 * 1024 * 1024) {
-                msgDiv.innerHTML = '<div class="message error"><i class="fas fa-exclamation-circle"></i> El archivo es demasiado grande. Máximo 5MB</div>';
-                resetFileInput(); return;
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = document.getElementById(fieldId + '_icon');
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
             }
+        }
 
-            fileName.textContent = file.name; fileName.style.display = 'block';
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                imagePreview.src = e.target.result;
-                previewContainer.style.display = 'flex';
-                uploadBtn.disabled = false;
-            };
-            reader.readAsDataURL(file);
+        document.getElementById('confirm_password').addEventListener('input', function() {
+            const newPassword = document.getElementById('new_password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && newPassword !== confirmPassword) {
+                this.setCustomValidity('Las contraseñas no coinciden');
+                this.classList.add('error');
+            } else {
+                this.setCustomValidity('');
+                this.classList.remove('error');
+            }
         });
-    }
 
-    if (cancelBtn) cancelBtn.addEventListener('click', resetFileInput);
-});
-</script>
+        document.getElementById('new_password').addEventListener('input', function() {
+            if (this.value.length > 0 && this.value.length < 6) {
+                this.setCustomValidity('La contraseña debe tener al menos 6 caracteres');
+                this.classList.add('error');
+            } else {
+                this.setCustomValidity('');
+                this.classList.remove('error');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('profileImageInput');
+            const fileName = document.getElementById('fileName');
+            const imagePreview = document.getElementById('imagePreview');
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const cancelBtn = document.getElementById('cancelPreview');
+            
+            if (fileInput) {
+                fileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    
+                    if (file) {
+                        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                        if (!allowedTypes.includes(file.type)) {
+                            alert('Solo se permiten archivos de imagen (JPG, JPEG, PNG, GIF)');
+                            resetFileInput();
+                            return;
+                        }
+                        
+                        if (file.size > 5 * 1024 * 1024) {
+                            alert('El archivo es demasiado grande. Máximo 5MB');
+                            resetFileInput();
+                            return;
+                        }
+                        
+                        fileName.textContent = file.name;
+                        fileName.style.display = 'block';
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            imagePreview.src = e.target.result;
+                            previewContainer.style.display = 'block';
+                            uploadBtn.disabled = false;
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        resetFileInput();
+                    }
+                });
+            }
+            
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    resetFileInput();
+                });
+            }
+            
+            function resetFileInput() {
+                if (fileInput) fileInput.value = '';
+                if (fileName) {
+                    fileName.textContent = '';
+                    fileName.style.display = 'none';
+                }
+                if (previewContainer) previewContainer.style.display = 'none';
+                if (uploadBtn) uploadBtn.disabled = true;
+            }
+        });
+    </script>
 </body>
 </html>
