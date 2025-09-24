@@ -2,12 +2,11 @@
 require_once __DIR__ . '/../config_db/database.php';
 
 function registerUser($email, $username, $nombre, $apellido, $password, $confirm_password, $terms_accepted) {
-    global $conn; // Usamos la conexión tal como en cont_register.php
+    global $conn; 
 
     $error = '';
     $success = '';
 
-    // Validaciones idénticas al cont_register
     if (empty($username) || empty($email) || empty($nombre) || empty($apellido) || empty($password) || empty($confirm_password)) {
         $error = 'Complete todos los campos';
     } elseif ($password !== $confirm_password) {
@@ -19,7 +18,6 @@ function registerUser($email, $username, $nombre, $apellido, $password, $confirm
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'El email no es válido';
     } else {
-        // Vulnerabilidad intencional: concatenación directa
         $check_query = "SELECT * FROM usuarios WHERE username = '$username' OR email = '$email'";
 
         try {
