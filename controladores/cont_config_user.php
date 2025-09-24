@@ -25,6 +25,10 @@ $profile_message_type = $_SESSION['profile_message_type'] ?? '';
 $image_message = $_SESSION['image_message'] ?? '';
 $image_message_type = $_SESSION['image_message_type'] ?? '';
 
+unset($_SESSION['password_message'], $_SESSION['password_message_type']);
+unset($_SESSION['profile_message'], $_SESSION['profile_message_type']);
+unset($_SESSION['image_message'], $_SESSION['image_message_type']);
+
 $user_data = getUserData($user_id);
 if (!$user_data) {
     die("Usuario no encontrado.");
@@ -118,4 +122,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: configuracion.php');
         exit();
     }
-}
+} 
