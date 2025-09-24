@@ -23,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar_tarjeta'])) {
     $nombre_titular   = trim($_POST['nombre_titular'] ?? '');
     $alias_tarjeta    = trim($_POST['alias_tarjeta'] ?? '');
 
-    // Validaciones básicas
     if (empty($numero_tarjeta)) {
         $mensaje = 'El número de tarjeta es requerido';
     } elseif (strlen($numero_tarjeta) < 13) {
@@ -36,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar_tarjeta'])) {
         $mensaje = 'El nombre del titular debe tener al menos 3 caracteres';
     }
 
-    // Validación fecha de expiración
     if (empty($mensaje)) {
         $fecha_parts = explode('/', $fecha_expiracion);
         $mes = intval($fecha_parts[0]);
