@@ -38,30 +38,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_recarga'])) 
     $custom_amount = $_POST['custom_amount'] ?? '';
     $metodo_pago = $_POST['metodo_pago'] ?? '';
 
-    // Validaciones
-    if (empty($monto_recarga)) {
-        $mensaje = "Debe seleccionar un monto de recarga.";
-        $mensaje_tipo = 'error';
-    } elseif ($monto_recarga === 'custom' && empty($custom_amount)) {
-        $mensaje = "Debe ingresar un monto personalizado.";
-        $mensaje_tipo = 'error';
-    } elseif (empty($metodo_pago)) {
-        $mensaje = "Debe seleccionar un método de pago, si no el recargo no se podrá realizar.";
+    // Validar monto
+    if ($monto_recarga === '') {
+        $mensaje = "Debe seleccionar un monto para la recarga.";
         $mensaje_tipo = 'error';
     } else {
-        $monto_final = $monto_recarga === 'custom' ? floatval($custom_amount) : floatval($monto_recarga);
+        $monto_final = ($monto_recarga === 'custom') ? floatval($custom_amount) : floatval($monto_recarga);
 
         if ($monto_final <= 0) {
             $mensaje = "Monto inválido para recarga.";
             $mensaje_tipo = 'error';
-        } else {
-            try {
-                if ($metodo_pago === 'nueva_tarjeta' && !empty($_POST['guardar_tarjeta'])) {
-                    $numero_tarjeta = $_POST['numero_tarjeta'];
-                    $fecha_expiracion = $_POST['fecha_expiracion'];
-                    $nombre_titular = $_POST['nombre_titular'];
-                    $alias = $_POST['alias_tarjeta'] ?? null;
+        } elseif ($metodo_pago === '') {
+            $mensaje = "Debe seleccionar un método de pago para realizar la recarga.";
+            $mensaje_tipo = 'error';
+        } elseif ($metodo_pago === 'nueva_tarjeta') {
+            // Validar campos de nueva tarjeta
+            $numero_tarjeta   = trim($_POST['numero_tarjeta'] ?? '');
+            $fecha_expiracion = trim($_POST['fecha_expiracion'] ?? '');
+            $nombre_titular   = trim($_POST['nombre_titular'] ?? '');
 
+            if ($numero_tarjeta === '' || $fecha_expiracion === '' || $nombre_titular === '') {
+                $mensaje = "Debe completar todos los campos de la nueva tarjeta para continuar.";
+                $mensaje_tipo = 'error';
+            } else {
+                // Guardar tarjeta si el usuario marcó la opción
+                $alias = $_POST['alias_tarjeta'] ?? null;
+                if (!empty($_POST['guardar_tarjeta'])) {
                     saveUserCard($conn, $user_id, $numero_tarjeta, $fecha_expiracion, $nombre_titular, $alias);
                 }
 
@@ -70,13 +72,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_recarga'])) 
 
                 $mensaje = "¡Recarga exitosa! Se han agregado $" . number_format($monto_final, 2) . " a tu cartera.";
                 $mensaje_tipo = 'success';
-
                 $saldo_cartera += $monto_final;
-
-            } catch (Exception $e) {
-                $mensaje = "Error al procesar la recarga: " . $e->getMessage();
-                $mensaje_tipo = 'error';
             }
+        } else {
+            // Pago con tarjeta guardada
+            $descripcion = "Recarga de cartera - $" . number_format($monto_final, 2);
+            rechargeWallet($conn, $user_id, $monto_final, $descripcion);
+
+            $mensaje = "¡Recarga exitosa! Se han agregado $" . number_format($monto_final, 2) . " a tu cartera.";
+            $mensaje_tipo = 'success';
+            $saldo_cartera += $monto_final;
         }
     }
 }
