@@ -1,5 +1,6 @@
 <?php
 include 'controladores/cont_agg_card.php'; 
+
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +25,6 @@ include 'controladores/cont_agg_card.php';
                 <p>Guarda tu tarjeta de forma segura para futuras compras</p>
             </div>
 
-            <!-- Mensaje PHP -->
             <?php if (!empty($mensaje)): ?>
                 <div class="message message-<?php echo $mensaje_tipo; ?>">
                     <i class="fas fa-<?php echo $mensaje_tipo === 'error' ? 'exclamation-triangle' : 'check-circle'; ?>"></i>
@@ -55,62 +55,87 @@ include 'controladores/cont_agg_card.php';
                     </div>
                 </div>
 
-                <form method="POST" class="card-form" novalidate>
-                    <!-- Contenedor de mensajes JS -->
-                    <div id="js-message-container"></div>
-
+                <form method="POST" class="card-form">
                     <div class="form-section">
-                        <h3><i class="fas fa-info-circle"></i> Información de la Recarga</h3>
-
+                        <h3><i class="fas fa-info-circle"></i> Información de la Tarjeta</h3>
+                        
                         <div class="form-group">
-                            <label for="monto">Monto a recargar</label>
-                            <select id="monto" name="monto" required>
-                                <option value="">-- Selecciona un monto --</option>
-                                <option value="5">5 USD</option>
-                                <option value="10">10 USD</option>
-                                <option value="20">20 USD</option>
-                                <option value="50">50 USD</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="metodo_pago">Método de pago</label>
-                            <select id="metodo_pago" name="metodo_pago" required>
-                                <option value="">-- Escoge un método --</option>
-                                <option value="tarjeta_guardada">Tarjeta guardada</option>
-                                <option value="nueva_tarjeta">Usar nueva tarjeta</option>
-                            </select>
-                        </div>
-
-                        <div id="nueva_tarjeta_section" style="display:none;">
-                            <h3><i class="fas fa-credit-card"></i> Información de la Nueva Tarjeta</h3>
-                            <div class="form-group">
-                                <label for="numero_tarjeta">Número de Tarjeta</label>
-                                <input type="text" id="numero_tarjeta" name="numero_tarjeta" placeholder="1234 5678 9012 3456" maxlength="19">
+                            <label for="numero_tarjeta">Número de Tarjeta</label>
+                            <input type="text" id="numero_tarjeta" name="numero_tarjeta" 
+                                   placeholder="1234 5678 9012 3456" maxlength="19" required>
+                            <div class="input-icon">
+                                <i class="fas fa-credit-card"></i>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="fecha_expiracion">Fecha de Expiración</label>
-                                    <input type="text" id="fecha_expiracion" name="fecha_expiracion" placeholder="MM/YY" maxlength="5">
-                                </div>
-                                <div class="form-group">
-                                    <label for="cvv">CVV</label>
-                                    <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fecha_expiracion">Fecha de Expiración</label>
+                                <input type="text" id="fecha_expiracion" name="fecha_expiracion" 
+                                       placeholder="MM/YY" maxlength="5" required>
+                                <div class="input-icon">
+                                    <i class="fas fa-calendar-alt"></i>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="nombre_titular">Nombre del Titular</label>
-                                <input type="text" id="nombre_titular" name="nombre_titular" placeholder="Como aparece en la tarjeta">
+                                <label for="cvv">CVV</label>
+                                <input type="text" id="cvv" name="cvv" 
+                                       placeholder="123" maxlength="4" required>
+                                <div class="input-icon">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nombre_titular">Nombre del Titular</label>
+                            <input type="text" id="nombre_titular" name="nombre_titular" 
+                                   placeholder="Como aparece en la tarjeta" required>
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="alias_tarjeta">Alias para la Tarjeta (Opcional)</label>
+                            <input type="text" id="alias_tarjeta" name="alias_tarjeta" 
+                                   placeholder="Mi Tarjeta Personal" maxlength="50">
+                            <div class="input-icon">
+                                <i class="fas fa-tag"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="security-info">
+                        <div class="security-badge">
+                            <i class="fas fa-shield-alt"></i>
+                            <div class="security-text">
+                                <h4>Información Segura</h4>
+                                <p>Tus datos están protegidos con cifrado de nivel bancario SSL de 256 bits</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-actions">
                         <button type="submit" name="agregar_tarjeta" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Recargar / Agregar Tarjeta
+                            <i class="fas fa-plus"></i> Agregar Tarjeta
                         </button>
+                        <a href="profile/user/mis_tarjetas.php" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Volver
+                        </a>
                     </div>
                 </form>
+
+                <div class="card-benefits">
+                    <h3><i class="fas fa-star"></i> Beneficios de Guardar tu Tarjeta</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Compras más rápidas y sencillas</li>
+                        <li><i class="fas fa-check-circle"></i> No necesitas ingresar datos cada vez</li>
+                        <li><i class="fas fa-check-circle"></i> Información cifrada y segura</li>
+                        <li><i class="fas fa-check-circle"></i> Puedes eliminar la tarjeta cuando quieras</li>
+                        <li><i class="fas fa-check-circle"></i> Múltiples tarjetas guardadas</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </main>
@@ -119,66 +144,118 @@ include 'controladores/cont_agg_card.php';
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const monto = document.getElementById('monto');
-            const metodo_pago = document.getElementById('metodo_pago');
-            const nuevaTarjetaSection = document.getElementById('nueva_tarjeta_section');
-            const form = document.querySelector('.card-form');
-            const messageContainer = document.getElementById('js-message-container');
+            const numeroTarjetaInput = document.getElementById('numero_tarjeta');
+            const fechaExpiracionInput = document.getElementById('fecha_expiracion');
+            const cvvInput = document.getElementById('cvv');
+            const nombreTitularInput = document.getElementById('nombre_titular');
+            
+            const cardNumberDisplay = document.getElementById('cardNumber');
+            const cardHolderDisplay = document.getElementById('cardHolder');
+            const cardExpiryDisplay = document.getElementById('cardExpiry');
 
-            // Mostrar sección nueva tarjeta si selecciona "Usar nueva tarjeta"
-            metodo_pago.addEventListener('change', () => {
-                nuevaTarjetaSection.style.display = metodo_pago.value === 'nueva_tarjeta' ? 'block' : 'none';
+            numeroTarjetaInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+                let formattedValue = value.match(/.{1,4}/g)?.join(' ') || '';
+                
+                if (formattedValue.length > 19) {
+                    formattedValue = formattedValue.substr(0, 19);
+                }
+                
+                e.target.value = formattedValue;
+                
+                if (value.length > 0) {
+                    let maskedValue = value.replace(/\d(?=\d{4})/g, '*').match(/.{1,4}/g)?.join(' ') || '';
+                    cardNumberDisplay.textContent = maskedValue;
+                } else {
+                    cardNumberDisplay.textContent = '**** **** **** ****';
+                }
             });
 
+            fechaExpiracionInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                e.target.value = value;
+                
+                cardExpiryDisplay.textContent = value || 'MM/YY';
+            });
+
+            cvvInput.addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            });
+
+            nombreTitularInput.addEventListener('input', function(e) {
+                let value = e.target.value.toUpperCase();
+                cardHolderDisplay.textContent = value || 'TU NOMBRE';
+            });
+
+            const form = document.querySelector('.card-form');
             form.addEventListener('submit', function(e) {
                 let isValid = true;
-                messageContainer.innerHTML = '';
-                messageContainer.className = '';
-
-                const showErrorMessage = (msg) => {
-                    const div = document.createElement('div');
-                    div.className = 'message message-error';
-                    div.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
-                    messageContainer.appendChild(div);
-                };
-
-                if (!monto.value) {
-                    showErrorMessage('Selecciona el monto a recargar');
+                
+                const numeroTarjeta = numeroTarjetaInput.value.replace(/\s/g, '');
+                if (numeroTarjeta.length < 13 || numeroTarjeta.length > 19) {
+                    showError(numeroTarjetaInput, 'Número de tarjeta inválido');
                     isValid = false;
+                } else {
+                    hideError(numeroTarjetaInput);
                 }
-
-                if (!metodo_pago.value) {
-                    showErrorMessage('Escoge un método de pago o usa nueva tarjeta');
+                
+                const fechaExp = fechaExpiracionInput.value;
+                if (!/^\d{2}\/\d{2}$/.test(fechaExp)) {
+                    showError(fechaExpiracionInput, 'Fecha inválida (MM/YY)');
                     isValid = false;
-                }
-
-                // Validación de nueva tarjeta
-                if (metodo_pago.value === 'nueva_tarjeta') {
-                    const numero = document.getElementById('numero_tarjeta').value.replace(/\s/g,'');
-                    const fecha = document.getElementById('fecha_expiracion').value;
-                    const cvv = document.getElementById('cvv').value;
-                    const titular = document.getElementById('nombre_titular').value.trim();
-
-                    if (!numero || numero.length < 13 || numero.length > 19) {
-                        showErrorMessage('Número de tarjeta inválido');
+                } else {
+                    const [mes, año] = fechaExp.split('/').map(num => parseInt(num));
+                    const fechaActual = new Date();
+                    const añoCompleto = 2000 + año;
+                    const fechaTarjeta = new Date(añoCompleto, mes - 1);
+                    
+                    if (fechaTarjeta <= fechaActual) {
+                        showError(fechaExpiracionInput, 'Tarjeta vencida');
                         isValid = false;
-                    }
-                    if (!/^\d{2}\/\d{2}$/.test(fecha)) {
-                        showErrorMessage('Fecha inválida (MM/YY)');
-                        isValid = false;
-                    }
-                    if (!/^\d{3,4}$/.test(cvv)) {
-                        showErrorMessage('CVV inválido');
-                        isValid = false;
-                    }
-                    if (!titular || titular.length < 3) {
-                        showErrorMessage('Nombre del titular requerido');
-                        isValid = false;
+                    } else {
+                        hideError(fechaExpiracionInput);
                     }
                 }
-
-                if (!isValid) e.preventDefault();
+                
+                const cvv = cvvInput.value;
+                if (cvv.length < 3 || cvv.length > 4) {
+                    showError(cvvInput, 'CVV inválido');
+                    isValid = false;
+                } else {
+                    hideError(cvvInput);
+                }
+                
+                if (nombreTitularInput.value.trim().length < 3) {
+                    showError(nombreTitularInput, 'Nombre del titular requerido');
+                    isValid = false;
+                } else {
+                    hideError(nombreTitularInput);
+                }
+                
+                if (!isValid) {
+                    e.preventDefault();
+                }
             });
+
+            function showError(input, message) {
+                hideError(input);
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = message;
+                input.parentNode.appendChild(errorDiv);
+                input.classList.add('error');
+            }
+
+            function hideError(input) {
+                const existingError = input.parentNode.querySelector('.error-message');
+                if (existingError) {
+                    existingError.remove();
+                }
+                input.classList.remove('error');
+            }
         });
     </script>
 </body>

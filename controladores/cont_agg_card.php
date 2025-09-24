@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar_tarjeta'])) {
     $alias_tarjeta = trim($_POST['alias_tarjeta'] ?? '');
     
     if (empty($numero_tarjeta)) {
-        $mensaje = 'El número de tarjeta es requerido'e;
+        $mensaje = 'El número de tarjeta es requerido';
         $mensaje_tipo = 'error';
     } elseif (empty($fecha_expiracion)) {
         $mensaje = 'La fecha de expiración es requerida';
