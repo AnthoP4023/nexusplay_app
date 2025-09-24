@@ -12,7 +12,6 @@ body {
     max-width: 1200px;
     padding: 20px;
     color: #e5e5e5;
-    align-self: center;
 }
 
 .recharge-header {
@@ -463,6 +462,11 @@ body {
 }
 
 @media (max-width: 480px) {
+
+    .recharge-container {
+        align-self: center;
+    }
+
     .amount-options {
         grid-template-columns: repeat(2, 1fr);
     }

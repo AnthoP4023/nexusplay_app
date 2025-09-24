@@ -38,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_recarga'])) 
     $custom_amount = $_POST['custom_amount'] ?? '';
     $metodo_pago = $_POST['metodo_pago'] ?? '';
 
-    // Validaciones
     if (empty($monto_recarga)) {
         $mensaje = "Debes seleccionar un monto de recarga.";
         $mensaje_tipo = 'error';
