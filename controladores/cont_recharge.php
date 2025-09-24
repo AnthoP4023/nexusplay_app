@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_recarga'])) 
     $custom_amount = $_POST['custom_amount'] ?? '';
     $metodo_pago = $_POST['metodo_pago'] ?? '';
 
-    // Validaciones ficticias tipo alerta
+    // Validaciones
     if (empty($monto_recarga)) {
         $mensaje = "Debes seleccionar un monto de recarga.";
         $mensaje_tipo = 'error';
@@ -47,6 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_recarga'])) 
         $mensaje_tipo = 'error';
     } elseif (empty($metodo_pago)) {
         $mensaje = "Debes seleccionar un método de pago.";
+        $mensaje_tipo = 'error';
+    } elseif ($metodo_pago === 'nueva_tarjeta' &&
+              (empty($_POST['numero_tarjeta']) || empty($_POST['fecha_expiracion']) || empty($_POST['cvv']) || empty($_POST['nombre_titular']))) {
+        $mensaje = "Debes completar todos los datos de la nueva tarjeta.";
         $mensaje_tipo = 'error';
     } else {
         $monto_final = $monto_recarga === 'custom' ? floatval($custom_amount) : floatval($monto_recarga);
@@ -64,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['realizar_recarga'])) 
 
                     saveUserCard($conn, $user_id, $numero_tarjeta, $fecha_expiracion, $nombre_titular, $alias);
                 }
-                
+
                 $descripcion = "Recarga de cartera - $" . number_format($monto_final, 2);
                 rechargeWallet($conn, $user_id, $monto_final, $descripcion);
 
