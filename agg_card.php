@@ -1,6 +1,5 @@
 <?php
 include 'controladores/cont_agg_card.php'; 
-
 ?>
 
 <!DOCTYPE html>

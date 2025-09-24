@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 require_once __DIR__ . '../../config_db/database.php';
 require_once __DIR__ . '../../functions/fun_auth.php';
-require_once __DIR__ . '../../functions/fun_user_profile.php'; // Funciones para pedidos, stats, reseñas, cartera, tarjetas
+require_once __DIR__ . '../../functions/fun_user_profile.php';
 
 if (!isLoggedIn()) {
     header('Location: /auth/login.php');
