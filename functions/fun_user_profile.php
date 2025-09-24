@@ -4,7 +4,9 @@ require_once __DIR__ . '../../config_db/database.php';
 function getUserData($user_id) {
     global $conn;
 
-    $stmt = $conn->prepare("SELECT username, email, nombre, apellido, imagen_perfil, fecha_registro FROM usuarios WHERE id = ?");
+    $stmt = $conn->prepare("SELECT username, email, nombre, apellido, imagen_perfil, fecha_registro 
+                            FROM usuarios 
+                            WHERE id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $data = $stmt->get_result()->fetch_assoc();
@@ -37,7 +39,8 @@ function getUserOrders($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
 }
 
 function getUserStats($user_id) {
@@ -79,7 +82,8 @@ function getUserMovements($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
 }
 
 function getUserCards($user_id) {
@@ -93,7 +97,8 @@ function getUserCards($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
 }
 
 function getUserReviews($user_id) {
@@ -108,5 +113,6 @@ function getUserReviews($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
 }
