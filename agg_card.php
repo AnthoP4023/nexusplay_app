@@ -55,7 +55,7 @@ include 'controladores/cont_agg_card.php';
                     </div>
                 </div>
 
-                <form method="POST" class="card-form">
+                <form method="POST" class="card-form" novalidate>
                     <div class="form-section">
                         <h3><i class="fas fa-info-circle"></i> Información de la Tarjeta</h3>
                         
