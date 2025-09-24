@@ -1,25 +1,13 @@
 <?php
-require_once __DIR__ . '../../config_db/database.php';
+require_once __DIR__ . '../config_db/database.php';
 
 function getUserData($user_id) {
     global $conn;
     $stmt = $conn->prepare("SELECT username, email, nombre, apellido, imagen_perfil, fecha_registro FROM usuarios WHERE id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    $data = $stmt->get_result()->fetch_assoc();
-
-    if ($data) {
-        $imagen_bd = $data['imagen_perfil'];
-        if (!empty($imagen_bd) && $imagen_bd !== 'default-avatar.png') {
-            $ruta_imagen = '/images/users/' . $imagen_bd;
-            $ruta_fisica = $_SERVER['DOCUMENT_ROOT'] . $ruta_imagen;
-            $data['perfil_img'] = file_exists($ruta_fisica) ? $ruta_imagen : '/images/users/default-avatar.png';
-        } else {
-            $data['perfil_img'] = '/images/users/default-avatar.png';
-        }
-    }
-
-    return $data;
+    $result = $stmt->get_result();
+    return $result->fetch_assoc(); // devuelve array asociativo
 }
 
 function getUserOrders($user_id) {
@@ -36,7 +24,7 @@ function getUserOrders($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result();
+    return $stmt->get_result(); // devuelve mysqli_result para la vista
 }
 
 function getUserStats($user_id) {
@@ -78,7 +66,7 @@ function getUserMovements($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result();
+    return $stmt->get_result(); // mysqli_result
 }
 
 function getUserCards($user_id) {
@@ -86,13 +74,13 @@ function getUserCards($user_id) {
     $stmt = $conn->prepare("
         SELECT id, RIGHT(AES_DECRYPT(numero_tarjeta, 'clave_cifrado_segura'), 4) as ultimos_4,
                fecha_expiracion, alias, fecha_registro
-        FROM tarjetas
+        FROM tarjetas 
         WHERE usuario_id = ?
         ORDER BY fecha_registro DESC
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result();
+    return $stmt->get_result(); // mysqli_result
 }
 
 function getUserReviews($user_id) {
@@ -107,6 +95,5 @@ function getUserReviews($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result();
+    return $stmt->get_result(); // mysqli_result
 }
-?>
