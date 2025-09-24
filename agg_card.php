@@ -57,13 +57,14 @@ include 'controladores/cont_agg_card.php';
                     </div>
                 </div>
 
-                <form method="POST" class="card-form" novalidate>
+                <!-- FORMULARIO CORREGIDO -->
+                <form method="POST" class="card-form">
                     <div class="form-section">
                         <h3><i class="fas fa-info-circle"></i> Información de la Recarga</h3>
 
                         <div class="form-group">
                             <label for="monto_recarga">Monto a recargar</label>
-                            <select id="monto_recarga" name="monto_recarga">
+                            <select id="monto_recarga" name="monto_recarga" required>
                                 <option value="">-- Selecciona un monto --</option>
                                 <option value="5">5 USD</option>
                                 <option value="10">10 USD</option>
@@ -74,7 +75,7 @@ include 'controladores/cont_agg_card.php';
 
                         <div class="form-group">
                             <label for="metodo_pago">Método de pago</label>
-                            <select id="metodo_pago" name="metodo_pago">
+                            <select id="metodo_pago" name="metodo_pago" required>
                                 <option value="">-- Escoge un método --</option>
                                 <option value="tarjeta_guardada">Tarjeta guardada</option>
                                 <option value="nueva_tarjeta">Usar nueva tarjeta</option>
@@ -118,51 +119,12 @@ include 'controladores/cont_agg_card.php';
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const monto = document.getElementById('monto_recarga');
         const metodo_pago = document.getElementById('metodo_pago');
         const nuevaTarjetaSection = document.getElementById('nueva_tarjeta_section');
-        const form = document.querySelector('.card-form');
-        const messageContainer = document.getElementById('js-message-container');
 
+        // Mostrar sección de nueva tarjeta según selección
         metodo_pago.addEventListener('change', () => {
             nuevaTarjetaSection.style.display = metodo_pago.value === 'nueva_tarjeta' ? 'block' : 'none';
-        });
-
-        form.addEventListener('submit', function(e) {
-            let isValid = true;
-            messageContainer.innerHTML = '';
-
-            const showErrorMessage = (msg, campo = null) => {
-                const div = document.createElement('div');
-                div.className = 'message message-error';
-                div.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
-                messageContainer.appendChild(div);
-                if(campo) campo.reportValidity();
-            };
-
-            if (!monto.value) {
-                showErrorMessage('Selecciona el monto a recargar', monto);
-                isValid = false;
-            }
-
-            if (!metodo_pago.value) {
-                showErrorMessage('Selecciona el método de pago', metodo_pago);
-                isValid = false;
-            }
-
-            if (metodo_pago.value === 'nueva_tarjeta') {
-                const numero = document.getElementById('numero_tarjeta');
-                const fecha = document.getElementById('fecha_expiracion');
-                const cvv = document.getElementById('cvv');
-                const titular = document.getElementById('nombre_titular');
-
-                if (!numero.value.trim()) { showErrorMessage('Ingresa el número de tarjeta', numero); isValid=false; }
-                if (!fecha.value.trim()) { showErrorMessage('Ingresa la fecha de expiración', fecha); isValid=false; }
-                if (!cvv.value.trim()) { showErrorMessage('Ingresa el CVV', cvv); isValid=false; }
-                if (!titular.value.trim()) { showErrorMessage('Ingresa el nombre del titular', titular); isValid=false; }
-            }
-
-            if (!isValid) e.preventDefault();
         });
     });
     </script>
