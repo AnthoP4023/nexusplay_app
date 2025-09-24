@@ -115,8 +115,7 @@ include 'controladores/cont_recharge.php';
                         </div>
                         <div class="form-group">
                             <label class="checkbox-label">
-                                <input type="checkbox" name="guardar_tarjeta" value="1">
-                                <span class="checkmark"></span>
+                                <span type="checkbox" name="guardar_tarjeta" class="checkmark" value="1"></span>
                                 Guardar esta tarjeta para futuras compras
                             </label>
                         </div>
