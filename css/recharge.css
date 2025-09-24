@@ -490,7 +490,7 @@ body {
 
     .form-group input,
     .btn-recharge {
-        max-width: 100%;
+        max-width: 300px;
     }
 
     .custom-amount-input input {
