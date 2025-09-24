@@ -25,7 +25,7 @@ include '../../controladores/cont_config_user.php';
                     <div class="user-info-container">
                         <div class="avatar-section">
                             <div class="user-avatar">
-                                <img src="<?php echo htmlspecialchars($perfil_img); ?>" alt="Mi Perfil" class="avatar-img">
+                                <img src="<?php echo htmlspecialchars($_SESSION['imagen_perfil']); ?>" alt="Mi Perfil" class="avatar-img">
                             </div>
                         </div>
                         
@@ -79,19 +79,38 @@ include '../../controladores/cont_config_user.php';
                     <h2 class="section-title">Configuraciones de Cuenta</h2>
                     
                     <div class="config-container">
+
+                        <!-- Mensajes generales -->
+                        <?php if (!empty($_SESSION['profile_message'])): ?>
+                            <div class="message <?php echo $_SESSION['profile_message_type']; ?>">
+                                <i class="fas <?php echo $_SESSION['profile_message_type'] === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
+                                <?php echo htmlspecialchars($_SESSION['profile_message']); ?>
+                            </div>
+                            <?php unset($_SESSION['profile_message'], $_SESSION['profile_message_type']); ?>
+                        <?php endif; ?>
+
+                        <?php if (!empty($_SESSION['password_message'])): ?>
+                            <div class="message <?php echo $_SESSION['password_message_type']; ?>">
+                                <i class="fas <?php echo $_SESSION['password_message_type'] === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
+                                <?php echo htmlspecialchars($_SESSION['password_message']); ?>
+                            </div>
+                            <?php unset($_SESSION['password_message'], $_SESSION['password_message_type']); ?>
+                        <?php endif; ?>
+
+                        <?php if (!empty($_SESSION['image_message'])): ?>
+                            <div class="message <?php echo $_SESSION['image_message_type']; ?>">
+                                <i class="fas <?php echo $_SESSION['image_message_type'] === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
+                                <?php echo htmlspecialchars($_SESSION['image_message']); ?>
+                            </div>
+                            <?php unset($_SESSION['image_message'], $_SESSION['image_message_type']); ?>
+                        <?php endif; ?>
+
                         <!-- Información Personal -->
                         <div class="config-section">
                             <div class="config-header">
                                 <h3><i class="fas fa-user-edit"></i> Información Personal</h3>
                                 <p>Actualiza tus datos personales</p>
                             </div>
-                            
-                            <?php if (!empty($profile_message)): ?>
-                                <div class="message <?php echo $profile_message_type; ?>">
-                                    <i class="fas <?php echo $profile_message_type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
-                                    <?php echo htmlspecialchars($profile_message); ?>
-                                </div>
-                            <?php endif; ?>
                             
                             <form method="POST" class="config-form">
                                 <div class="form-row">
@@ -136,20 +155,10 @@ include '../../controladores/cont_config_user.php';
                                 <h3><i class="fas fa-camera"></i> Imagen de Perfil</h3>
                                 <p>Cambia tu foto de perfil</p>
                             </div>
-
-                            <!-- Mensajes de error/éxito -->
-                            <div id="imageErrorMessage">
-                                <?php if (!empty($image_message)): ?>
-                                    <div class="message <?php echo $image_message_type; ?>">
-                                        <i class="fas <?php echo $image_message_type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
-                                        <?php echo htmlspecialchars($image_message); ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
                             
                             <div class="profile-image-section">
                                 <div class="current-image">
-                                    <img src="<?php echo htmlspecialchars($perfil_img); ?>" alt="Imagen actual" id="currentProfileImage" class="profile-preview">
+                                    <img src="<?php echo htmlspecialchars($_SESSION['imagen_perfil']); ?>" alt="Imagen actual" id="currentProfileImage" class="profile-preview">
                                     <div class="image-info">
                                         <h4>Imagen Actual</h4>
                                         <p class="image-guidelines">
@@ -194,13 +203,6 @@ include '../../controladores/cont_config_user.php';
                                 <p>Cambia tu contraseña para mantener tu cuenta segura</p>
                             </div>
                             
-                            <?php if (!empty($password_message)): ?>
-                                <div class="message <?php echo $password_message_type; ?>">
-                                    <i class="fas <?php echo $password_message_type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'; ?>"></i>
-                                    <?php echo htmlspecialchars($password_message); ?>
-                                </div>
-                            <?php endif; ?>
-                            
                             <form method="POST" class="config-form">
                                 <div class="form-group">
                                     <label for="current_password"><i class="fas fa-key"></i> Contraseña Actual</label>
@@ -239,6 +241,7 @@ include '../../controladores/cont_config_user.php';
                                 </button>
                             </form>
                         </div>
+
                     </div>
                 </div>
             </div>
