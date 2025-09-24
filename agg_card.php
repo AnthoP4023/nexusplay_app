@@ -24,7 +24,7 @@ include 'controladores/cont_agg_card.php';
                 <p>Guarda tu tarjeta de forma segura y recarga tu saldo</p>
             </div>
 
-            <!-- Contenedor de mensajes PHP y JS -->
+            <!-- Contenedor de mensajes -->
             <div id="js-message-container">
                 <?php if(!empty($mensaje)): ?>
                     <div class="message <?php echo $mensaje_tipo === 'success' ? 'message-success' : 'message-error'; ?>">
@@ -58,7 +58,7 @@ include 'controladores/cont_agg_card.php';
                 </div>
 
                 <!-- FORMULARIO -->
-                <form method="POST" class="card-form" id="recargaForm">
+                <form method="POST" class="card-form" id="recargaForm" novalidate>
                     <div class="form-section">
                         <h3><i class="fas fa-info-circle"></i> Información de la Recarga</h3>
 
@@ -142,6 +142,7 @@ include 'controladores/cont_agg_card.php';
                 messageContainer.appendChild(div);
             };
 
+            // Validaciones principales
             if (!monto.value) {
                 showError('Debes seleccionar un monto a recargar');
                 isValid = false;
@@ -152,6 +153,7 @@ include 'controladores/cont_agg_card.php';
                 isValid = false;
             }
 
+            // Validaciones si es nueva tarjeta
             if (metodo_pago.value === 'nueva_tarjeta') {
                 const numero = document.getElementById('numero_tarjeta').value.trim();
                 const fecha = document.getElementById('fecha_expiracion').value.trim();
@@ -166,8 +168,9 @@ include 'controladores/cont_agg_card.php';
 
             if (!isValid) {
                 e.preventDefault();
-                const firstInvalid = form.querySelector('select:invalid, input:invalid');
-                if (firstInvalid) firstInvalid.focus();
+                // Evitar que el navegador enfoque campos ocultos
+                const firstInvalid = form.querySelector('select:not([style*="display: none"]), input:not([style*="display: none"])');
+                if(firstInvalid) firstInvalid.focus();
             }
         });
     });
