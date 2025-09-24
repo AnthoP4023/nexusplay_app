@@ -80,6 +80,7 @@ function updateUserProfile($user_id, $username, $email, $nombre, $apellido) {
 
     return $conn->query($sql);
 }
+
 function updateUserProfileImage($user_id, $file) {
     global $conn;
 
@@ -88,25 +89,12 @@ function updateUserProfileImage($user_id, $file) {
 
     $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-    $max_size = 5 * 1024 * 1024; // 5MB
+    $max_size = 5 * 1024 * 1024;
 
-    // Validación de extensión
-    if (!in_array($file_ext, $allowed_extensions)) {
-        return [
-            'success' => false,
-            'message' => 'Solo se permiten archivos de imagen (JPG, JPEG, PNG, GIF)'
-        ];
+    if (!in_array($file_ext, $allowed_extensions) || $file['size'] > $max_size) {
+        return ['success' => false, 'message' => 'Archivo inválido o demasiado grande'];
     }
 
-    // Validación de tamaño
-    if ($file['size'] > $max_size) {
-        return [
-            'success' => false,
-            'message' => 'El archivo es demasiado grande. Máximo 5MB'
-        ];
-    }
-
-    // Eliminar imagen anterior
     $stmt_old = $conn->prepare("SELECT imagen_perfil FROM usuarios WHERE id = ?");
     $stmt_old->bind_param("i", $user_id);
     $stmt_old->execute();
@@ -117,7 +105,6 @@ function updateUserProfileImage($user_id, $file) {
         if (file_exists($old_path)) unlink($old_path);
     }
 
-    // Subir nueva imagen
     $new_filename = 'user_' . $user_id . '_' . time() . '.' . $file_ext;
     $upload_path = $upload_dir . $new_filename;
 
@@ -134,5 +121,3 @@ function updateUserProfileImage($user_id, $file) {
 
     return ['success' => false, 'message' => 'Error al subir la imagen'];
 }
-
-?>
