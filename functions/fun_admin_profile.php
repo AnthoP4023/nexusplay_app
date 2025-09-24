@@ -1,5 +1,4 @@
 <?php
-// Funciones para el perfil del admin
 
 function getAdminData($conn, $user_id) {
     $stmt = $conn->prepare("SELECT username, email, nombre, apellido, imagen_perfil, fecha_registro FROM usuarios WHERE id = ?");
