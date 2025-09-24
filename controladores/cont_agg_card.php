@@ -24,16 +24,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar_tarjeta'])) {
     $alias_tarjeta    = trim($_POST['alias_tarjeta'] ?? '');
 
     // Validaciones básicas
+    // Validaciones básicas
     if (empty($numero_tarjeta)) {
-        $mensaje = 'El número de tarjeta es requerido';
+        $mensaje = 'Falta ingresar el número de tarjeta';
     } elseif (!preg_match('/^\d+$/', str_replace(' ', '', $numero_tarjeta))) {
         $mensaje = 'El número de tarjeta solo puede contener números';
     } elseif (!validarLuhn($numero_tarjeta)) {
         $mensaje = 'El número de tarjeta no es válido (falló Luhn)';
-    } elseif (empty($fecha_expiracion) || !preg_match('/^\d{2}\/\d{2}$/', $fecha_expiracion)) {
+    } elseif (empty($fecha_expiracion)) {
+        $mensaje = 'Falta ingresar la fecha de expiración';
+    } elseif (!preg_match('/^\d{2}\/\d{2}$/', $fecha_expiracion)) {
         $mensaje = 'Formato de fecha inválido (MM/YY)';
-    } elseif (empty($cvv) || !preg_match('/^\d{3,4}$/', $cvv)) {
-        $mensaje = 'CVV inválido';
+    } elseif (empty($cvv)) {
+        $mensaje = 'Falta ingresar el CVV';
+    } elseif (!preg_match('/^\d{3,4}$/', $cvv)) {
+        $mensaje = 'El CVV debe tener 3 o 4 dígitos';
+    } elseif (empty($nombre_titular)) {
+        $mensaje = 'Falta ingresar el nombre del titular';
     } elseif (strlen($nombre_titular) < 3) {
         $mensaje = 'El nombre del titular debe tener al menos 3 caracteres';
     }
