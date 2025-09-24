@@ -1,12 +1,10 @@
 <?php
-require_once __DIR__ . '../../config_db/database.php';
+require_once __DIR__ . '/../config_db/database.php';
 
 function getUserData($user_id) {
     global $conn;
-
     $stmt = $conn->prepare("SELECT username, email, nombre, apellido, imagen_perfil, fecha_registro 
-                            FROM usuarios 
-                            WHERE id = ?");
+                            FROM usuarios WHERE id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $data = $stmt->get_result()->fetch_assoc();
@@ -39,13 +37,12 @@ function getUserOrders($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_all(MYSQLI_ASSOC);
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
 function getUserStats($user_id) {
     global $conn;
-    $stmt_stats = $conn->prepare("
+    $stmt = $conn->prepare("
         SELECT 
             COUNT(p.id) as total_pedidos,
             SUM(CASE WHEN p.estado='completado' THEN p.total ELSE 0 END) as total_gastado,
@@ -55,9 +52,9 @@ function getUserStats($user_id) {
         FROM pedidos p
         WHERE p.usuario_id = ?
     ");
-    $stmt_stats->bind_param("i", $user_id);
-    $stmt_stats->execute();
-    $stats = $stmt_stats->get_result()->fetch_assoc();
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stats = $stmt->get_result()->fetch_assoc();
 
     $stmt_cartera = $conn->prepare("SELECT saldo FROM carteras WHERE usuario_id = ?");
     $stmt_cartera->bind_param("i", $user_id);
@@ -82,8 +79,7 @@ function getUserMovements($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_all(MYSQLI_ASSOC);
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
 function getUserCards($user_id) {
@@ -97,8 +93,7 @@ function getUserCards($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_all(MYSQLI_ASSOC);
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
 function getUserReviews($user_id) {
@@ -113,6 +108,5 @@ function getUserReviews($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_all(MYSQLI_ASSOC);
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
