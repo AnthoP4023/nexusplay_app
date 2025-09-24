@@ -36,7 +36,7 @@ function getUserOrders($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result(); // 👈 devolvemos mysqli_result
+    return $stmt->get_result();
 }
 
 function getUserStats($user_id) {
@@ -78,7 +78,7 @@ function getUserMovements($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result(); // 👈 devolvemos mysqli_result
+    return $stmt->get_result();
 }
 
 function getUserCards($user_id) {
@@ -92,7 +92,7 @@ function getUserCards($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result(); // 👈 devolvemos mysqli_result
+    return $stmt->get_result();
 }
 
 function getUserReviews($user_id) {
@@ -107,6 +107,6 @@ function getUserReviews($user_id) {
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    return $stmt->get_result(); // 👈 devolvemos mysqli_result
+    return $stmt->get_result();
 }
 ?>
