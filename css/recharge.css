@@ -469,6 +469,7 @@ body {
 
     .recharge-container {
         align-self: center;
+        padding: 45px 0px;
     }
 
     .amount-options {
