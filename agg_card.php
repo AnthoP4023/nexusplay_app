@@ -62,8 +62,8 @@ include 'controladores/cont_agg_card.php';
                         <h3><i class="fas fa-info-circle"></i> Información de la Recarga</h3>
 
                         <div class="form-group">
-                            <label for="monto">Monto a recargar</label>
-                            <select id="monto" name="monto">
+                            <label for="monto_recarga">Monto a recargar</label>
+                            <select id="monto_recarga" name="monto_recarga">
                                 <option value="">-- Selecciona un monto --</option>
                                 <option value="5">5 USD</option>
                                 <option value="10">10 USD</option>
@@ -118,49 +118,48 @@ include 'controladores/cont_agg_card.php';
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const monto = document.getElementById('monto');
+        const monto = document.getElementById('monto_recarga');
         const metodo_pago = document.getElementById('metodo_pago');
         const nuevaTarjetaSection = document.getElementById('nueva_tarjeta_section');
         const form = document.querySelector('.card-form');
         const messageContainer = document.getElementById('js-message-container');
 
-        // Mostrar sección de nueva tarjeta según selección
         metodo_pago.addEventListener('change', () => {
             nuevaTarjetaSection.style.display = metodo_pago.value === 'nueva_tarjeta' ? 'block' : 'none';
         });
 
-        // Validación Front-end
         form.addEventListener('submit', function(e) {
             let isValid = true;
-            messageContainer.innerHTML = ''; // Limpiar mensajes JS
+            messageContainer.innerHTML = '';
 
-            const showErrorMessage = (msg) => {
+            const showErrorMessage = (msg, campo = null) => {
                 const div = document.createElement('div');
                 div.className = 'message message-error';
                 div.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
                 messageContainer.appendChild(div);
+                if(campo) campo.reportValidity();
             };
 
             if (!monto.value) {
-                showErrorMessage('Selecciona el monto a recargar');
+                showErrorMessage('Selecciona el monto a recargar', monto);
                 isValid = false;
             }
 
             if (!metodo_pago.value) {
-                showErrorMessage('Selecciona el método de pago');
+                showErrorMessage('Selecciona el método de pago', metodo_pago);
                 isValid = false;
             }
 
             if (metodo_pago.value === 'nueva_tarjeta') {
-                const numero = document.getElementById('numero_tarjeta').value.trim();
-                const fecha = document.getElementById('fecha_expiracion').value.trim();
-                const cvv = document.getElementById('cvv').value.trim();
-                const titular = document.getElementById('nombre_titular').value.trim();
+                const numero = document.getElementById('numero_tarjeta');
+                const fecha = document.getElementById('fecha_expiracion');
+                const cvv = document.getElementById('cvv');
+                const titular = document.getElementById('nombre_titular');
 
-                if (!numero) { showErrorMessage('Ingresa el número de tarjeta'); isValid=false; }
-                if (!fecha) { showErrorMessage('Ingresa la fecha de expiración'); isValid=false; }
-                if (!cvv) { showErrorMessage('Ingresa el CVV'); isValid=false; }
-                if (!titular) { showErrorMessage('Ingresa el nombre del titular'); isValid=false; }
+                if (!numero.value.trim()) { showErrorMessage('Ingresa el número de tarjeta', numero); isValid=false; }
+                if (!fecha.value.trim()) { showErrorMessage('Ingresa la fecha de expiración', fecha); isValid=false; }
+                if (!cvv.value.trim()) { showErrorMessage('Ingresa el CVV', cvv); isValid=false; }
+                if (!titular.value.trim()) { showErrorMessage('Ingresa el nombre del titular', titular); isValid=false; }
             }
 
             if (!isValid) e.preventDefault();
