@@ -1,6 +1,5 @@
 <?php
 include 'controladores/cont_recharge.php'; 
-
 ?>
 
 <!DOCTYPE html>
@@ -38,31 +37,31 @@ include 'controladores/cont_recharge.php';
                     <div class="current-balance">$<?php echo number_format($saldo_cartera, 2); ?></div>
                 </div>
 
-                <form method="POST" class="recharge-form">
+                <form method="POST" class="recharge-form" novalidate>
                     <h3>Selecciona el monto a recargar</h3>
                     
                     <div class="amount-options">
-                        <input type="radio" id="amount_10" name="monto_recarga" value="10.00" required>
+                        <input type="radio" id="amount_10" name="monto_recarga" value="10.00">
                         <label for="amount_10" class="amount-card">
                             <span class="amount">$10.00</span>
                         </label>
 
-                        <input type="radio" id="amount_25" name="monto_recarga" value="25.00" required>
+                        <input type="radio" id="amount_25" name="monto_recarga" value="25.00">
                         <label for="amount_25" class="amount-card">
                             <span class="amount">$25.00</span>
                         </label>
 
-                        <input type="radio" id="amount_50" name="monto_recarga" value="50.00" required>
+                        <input type="radio" id="amount_50" name="monto_recarga" value="50.00">
                         <label for="amount_50" class="amount-card">
                             <span class="amount">$50.00</span>
                         </label>
 
-                        <input type="radio" id="amount_100" name="monto_recarga" value="100.00" required>
+                        <input type="radio" id="amount_100" name="monto_recarga" value="100.00">
                         <label for="amount_100" class="amount-card">
                             <span class="amount">$100.00</span>
                         </label>
 
-                        <input type="radio" id="amount_custom" name="monto_recarga" value="custom" required>
+                        <input type="radio" id="amount_custom" name="monto_recarga" value="custom">
                         <label for="amount_custom" class="amount-card custom-amount">
                             <span class="amount">Personalizado</span>
                         </label>
@@ -83,7 +82,7 @@ include 'controladores/cont_recharge.php';
                                 <?php foreach ($tarjetas as $tarjeta): ?>
                                     <div class="payment-option">
                                         <input type="radio" id="card_<?php echo $tarjeta['id']; ?>" 
-                                               name="metodo_pago" value="tarjeta_<?php echo $tarjeta['id']; ?>" required>
+                                               name="metodo_pago" value="tarjeta_<?php echo $tarjeta['id']; ?>">
                                         <label for="card_<?php echo $tarjeta['id']; ?>" class="card-option">
                                             <div class="card-info">
                                                 <i class="fas fa-credit-card"></i>
@@ -98,7 +97,7 @@ include 'controladores/cont_recharge.php';
 
                         <div class="new-card-section">
                             <div class="payment-option">
-                                <input type="radio" id="new_card" name="metodo_pago" value="nueva_tarjeta" required>
+                                <input type="radio" id="new_card" name="metodo_pago" value="nueva_tarjeta">
                                 <label for="new_card" class="payment-label">
                                     <i class="fas fa-plus-circle"></i> Usar Nueva Tarjeta
                                 </label>
@@ -107,33 +106,28 @@ include 'controladores/cont_recharge.php';
                             <div class="new-card-form" id="newCardForm" style="display: none;">
                                 <div class="form-group">
                                     <label for="numero_tarjeta">Número de Tarjeta</label>
-                                    <input type="text" id="numero_tarjeta" name="numero_tarjeta" 
-                                           placeholder="1234 5678 9012 3456" maxlength="19">
+                                    <input type="text" id="numero_tarjeta" name="numero_tarjeta" placeholder="1234 5678 9012 3456" maxlength="19">
                                 </div>
 
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="fecha_expiracion">Fecha de Expiración</label>
-                                        <input type="text" id="fecha_expiracion" name="fecha_expiracion" 
-                                               placeholder="MM/YY" maxlength="5">
+                                        <input type="text" id="fecha_expiracion" name="fecha_expiracion" placeholder="MM/YY" maxlength="5">
                                     </div>
                                     <div class="form-group">
                                         <label for="cvv">CVV</label>
-                                        <input type="text" id="cvv" name="cvv" 
-                                               placeholder="123" maxlength="4">
+                                        <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="nombre_titular">Nombre del Titular</label>
-                                    <input type="text" id="nombre_titular" name="nombre_titular" 
-                                           placeholder="Como aparece en la tarjeta">
+                                    <input type="text" id="nombre_titular" name="nombre_titular" placeholder="Como aparece en la tarjeta">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="alias_tarjeta">Alias para la Tarjeta (Opcional)</label>
-                                    <input type="text" id="alias_tarjeta" name="alias_tarjeta" 
-                                           placeholder="Mi Tarjeta Personal" maxlength="50">
+                                    <input type="text" id="alias_tarjeta" name="alias_tarjeta" placeholder="Mi Tarjeta Personal" maxlength="50">
                                 </div>
 
                                 <div class="form-group">
@@ -184,105 +178,75 @@ include 'controladores/cont_recharge.php';
     <?php include 'includes/footer.php'; ?>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const customAmountRadio = document.getElementById('amount_custom');
-            const customAmountDiv = document.getElementById('customAmountDiv');
-            const customAmountInput = document.getElementById('custom_amount');
-            const newCardRadio = document.getElementById('new_card');
-            const newCardForm = document.getElementById('newCardForm');
-            
-            customAmountRadio.addEventListener('change', function() {
-                if (this.checked) {
-                    customAmountDiv.style.display = 'block';
-                    customAmountInput.required = true;
-                }
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+        const customAmountRadio = document.getElementById('amount_custom');
+        const customAmountDiv = document.getElementById('customAmountDiv');
+        const customAmountInput = document.getElementById('custom_amount');
+        const newCardRadio = document.getElementById('new_card');
+        const newCardForm = document.getElementById('newCardForm');
 
-            document.querySelectorAll('input[name="monto_recarga"]:not(#amount_custom)').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    customAmountDiv.style.display = 'none';
-                    customAmountInput.required = false;
-                    customAmountInput.value = '';
-                });
-            });
-
-            if (newCardRadio) {
-                newCardRadio.addEventListener('change', function() {
-                    if (this.checked) {
-                        newCardForm.style.display = 'block';
-                        document.getElementById('numero_tarjeta').required = true;
-                        document.getElementById('fecha_expiracion').required = true;
-                        document.getElementById('cvv').required = true;
-                        document.getElementById('nombre_titular').required = true;
-                    }
-                });
-            }
-
-            document.querySelectorAll('input[name="metodo_pago"]:not(#new_card)').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    if (newCardForm) {
-                        newCardForm.style.display = 'none';
-                        document.getElementById('numero_tarjeta').required = false;
-                        document.getElementById('fecha_expiracion').required = false;
-                        document.getElementById('cvv').required = false;
-                        document.getElementById('nombre_titular').required = false;
-                    }
-                });
-            });
-
-            function updateSummary() {
-                const selectedAmount = getSelectedAmount();
-                const currentBalance = <?php echo $saldo_cartera; ?>;
-                const newBalance = currentBalance + selectedAmount;
-
-                document.getElementById('selected-amount').textContent = '$' + selectedAmount.toFixed(2);
-                document.getElementById('new-balance').textContent = '$' + newBalance.toFixed(2);
-            }
-
-            function getSelectedAmount() {
-                const selectedRadio = document.querySelector('input[name="monto_recarga"]:checked');
-                if (!selectedRadio) return 0;
-
-                if (selectedRadio.value === 'custom') {
-                    const customValue = parseFloat(customAmountInput.value) || 0;
-                    return customValue;
-                }
-                return parseFloat(selectedRadio.value) || 0;
-            }
-
-            document.querySelectorAll('input[name="monto_recarga"]').forEach(radio => {
-                radio.addEventListener('change', updateSummary);
-            });
-
-            customAmountInput.addEventListener('input', updateSummary);
-
-            const numeroTarjetaInput = document.getElementById('numero_tarjeta');
-            if (numeroTarjetaInput) {
-                numeroTarjetaInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
-                    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || '';
-                    e.target.value = formattedValue;
-                });
-            }
-
-            const fechaExpiracionInput = document.getElementById('fecha_expiracion');
-            if (fechaExpiracionInput) {
-                fechaExpiracionInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length >= 2) {
-                        value = value.substring(0, 2) + '/' + value.substring(2, 4);
-                    }
-                    e.target.value = value;
-                });
-            }
-
-            const cvvInput = document.getElementById('cvv');
-            if (cvvInput) {
-                cvvInput.addEventListener('input', function(e) {
-                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                });
-            }
+        // Mostrar/ocultar monto personalizado
+        customAmountRadio.addEventListener('change', function() {
+            customAmountDiv.style.display = this.checked ? 'block' : 'none';
         });
+        document.querySelectorAll('input[name="monto_recarga"]:not(#amount_custom)').forEach(radio => {
+            radio.addEventListener('change', function() {
+                customAmountDiv.style.display = 'none';
+            });
+        });
+
+        // Mostrar/ocultar formulario nueva tarjeta
+        newCardRadio.addEventListener('change', function() {
+            newCardForm.style.display = this.checked ? 'block' : 'none';
+        });
+        document.querySelectorAll('input[name="metodo_pago"]:not(#new_card)').forEach(radio => {
+            radio.addEventListener('change', function() {
+                newCardForm.style.display = 'none';
+            });
+        });
+
+        // Actualizar resumen
+        function updateSummary() {
+            const selectedRadio = document.querySelector('input[name="monto_recarga"]:checked');
+            let amount = 0;
+            if (selectedRadio) {
+                amount = selectedRadio.value === 'custom' ? parseFloat(customAmountInput.value) || 0 : parseFloat(selectedRadio.value);
+            }
+            const currentBalance = <?php echo $saldo_cartera; ?>;
+            document.getElementById('selected-amount').textContent = '$' + amount.toFixed(2);
+            document.getElementById('new-balance').textContent = '$' + (currentBalance + amount).toFixed(2);
+        }
+
+        document.querySelectorAll('input[name="monto_recarga"]').forEach(radio => {
+            radio.addEventListener('change', updateSummary);
+        });
+        customAmountInput.addEventListener('input', updateSummary);
+
+        // Formateo tarjeta y CVV
+        const numeroTarjetaInput = document.getElementById('numero_tarjeta');
+        if (numeroTarjetaInput) {
+            numeroTarjetaInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                e.target.value = value.match(/.{1,4}/g)?.join(' ') || '';
+            });
+        }
+
+        const fechaExpiracionInput = document.getElementById('fecha_expiracion');
+        if (fechaExpiracionInput) {
+            fechaExpiracionInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 2) value = value.substring(0,2) + '/' + value.substring(2,4);
+                e.target.value = value;
+            });
+        }
+
+        const cvvInput = document.getElementById('cvv');
+        if (cvvInput) {
+            cvvInput.addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/\D/g, '');
+            });
+        }
+    });
     </script>
 </body>
 </html>
