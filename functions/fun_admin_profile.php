@@ -1,6 +1,7 @@
 <?php
+// Funciones para el perfil del admin
 
-function getUserData($conn, $user_id) {
+function getAdminData($conn, $user_id) {
     $stmt = $conn->prepare("SELECT username, email, nombre, apellido, imagen_perfil, fecha_registro FROM usuarios WHERE id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
@@ -8,7 +9,7 @@ function getUserData($conn, $user_id) {
     return $result->fetch_assoc();
 }
 
-function getUserOrders($conn, $user_id) {
+function getAdminOrders($conn, $user_id) {
     $stmt = $conn->prepare("
         SELECT p.*, COUNT(dp.id) as total_items, GROUP_CONCAT(j.titulo SEPARATOR ', ') as juegos_comprados
         FROM pedidos p
@@ -17,28 +18,27 @@ function getUserOrders($conn, $user_id) {
         WHERE p.usuario_id = ?
         GROUP BY p.id
         ORDER BY p.fecha_pedido DESC
-        LIMIT 10
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     return $stmt->get_result();
 }
 
-function getUserReviews($conn, $user_id) {
+function getAdminReviews($conn, $user_id) {
     $stmt = $conn->prepare("
         SELECT r.*, j.titulo as juego_titulo, j.imagen as juego_imagen
         FROM resenas r
         JOIN juegos j ON r.juego_id = j.id
         WHERE r.usuario_id = ?
         ORDER BY r.fecha_resena DESC
-        LIMIT 10
+        LIMIT 5
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     return $stmt->get_result();
 }
 
-function getUserMovements($conn, $user_id) {
+function getAdminMovements($conn, $user_id) {
     $stmt = $conn->prepare("
         SELECT mc.tipo, mc.monto, mc.descripcion, mc.fecha
         FROM movimientos_cartera mc
@@ -52,10 +52,16 @@ function getUserMovements($conn, $user_id) {
     return $stmt->get_result();
 }
 
-function getUserCards($conn, $user_id) {
+function getAdminCards($conn, $user_id) {
     $stmt = $conn->prepare("
-        SELECT id, RIGHT(AES_DECRYPT(numero_tarjeta, 'clave_cifrado_segura'), 4) as ultimos_4,
-               fecha_expiracion, alias, fecha_registro
+        SELECT id,
+            RIGHT(AES_DECRYPT(numero_tarjeta, 'clave_cifrado_segura'), 4) AS ultimos_4,
+            fecha_expiracion,
+            CASE 
+                WHEN alias IS NOT NULL AND alias != '' THEN alias
+                ELSE CONCAT('Tarjeta ****', RIGHT(AES_DECRYPT(numero_tarjeta, 'clave_cifrado_segura'), 4))
+            END AS display_name,
+            fecha_registro
         FROM tarjetas
         WHERE usuario_id = ?
         ORDER BY fecha_registro DESC
@@ -65,7 +71,7 @@ function getUserCards($conn, $user_id) {
     return $stmt->get_result();
 }
 
-function getUserStats($conn, $user_id) {
+function getAdminStats($conn, $user_id) {
     $stmt_stats = $conn->prepare("
         SELECT 
             COUNT(p.id) as total_pedidos,

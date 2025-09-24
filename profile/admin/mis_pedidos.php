@@ -1,5 +1,5 @@
 <?php 
-include '../../controladores/cont_profile.php';
+include '../../controladores/cont_profile_admin.php';
 ?>
 
 <!DOCTYPE html>
