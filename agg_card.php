@@ -1,6 +1,5 @@
 <?php
 include 'controladores/cont_agg_card.php'; 
-
 ?>
 
 <!DOCTYPE html>
@@ -148,96 +147,100 @@ include 'controladores/cont_agg_card.php';
             const fechaExpiracionInput = document.getElementById('fecha_expiracion');
             const cvvInput = document.getElementById('cvv');
             const nombreTitularInput = document.getElementById('nombre_titular');
-            
+
             const cardNumberDisplay = document.getElementById('cardNumber');
             const cardHolderDisplay = document.getElementById('cardHolder');
             const cardExpiryDisplay = document.getElementById('cardExpiry');
 
+            // Formateo y máscara de tarjeta
             numeroTarjetaInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+                let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/g, '');
                 let formattedValue = value.match(/.{1,4}/g)?.join(' ') || '';
-                
-                if (formattedValue.length > 19) {
-                    formattedValue = formattedValue.substr(0, 19);
-                }
-                
-                e.target.value = formattedValue;
-                
-                if (value.length > 0) {
-                    let maskedValue = value.replace(/\d(?=\d{4})/g, '*').match(/.{1,4}/g)?.join(' ') || '';
-                    cardNumberDisplay.textContent = maskedValue;
-                } else {
-                    cardNumberDisplay.textContent = '**** **** **** ****';
-                }
+                e.target.value = formattedValue.substr(0, 19);
+                cardNumberDisplay.textContent = value.length > 0 
+                    ? value.replace(/\d(?=\d{4})/g, '*').match(/.{1,4}/g)?.join(' ') 
+                    : '**** **** **** ****';
             });
 
+            // Formato de fecha
             fechaExpiracionInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
-                if (value.length >= 2) {
-                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
-                }
+                if (value.length >= 2) value = value.substring(0,2)+'/'+value.substring(2,4);
                 e.target.value = value;
-                
                 cardExpiryDisplay.textContent = value || 'MM/YY';
             });
 
+            // CVV solo números
             cvvInput.addEventListener('input', function(e) {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
             });
 
+            // Nombre del titular en mayúsculas
             nombreTitularInput.addEventListener('input', function(e) {
-                let value = e.target.value.toUpperCase();
-                cardHolderDisplay.textContent = value || 'TU NOMBRE';
+                cardHolderDisplay.textContent = e.target.value.toUpperCase() || 'TU NOMBRE';
             });
 
+            // Validación del formulario al enviar
             const form = document.querySelector('.card-form');
             form.addEventListener('submit', function(e) {
                 let isValid = true;
-                
                 const numeroTarjeta = numeroTarjetaInput.value.replace(/\s/g, '');
-                if (numeroTarjeta.length < 13 || numeroTarjeta.length > 19) {
+                const fechaExp = fechaExpiracionInput.value;
+                const cvv = cvvInput.value;
+                const nombreTitular = nombreTitularInput.value.trim();
+
+                // Número de tarjeta
+                if (!numeroTarjeta) {
+                    showError(numeroTarjetaInput, 'Falta ingresar el número de tarjeta');
+                    isValid = false;
+                } else if (!/^\d+$/.test(numeroTarjeta)) {
+                    showError(numeroTarjetaInput, 'El número de tarjeta solo puede contener números');
+                    isValid = false;
+                } else if (numeroTarjeta.length < 13 || numeroTarjeta.length > 19) {
                     showError(numeroTarjetaInput, 'Número de tarjeta inválido');
                     isValid = false;
-                } else {
-                    hideError(numeroTarjetaInput);
-                }
-                
-                const fechaExp = fechaExpiracionInput.value;
-                if (!/^\d{2}\/\d{2}$/.test(fechaExp)) {
-                    showError(fechaExpiracionInput, 'Fecha inválida (MM/YY)');
+                } else hideError(numeroTarjetaInput);
+
+                // Fecha de expiración
+                if (!fechaExp) {
+                    showError(fechaExpiracionInput, 'Falta ingresar la fecha de expiración');
+                    isValid = false;
+                } else if (!/^\d{2}\/\d{2}$/.test(fechaExp)) {
+                    showError(fechaExpiracionInput, 'Formato de fecha inválido (MM/YY)');
                     isValid = false;
                 } else {
-                    const [mes, año] = fechaExp.split('/').map(num => parseInt(num));
+                    const [mes, año] = fechaExp.split('/').map(Number);
                     const fechaActual = new Date();
-                    const añoCompleto = 2000 + año;
-                    const fechaTarjeta = new Date(añoCompleto, mes - 1);
-                    
-                    if (fechaTarjeta <= fechaActual) {
+                    const fechaTarjeta = new Date(2000+año, mes-1);
+                    fechaTarjeta.setMonth(fechaTarjeta.getMonth()+1, 0);
+                    if (mes<1||mes>12) {
+                        showError(fechaExpiracionInput, 'Mes inválido');
+                        isValid = false;
+                    } else if (fechaTarjeta <= fechaActual) {
                         showError(fechaExpiracionInput, 'Tarjeta vencida');
                         isValid = false;
-                    } else {
-                        hideError(fechaExpiracionInput);
-                    }
+                    } else hideError(fechaExpiracionInput);
                 }
-                
-                const cvv = cvvInput.value;
-                if (cvv.length < 3 || cvv.length > 4) {
+
+                // CVV
+                if (!cvv) {
+                    showError(cvvInput, 'Falta ingresar el CVV');
+                    isValid = false;
+                } else if (!/^\d{3,4}$/.test(cvv)) {
                     showError(cvvInput, 'CVV inválido');
                     isValid = false;
-                } else {
-                    hideError(cvvInput);
-                }
-                
-                if (nombreTitularInput.value.trim().length < 3) {
-                    showError(nombreTitularInput, 'Nombre del titular requerido');
+                } else hideError(cvvInput);
+
+                // Nombre titular
+                if (!nombreTitular) {
+                    showError(nombreTitularInput, 'Falta ingresar el nombre del titular');
                     isValid = false;
-                } else {
-                    hideError(nombreTitularInput);
-                }
-                
-                if (!isValid) {
-                    e.preventDefault();
-                }
+                } else if (nombreTitular.length < 3) {
+                    showError(nombreTitularInput, 'Nombre del titular muy corto');
+                    isValid = false;
+                } else hideError(nombreTitularInput);
+
+                if (!isValid) e.preventDefault();
             });
 
             function showError(input, message) {
@@ -251,9 +254,7 @@ include 'controladores/cont_agg_card.php';
 
             function hideError(input) {
                 const existingError = input.parentNode.querySelector('.error-message');
-                if (existingError) {
-                    existingError.remove();
-                }
+                if (existingError) existingError.remove();
                 input.classList.remove('error');
             }
         });
