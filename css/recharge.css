@@ -480,7 +480,7 @@ body {
     }
 
     .btn-primary {
-        justify-self: center;
+        width: 250px;
         max-width: fit-content;
     }
 
