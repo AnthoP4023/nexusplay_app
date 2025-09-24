@@ -7,7 +7,8 @@ function getUserData($user_id) {
     $stmt = $conn->prepare("SELECT username, email, nombre, apellido, imagen_perfil, fecha_registro FROM usuarios WHERE id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    $data = $stmt->get_result()->fetch_assoc();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
 
     if ($data) {
         $imagen_bd = $data['imagen_perfil'];
@@ -119,4 +120,4 @@ function updateUserProfileImage($user_id, $file) {
     }
 
     return ['success' => false, 'message' => 'Error al subir la imagen'];
-}
+} 

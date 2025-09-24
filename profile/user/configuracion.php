@@ -25,7 +25,7 @@ include '../../controladores/cont_config_user.php';
                     <div class="user-info-container">
                         <div class="avatar-section">
                             <div class="user-avatar">
-                                <img src="<?php echo htmlspecialchars($_SESSION['imagen_perfil']); ?>" alt="Mi Perfil" class="avatar-img">
+                                <img src="<?php echo htmlspecialchars($perfil_img); ?>" alt="Mi Perfil" class="avatar-img">
                             </div>
                         </div>
                         
@@ -91,7 +91,6 @@ include '../../controladores/cont_config_user.php';
                     <h2 class="section-title">Configuraciones de Cuenta</h2>
                     
                     <div class="config-container">
-                        <!-- Información Personal -->
                         <div class="config-section">
                             <div class="config-header">
                                 <h3><i class="fas fa-user-edit"></i> Información Personal</h3>
@@ -108,13 +107,17 @@ include '../../controladores/cont_config_user.php';
                             <form method="POST" class="config-form">
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label for="username"><i class="fas fa-user"></i> Nombre de Usuario</label>
+                                        <label for="username">
+                                            <i class="fas fa-user"></i> Nombre de Usuario
+                                        </label>
                                         <input type="text" id="username" name="username" 
                                                value="<?php echo htmlspecialchars($user_data['username']); ?>" 
                                                placeholder="Ingresa tu nombre de usuario" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="email"><i class="fas fa-envelope"></i> Correo Electrónico</label>
+                                        <label for="email">
+                                            <i class="fas fa-envelope"></i> Correo Electrónico
+                                        </label>
                                         <input type="email" id="email" name="email" 
                                                value="<?php echo htmlspecialchars($user_data['email']); ?>" 
                                                placeholder="Ingresa tu correo electrónico" required>
@@ -123,13 +126,17 @@ include '../../controladores/cont_config_user.php';
                                 
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label for="nombre"><i class="fas fa-id-badge"></i> Nombre</label>
+                                        <label for="nombre">
+                                            <i class="fas fa-id-badge"></i> Nombre
+                                        </label>
                                         <input type="text" id="nombre" name="nombre" 
                                                value="<?php echo htmlspecialchars($user_data['nombre']); ?>" 
                                                placeholder="Ingresa tu nombre" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="apellido"><i class="fas fa-id-badge"></i> Apellido</label>
+                                        <label for="apellido">
+                                            <i class="fas fa-id-badge"></i> Apellido
+                                        </label>
                                         <input type="text" id="apellido" name="apellido" 
                                                value="<?php echo htmlspecialchars($user_data['apellido']); ?>" 
                                                placeholder="Ingresa tu apellido" required>
@@ -142,7 +149,6 @@ include '../../controladores/cont_config_user.php';
                             </form>
                         </div>
 
-                        <!-- Imagen de Perfil -->
                         <div class="config-section">
                             <div class="config-header">
                                 <h3><i class="fas fa-camera"></i> Imagen de Perfil</h3>
@@ -158,7 +164,7 @@ include '../../controladores/cont_config_user.php';
                             
                             <div class="profile-image-section">
                                 <div class="current-image">
-                                    <img src="<?php echo htmlspecialchars($_SESSION['imagen_perfil']); ?>" alt="Imagen actual" id="currentProfileImage" class="profile-preview">
+                                    <img src="<?php echo htmlspecialchars($perfil_img); ?>" alt="Imagen actual" id="currentProfileImage" class="profile-preview">
                                     <div class="image-info">
                                         <h4>Imagen Actual</h4>
                                         <p class="image-guidelines">
@@ -196,7 +202,6 @@ include '../../controladores/cont_config_user.php';
                             </div>
                         </div>
 
-                        <!-- Seguridad de la Cuenta -->
                         <div class="config-section">
                             <div class="config-header">
                                 <h3><i class="fas fa-lock"></i> Seguridad de la Cuenta</h3>
@@ -212,7 +217,9 @@ include '../../controladores/cont_config_user.php';
                             
                             <form method="POST" class="config-form">
                                 <div class="form-group">
-                                    <label for="current_password"><i class="fas fa-key"></i> Contraseña Actual</label>
+                                    <label for="current_password">
+                                        <i class="fas fa-key"></i> Contraseña Actual
+                                    </label>
                                     <div class="password-input">
                                         <input type="password" id="current_password" name="current_password" 
                                                placeholder="Ingresa tu contraseña actual" required>
@@ -224,7 +231,9 @@ include '../../controladores/cont_config_user.php';
                                 
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label for="new_password"><i class="fas fa-lock"></i> Nueva Contraseña</label>
+                                        <label for="new_password">
+                                            <i class="fas fa-lock"></i> Nueva Contraseña
+                                        </label>
                                         <div class="password-input">
                                             <input type="password" id="new_password" name="new_password" 
                                                    placeholder="Ingresa tu nueva contraseña" required>
@@ -235,7 +244,9 @@ include '../../controladores/cont_config_user.php';
                                         <small class="password-help">Mínimo 6 caracteres</small>
                                     </div>
                                     <div class="form-group">
-                                        <label for="confirm_password"><i class="fas fa-lock"></i> Confirmar Contraseña</label>
+                                        <label for="confirm_password">
+                                            <i class="fas fa-lock"></i> Confirmar Contraseña
+                                        </label>
                                         <div class="password-input">
                                             <input type="password" id="confirm_password" name="confirm_password" 
                                                    placeholder="Confirma tu nueva contraseña" required>
