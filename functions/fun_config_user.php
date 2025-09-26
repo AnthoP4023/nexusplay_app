@@ -120,4 +120,4 @@ function updateUserProfileImage($user_id, $file) {
     }
 
     return ['success' => false, 'message' => 'Error al subir la imagen'];
-} 
+}  

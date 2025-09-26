@@ -44,3 +44,4 @@ function registerUser($email, $username, $nombre, $apellido, $password, $confirm
     return ['error' => $error, 'success' => $success];
 }
 ?>
+ 
