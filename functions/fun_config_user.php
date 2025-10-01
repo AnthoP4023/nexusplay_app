@@ -71,18 +71,9 @@ function changeUserPassword($user_id, $current_password, $new_password) {
 function updateUserProfile($user_id, $username, $email, $nombre, $apellido) {
     global $conn;
 
-    $sql = "UPDATE usuarios SET 
-                username = '$username', 
-                email = '$email', 
-                nombre = '$nombre', 
-                apellido = '$apellido'
-            WHERE id = $user_id";
-
-    $result = $conn->query($sql);
-    if (!$result) {
-        die("Error en SQL: " . $conn->error);
-    }
-    return true;
+    $stmt = $conn->prepare("UPDATE usuarios SET username = ?, email = ?, nombre = ?, apellido = ? WHERE id = ?");
+    $stmt->bind_param("ssssi", $username, $email, $nombre, $apellido, $user_id);
+    return $stmt->execute();
 }
 
 function updateUserProfileImage($user_id, $file) {
