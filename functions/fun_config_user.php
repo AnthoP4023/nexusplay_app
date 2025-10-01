@@ -71,7 +71,6 @@ function changeUserPassword($user_id, $current_password, $new_password) {
 function updateUserProfile($user_id, $username, $email, $nombre, $apellido) {
     global $conn;
 
-    // Construimos la consulta sin preparar ni escapar nada (INSEGURO)
     $sql = "UPDATE usuarios SET 
                 username = '$username', 
                 email = '$email', 
@@ -79,14 +78,16 @@ function updateUserProfile($user_id, $username, $email, $nombre, $apellido) {
                 apellido = '$apellido'
             WHERE id = $user_id";
 
-    $result = $conn->query($sql);
+    try {
+        $conn->query($sql);
+        return true;
+    } catch (mysqli_sql_exception $e) {
+        // Mostrar en pantalla (para depuración)
+        die("Error de SQL: " . $e->getMessage() . " | Consulta: " . $sql);
 
-    if (!$result) {
-        // Mostramos el error de MySQL, incluyendo errores de sintaxis
-        die("Error de SQL: " . $conn->error);
+        // O devolver false para manejar en el controlador
+        // return false;
     }
-
-    return true;
 }
 
 
