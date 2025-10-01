@@ -82,11 +82,7 @@ function updateUserProfile($user_id, $username, $email, $nombre, $apellido) {
         $conn->query($sql);
         return true;
     } catch (mysqli_sql_exception $e) {
-        // Mostrar en pantalla (para depuración)
-        die("Error de SQL: " . $e->getMessage() . " | Consulta: " . $sql);
-
-        // O devolver false para manejar en el controlador
-        // return false;
+        die($e->getMessage());
     }
 }
 
