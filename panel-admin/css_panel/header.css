@@ -337,11 +337,6 @@ body {
         align-items: center;
         justify-content: center;
     }
-    
-    .mobile-overlay {
-        display: block;
-    }
-
     .nav-item span {
         display: block;
     }

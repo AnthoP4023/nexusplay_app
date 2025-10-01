@@ -30,8 +30,8 @@ body {
 }
 
 .game-hero-compact {
-    background: #88888859;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #00000059;
+    border: 1px solid rgba(87, 87, 87, 0.7);
     border-radius: 20px;
     padding: 30px;
 }
@@ -131,8 +131,8 @@ body {
 }
 
 .game-description-section {
-    background: #88888859;;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #00000059;
+    border: 1px solid rgba(87, 87, 87, 0.7);
     border-radius: 20px;
     padding: 30px;
 }
@@ -158,8 +158,8 @@ body {
 }
 
 .purchase-card {
-    background: #88888859;;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #00000059;
+    border: 1px solid rgba(87, 87, 87, 0.7);
     border-radius: 20px;
     padding: 30px;
     text-align: center;
@@ -197,8 +197,8 @@ body {
 }
 
 .rating-stats-card {
-    background: #88888859;;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #00000059;
+    border: 1px solid rgba(87, 87, 87, 0.7);
     border-radius: 20px;
     padding: 25px;
 }
@@ -283,8 +283,8 @@ body {
 }
 
 .reviews-section {
-    background: #88888859;;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #00000059;
+    border: 1px solid rgba(87, 87, 87, 0.7);
     border-radius: 20px;
     padding: 30px;
 }
