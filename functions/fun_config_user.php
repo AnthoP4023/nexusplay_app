@@ -78,10 +78,21 @@ function updateUserProfile($user_id, $username, $email, $nombre, $apellido) {
                 apellido = ?
             WHERE id = ?");
     
+    if (!$stmt) {
+        // Si la preparación falla, mostramos el error de SQL
+        die("Error en prepare: " . $conn->error);
+    }
+
     $stmt->bind_param("ssssi", $username, $email, $nombre, $apellido, $user_id);
-    
-    return $stmt->execute();
+
+    if (!$stmt->execute()) {
+        // Si la ejecución falla, mostramos el error de ejecución
+        die("Error en execute: " . $stmt->error);
+    }
+
+    return true; // Si todo sale bien
 }
+
 
 function updateUserProfileImage($user_id, $file) {
     global $conn;
