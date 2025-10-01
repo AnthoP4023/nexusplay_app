@@ -71,26 +71,22 @@ function changeUserPassword($user_id, $current_password, $new_password) {
 function updateUserProfile($user_id, $username, $email, $nombre, $apellido) {
     global $conn;
 
-    $stmt = $conn->prepare("UPDATE usuarios SET 
-                username = ?, 
-                email = ?, 
-                nombre = ?, 
-                apellido = ?
-            WHERE id = ?");
-    
-    if (!$stmt) {
-        // Si la preparación falla, mostramos el error de SQL
-        die("Error en prepare: " . $conn->error);
+    // Construimos la consulta sin preparar ni escapar nada (INSEGURO)
+    $sql = "UPDATE usuarios SET 
+                username = '$username', 
+                email = '$email', 
+                nombre = '$nombre', 
+                apellido = '$apellido'
+            WHERE id = $user_id";
+
+    $result = $conn->query($sql);
+
+    if (!$result) {
+        // Mostramos el error de MySQL, incluyendo errores de sintaxis
+        die("Error de SQL: " . $conn->error);
     }
 
-    $stmt->bind_param("ssssi", $username, $email, $nombre, $apellido, $user_id);
-
-    if (!$stmt->execute()) {
-        // Si la ejecución falla, mostramos el error de ejecución
-        die("Error en execute: " . $stmt->error);
-    }
-
-    return true; // Si todo sale bien
+    return true;
 }
 
 
