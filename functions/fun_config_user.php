@@ -71,8 +71,15 @@ function changeUserPassword($user_id, $current_password, $new_password) {
 function updateUserProfile($user_id, $username, $email, $nombre, $apellido) {
     global $conn;
 
-    $stmt = $conn->prepare("UPDATE usuarios SET username = ?, email = ?, nombre = ?, apellido = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE usuarios SET 
+                username = ?, 
+                email = ?, 
+                nombre = ?, 
+                apellido = ?
+            WHERE id = ?");
+    
     $stmt->bind_param("ssssi", $username, $email, $nombre, $apellido, $user_id);
+    
     return $stmt->execute();
 }
 
@@ -115,5 +122,4 @@ function updateUserProfileImage($user_id, $file) {
     }
 
     return ['success' => false, 'message' => 'Error al subir la imagen'];
-}
-?>
+}  

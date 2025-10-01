@@ -30,8 +30,9 @@ unset($_SESSION['profile_message'], $_SESSION['profile_message_type']);
 unset($_SESSION['image_message'], $_SESSION['image_message_type']);
 
 $user_data = getUserData($user_id);
-if (!$user_data) die("Usuario no encontrado.");
-
+if (!$user_data) {
+    die("Usuario no encontrado.");
+}
 $_SESSION['username'] = $user_data['username'];
 $_SESSION['imagen_perfil'] = $user_data['perfil_img'];
 
@@ -85,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (updateUserProfile($user_id, $new_username, $new_email, $new_nombre, $new_apellido)) {
                 $_SESSION['profile_message'] = 'Perfil actualizado exitosamente';
                 $_SESSION['profile_message_type'] = 'success';
+
                 $_SESSION['username'] = $new_username;
                 $user_data['username'] = $new_username;
                 $user_data['email'] = $new_email;
@@ -120,5 +122,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: configuracion.php');
         exit();
     }
-}
-?>
+} 
