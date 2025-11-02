@@ -128,8 +128,17 @@ function deleteProduct($id) {
     global $conn;
 
     try {
-        $conn->begin_transaction();
-
+        $conn->begin_transaction();        
+        $stmt_reviews = $conn->prepare("DELETE FROM resenas WHERE juego_id = ?");
+        $stmt_reviews->bind_param("i", $id);
+        $stmt_reviews->execute();
+        $stmt_reviews->close();
+        
+        $stmt_cart = $conn->prepare("DELETE FROM carrito WHERE juego_id = ?");
+        $stmt_cart->bind_param("i", $id);
+        $stmt_cart->execute();
+        $stmt_cart->close();
+        
         $stmt_details = $conn->prepare("DELETE FROM detalles_pedido WHERE juego_id = ?");
         $stmt_details->bind_param("i", $id);
         $stmt_details->execute();
@@ -146,11 +155,11 @@ function deleteProduct($id) {
         if ($stmt_game->execute()) {
             $stmt_game->close();
             $conn->commit();
-            return ['success' => true, 'message' => 'Producto y registros asociados eliminados correctamente'];
+            return ['success' => true, 'message' => 'Producto y todos los registros asociados eliminados correctamente.'];
         } else {
             $stmt_game->close();
             $conn->rollback(); 
-            return ['success' => false, 'message' => 'Error al eliminar producto'];
+            return ['success' => false, 'message' => 'Error al eliminar producto principal.'];
         }
     } catch (Exception $e) {
         $conn->rollback();
