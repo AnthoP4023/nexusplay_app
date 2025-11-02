@@ -72,33 +72,47 @@ function getUsuarios($page = 1, $limit = 20) {
     }
 }
 
-function getTotalUsuariosCount() {
+function getTiposUsuario() {
     global $conn;
     try {
-        $sql = "SELECT COUNT(*) as total FROM usuarios";
-        $stmt = $conn->prepare($sql);
+        // Asumo que tienes una tabla tipo_user
+        $stmt = $conn->prepare("SELECT id, nombre FROM tipo_user ORDER BY id ASC");
         $stmt->execute();
         $result = $stmt->get_result();
-        return $result->fetch_assoc()['total'];
+        
+        $tipos = [];
+        while ($row = $result->fetch_assoc()) {
+            $tipos[] = $row;
+        }
+        return $tipos;
     } catch (Exception $e) {
-        error_log("Error en getTotalUsuariosCount: " . $e->getMessage());
-        return 0;
+        error_log("Error en getTiposUsuario: " . $e->getMessage());
+        return [];
     }
 }
 
 function getUsuarioById($id) {
     global $conn;
     try {
-        $stmt = $conn->prepare("SELECT * FROM usuarios WHERE id = ?");
+        $stmt = $conn->prepare("
+            SELECT 
+                u.id, u.username, u.email, u.tipo_user_id, u.imagen_perfil, u.nombre, u.apellido,
+                IFNULL(c.saldo, 0) AS saldo
+            FROM usuarios u
+            LEFT JOIN carteras c ON u.id = c.usuario_id
+            WHERE u.id = ?
+        ");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $usuario = $result->fetch_assoc();
-            $usuario['avatar'] = !empty($usuario['imagen_perfil']) && $usuario['imagen_perfil'] !== 'default-avatar.png'
-                ? '../../images/users/' . $usuario['imagen_perfil']
-                : '../../images/users/default-avatar.png';
+            // Esto es importante para el modal: solo pasar el nombre del archivo, no la ruta completa
+            $usuario['imagen_perfil_nombre'] = $usuario['imagen_perfil'] ?? 'default-avatar.png'; 
+            unset($usuario['imagen_perfil']); // Lo quitamos para no confundir con la ruta.
+            
+            unset($usuario['password']); 
             return $usuario;
         }
         return null;
@@ -108,17 +122,47 @@ function getUsuarioById($id) {
     }
 }
 
-function updateUsuario($id, $datos) {
+function updateUsuario($id, $datos, $file_data = null) {
     global $conn;
+    
     try {
+        $conn->begin_transaction();
+        
+        // 1. Manejo del Saldo por separado (en la tabla `carteras`)
+        if (isset($datos['saldo'])) {
+            $saldo_actualizado = updateSaldo($id, $datos['saldo']);
+            if (!$saldo_actualizado) {
+                 $conn->rollback();
+                 return false;
+            }
+            unset($datos['saldo']); 
+        }
+
+        // 2. Manejo del Avatar
+        if (isset($file_data['avatar']) && $file_data['avatar']['error'] == 0) {
+            $avatar_nombre = uploadAvatar($file_data['avatar']);
+            if ($avatar_nombre) {
+                $datos['imagen_perfil'] = $avatar_nombre; 
+            }
+        }
+        
+        // 3. Actualización de la tabla `usuarios`
         $fields = [];
         $params = [];
         $types = "";
 
         foreach ($datos as $field => $value) {
+            // No actualizamos la contraseña si se envía vacía
+            if ($field === 'password' && empty($value)) continue;
+
             $fields[] = "$field = ?";
             $params[] = $value;
-            $types .= is_int($value) ? "i" : "s";
+            $types .= is_int($value) ? "i" : (is_float($value) ? "d" : "s");
+        }
+
+        if (empty($fields)) {
+            $conn->commit();
+            return true; // No hay campos de usuario que actualizar, solo se actualizó el saldo.
         }
 
         $params[] = $id;
@@ -126,13 +170,74 @@ function updateUsuario($id, $datos) {
 
         $sql = "UPDATE usuarios SET " . implode(", ", $fields) . " WHERE id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param($types, ...$params);
-        return $stmt->execute();
+        // Usamos call_user_func_array para pasar los parámetros dinámicamente
+        call_user_func_array([$stmt, 'bind_param'], array_merge([$types], $params));
+        
+        if ($stmt->execute()) {
+             $conn->commit();
+             return true;
+        } else {
+             $conn->rollback();
+             return false;
+        }
     } catch (Exception $e) {
+        $conn->rollback();
         error_log("Error en updateUsuario: " . $e->getMessage());
         return false;
     }
 }
+
+
+
+function uploadAvatar($file) {
+    try {
+        $upload_dir = __DIR__ . '/../../images/users/'; // Ruta absoluta
+        
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
+        
+        $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $filename = time() . '_' . rand(1000, 9999) . '.' . $extension;
+        $upload_path = $upload_dir . $filename;
+        
+        if (move_uploaded_file($file['tmp_name'], $upload_path)) {
+            return $filename;
+        }
+    } catch (Exception $e) {
+        error_log("Error en uploadAvatar: " . $e->getMessage());
+    }
+    
+    return null;
+}
+function updateSaldo($usuario_id, $nuevo_saldo) {
+    global $conn;
+    try {
+        // Busca si la cartera existe
+        $stmt_check = $conn->prepare("SELECT COUNT(*) FROM carteras WHERE usuario_id = ?");
+        $stmt_check->bind_param("i", $usuario_id);
+        $stmt_check->execute();
+        $exists = $stmt_check->get_result()->fetch_row()[0];
+        $stmt_check->close();
+
+        if ($exists) {
+            $sql = "UPDATE carteras SET saldo = ? WHERE usuario_id = ?";
+        } else {
+             // Si no existe, la crea (asumiendo que las carteras se crean al registrarse, pero por si acaso)
+            $sql = "INSERT INTO carteras (usuario_id, saldo) VALUES (?, ?) ON DUPLICATE KEY UPDATE saldo = VALUES(saldo)";
+            // Nota: ON DUPLICATE solo funciona si 'usuario_id' es PRIMARY o UNIQUE
+        }
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("di", $nuevo_saldo, $usuario_id); 
+        return $stmt->execute();
+    } catch (Exception $e) {
+        error_log("Error en updateSaldo: " . $e->getMessage());
+        return false;
+    }
+}
+
+
 
 function deleteUsuario($id) {
     global $conn;
