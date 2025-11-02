@@ -52,20 +52,30 @@ function getAdminMovements($conn, $user_id) {
 }
 
 function getAdminCards($conn, $user_id) {
+    
+    $encryption_key = getenv('DB_ENCRYPTION_KEY'); 
+
+    if (!$encryption_key) {
+        error_log("Error de Seguridad Crítico: La clave de cifrado de la base de datos no está configurada.");
+        return $conn->query("SELECT 1 FROM DUAL WHERE 1=0"); 
+    }
+
     $stmt = $conn->prepare("
         SELECT id,
-            RIGHT(AES_DECRYPT(numero_tarjeta, 'clave_cifrado_segura'), 4) AS ultimos_4,
+            RIGHT(AES_DECRYPT(numero_tarjeta, ?), 4) AS ultimos_4,
             fecha_expiracion,
             CASE 
                 WHEN alias IS NOT NULL AND alias != '' THEN alias
-                ELSE CONCAT('Tarjeta ****', RIGHT(AES_DECRYPT(numero_tarjeta, 'clave_cifrado_segura'), 4))
+                ELSE CONCAT('Tarjeta ****', RIGHT(AES_DECRYPT(numero_tarjeta, ?), 4))
             END AS display_name,
             fecha_registro
         FROM tarjetas
         WHERE usuario_id = ?
         ORDER BY fecha_registro DESC
     ");
-    $stmt->bind_param("i", $user_id);
+    
+    $stmt->bind_param("ssi", $encryption_key, $encryption_key, $user_id);
+    
     $stmt->execute();
     return $stmt->get_result();
 }
