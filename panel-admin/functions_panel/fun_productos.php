@@ -130,6 +130,11 @@ function deleteProduct($id) {
     try {
         $conn->begin_transaction();
 
+        $stmt_details = $conn->prepare("DELETE FROM detalles_pedido WHERE juego_id = ?");
+        $stmt_details->bind_param("i", $id);
+        $stmt_details->execute();
+        $stmt_details->close();
+
         $stmt_codes = $conn->prepare("DELETE FROM codigos_juegos WHERE juego_id = ?");
         $stmt_codes->bind_param("i", $id);
         $stmt_codes->execute();
@@ -141,7 +146,7 @@ function deleteProduct($id) {
         if ($stmt_game->execute()) {
             $stmt_game->close();
             $conn->commit();
-            return ['success' => true, 'message' => 'Producto y códigos asociados eliminados correctamente'];
+            return ['success' => true, 'message' => 'Producto y registros asociados eliminados correctamente'];
         } else {
             $stmt_game->close();
             $conn->rollback(); 
@@ -149,7 +154,7 @@ function deleteProduct($id) {
         }
     } catch (Exception $e) {
         $conn->rollback();
-        return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+        return ['success' => false, 'message' => 'Error de la base de datos: ' . $e->getMessage()];
     }
 }
 

@@ -137,22 +137,9 @@ function updateUsuario($id, $datos) {
 function deleteUsuario($id) {
     global $conn;
     try {
-        // Quita la condición 'AND tipo_user_id = 1' para eliminar cualquier ID
-        $stmt = $conn->prepare("DELETE FROM usuarios WHERE id = ?"); 
+        $stmt = $conn->prepare("DELETE FROM usuarios WHERE id = ? AND tipo_user_id = 1");
         $stmt->bind_param("i", $id);
-        
-        // Ejecutar la eliminación
-        $result = $stmt->execute();
-
-        // Puedes verificar si se eliminó alguna fila
-        if ($result && $conn->affected_rows > 0) {
-            // Éxito: se eliminó el usuario
-            return true; 
-        } else {
-            // No se encontró el usuario o no se eliminó
-            return false;
-        }
-
+        return $stmt->execute();
     } catch (Exception $e) {
         error_log("Error en deleteUsuario: " . $e->getMessage());
         return false;
