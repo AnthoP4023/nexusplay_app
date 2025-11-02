@@ -136,42 +136,25 @@ function updateUsuario($id, $datos) {
 
 function deleteUsuario($id) {
     global $conn;
-
-    $conn->begin_transaction(); 
-
     try {
-        $user_check_stmt = $conn->prepare("SELECT tipo_user_id FROM usuarios WHERE id = ?");
-        $user_check_stmt->bind_param("i", $id);
-        $user_check_stmt->execute();
-        $result = $user_check_stmt->get_result();
-        if ($result->num_rows === 0 || $result->fetch_assoc()['tipo_user_id'] != 1) {
-            $conn->rollback();
-            error_log("Intento fallido de eliminar usuario (ID: $id). No existe o es un Admin.");
+        // Quita la condición 'AND tipo_user_id = 1' para eliminar cualquier ID
+        $stmt = $conn->prepare("DELETE FROM usuarios WHERE id = ?"); 
+        $stmt->bind_param("i", $id);
+        
+        // Ejecutar la eliminación
+        $result = $stmt->execute();
+
+        // Puedes verificar si se eliminó alguna fila
+        if ($result && $conn->affected_rows > 0) {
+            // Éxito: se eliminó el usuario
+            return true; 
+        } else {
+            // No se encontró el usuario o no se eliminó
             return false;
         }
 
-       
-        
-        $conn->prepare("DELETE FROM movimientos_cartera WHERE cartera_id IN (SELECT id FROM carteras WHERE usuario_id = ?)")->bind_param("i", $id)->execute();
-        $conn->prepare("DELETE FROM carteras WHERE usuario_id = ?")->bind_param("i", $id)->execute();
-        
-        $conn->prepare("DELETE FROM detalles_pedido WHERE pedido_id IN (SELECT id FROM pedidos WHERE usuario_id = ?)")->bind_param("i", $id)->execute();
-        $conn->prepare("DELETE FROM pedidos WHERE usuario_id = ?")->bind_param("i", $id)->execute();
-        
-        $conn->prepare("DELETE FROM resenas WHERE usuario_id = ?")->bind_param("i", $id)->execute();
-        
-        $conn->prepare("DELETE FROM tarjetas WHERE usuario_id = ?")->bind_param("i", $id)->execute();
-
-        $delete_stmt = $conn->prepare("DELETE FROM usuarios WHERE id = ?");
-        $delete_stmt->bind_param("i", $id);
-        $delete_stmt->execute();
-
-        $conn->commit();
-        return true;
-
     } catch (Exception $e) {
-        $conn->rollback(); 
-        error_log("Transacción de eliminación de usuario fallida: " . $e->getMessage());
+        error_log("Error en deleteUsuario: " . $e->getMessage());
         return false;
     }
 }
