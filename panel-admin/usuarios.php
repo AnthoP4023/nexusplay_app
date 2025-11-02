@@ -111,7 +111,7 @@ $total_admins = getTotalAdministradores();
                                             <i class="fas fa-edit"></i>
                                         </button>
                                         <?php if($usuario['tipo_user_id'] != 2):  ?>
-                                        <form method="POST" style="display:inline;">
+                                        <form method="POST" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');">
                                             <input type="hidden" name="delete_id" value="<?php echo $usuario['id']; ?>">
                                             <button type="submit" class="action-btn delete">
                                                 <i class="fas fa-trash"></i>
