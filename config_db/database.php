@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
-$username = "denji";
-$password = "denji123";
+$username = "anthony2025";
+$password = "D3nj100CHA1NSM4NP";
 $database = "nexusplay_db";
 $port = 3306;
 

@@ -126,17 +126,29 @@ function updateProduct($data) {
 
 function deleteProduct($id) {
     global $conn;
-    
+
     try {
-        $stmt = $conn->prepare("DELETE FROM juegos WHERE id = ?");
-        $stmt->bind_param("i", $id);
+        $conn->begin_transaction();
+
+        $stmt_codes = $conn->prepare("DELETE FROM codigos_juegos WHERE juego_id = ?");
+        $stmt_codes->bind_param("i", $id);
+        $stmt_codes->execute();
+        $stmt_codes->close();
+
+        $stmt_game = $conn->prepare("DELETE FROM juegos WHERE id = ?");
+        $stmt_game->bind_param("i", $id);
         
-        if ($stmt->execute()) {
-            return ['success' => true, 'message' => 'Producto eliminado correctamente'];
+        if ($stmt_game->execute()) {
+            $stmt_game->close();
+            $conn->commit();
+            return ['success' => true, 'message' => 'Producto y códigos asociados eliminados correctamente'];
         } else {
+            $stmt_game->close();
+            $conn->rollback(); 
             return ['success' => false, 'message' => 'Error al eliminar producto'];
         }
     } catch (Exception $e) {
+        $conn->rollback();
         return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
     }
 }
