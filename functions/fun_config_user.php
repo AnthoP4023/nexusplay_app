@@ -91,39 +91,62 @@ function updateUserProfileImage($user_id, $file) {
     global $conn;
 
     $upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/images/users/';
-    if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
-
-    $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-    $max_size = 5 * 1024 * 1024;
-
-    if (!in_array($file_ext, $allowed_extensions) || $file['size'] > $max_size) {
-        return ['success' => false, 'message' => 'Archivo inválido o demasiado grande'];
+    
+    if (!is_dir($upload_dir) && !mkdir($upload_dir, 0755, true)) {
+        return ['success' => false, 'message' => 'Error: No se pudo crear el directorio de subida.'];
     }
 
+    $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    $allowed_extensions = ['jpg', 'jpeg', 'png']; 
+    $max_size = 5 * 1024 * 1024; 
+
+    if (!in_array($file_ext, $allowed_extensions)) {
+        return ['success' => false, 'message' => 'Tipo de archivo no permitido. Solo se aceptan JPG y PNG.'];
+    }
+    if ($file['size'] > $max_size) {
+        return ['success' => false, 'message' => 'El archivo es demasiado grande.'];
+    }
+    
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime_type = @finfo_file($finfo, $file['tmp_name']); 
+    finfo_close($finfo);
+
+    $allowed_mime = ['image/jpeg', 'image/png'];
+    
+    if (!in_array($mime_type, $allowed_mime)) {
+        return ['success' => false, 'message' => 'El contenido del archivo no es una imagen válida (MIME type no permitido).'];
+    }
+    
     $stmt_old = $conn->prepare("SELECT imagen_perfil FROM usuarios WHERE id = ?");
     $stmt_old->bind_param("i", $user_id);
     $stmt_old->execute();
     $old_data = $stmt_old->get_result()->fetch_assoc();
+    $stmt_old->close();
 
     if (!empty($old_data['imagen_perfil']) && $old_data['imagen_perfil'] !== 'default-avatar.png') {
         $old_path = $upload_dir . $old_data['imagen_perfil'];
-        if (file_exists($old_path)) unlink($old_path);
+        if (file_exists($old_path)) {
+            @unlink($old_path); 
+        }
     }
 
     $new_filename = 'user_' . $user_id . '_' . time() . '.' . $file_ext;
     $upload_path = $upload_dir . $new_filename;
 
     if (move_uploaded_file($file['tmp_name'], $upload_path)) {
+        
         $stmt_update = $conn->prepare("UPDATE usuarios SET imagen_perfil = ? WHERE id = ?");
         $stmt_update->bind_param("si", $new_filename, $user_id);
+        
         if ($stmt_update->execute()) {
+            $stmt_update->close();
             return ['success' => true, 'filename' => $new_filename];
         } else {
-            unlink($upload_path);
+            @unlink($upload_path);
+            $stmt_update->close();
             return ['success' => false, 'message' => 'Error al actualizar la base de datos'];
         }
     }
 
-    return ['success' => false, 'message' => 'Error al subir la imagen'];
-}  
+    return ['success' => false, 'message' => 'Error desconocido al mover el archivo subido.'];
+}

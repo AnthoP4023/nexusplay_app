@@ -33,7 +33,7 @@
                     <form method="POST">
                         <input type="text" name="username" placeholder="👤 Usuario" autocomplete="username" required>
                         <input type="password" name="password" placeholder="🔒 Contraseña">
-                        <button type="submit">Iniciar Sesión</button>
+                        <button type="submit">Ingresar</button>
                     </form>
                     <div class="links">
                         <a href="register.php">¿No tienes cuenta? Regístrate</a>
