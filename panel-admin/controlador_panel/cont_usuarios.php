@@ -4,16 +4,10 @@
 require_once __DIR__ . '/../functions_panel/fun_auth_panel.php';
 require_once __DIR__ . '/../functions_panel/fun_usuarios.php';
 
-// Bloque de manejo de peticiones AJAX (POST)
+// Bloque de manejo de peticiones AJAX (POST para 'get' y 'edit')
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     header('Content-Type: application/json');
     
-    // Si la acción es 'delete_id', ya se manejó en usuarios.php, pero por si acaso.
-    if (isset($_POST['delete_id'])) {
-        exit;
-    }
-    
-    // Verificación de sesión de seguridad
     if (!isPanelAdminLoggedIn()) {
         echo json_encode(['success' => false, 'message' => 'Sesión expirada o no autorizada.']);
         exit;
@@ -28,11 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     'tipo_user_id'   => (int)$_POST['tipo_user_id'],
                     'nombre'         => trim($_POST['nombre']),
                     'apellido'       => trim($_POST['apellido']),
-                    // El saldo se pasa como string/float
                     'saldo'          => floatval($_POST['saldo']), 
                 ];
                 
-                // updateUsuario maneja la actualización en la tabla `usuarios` y el `saldo` en `carteras`.
                 $result = updateUsuario((int)$_POST['id'], $datos_a_actualizar, $_FILES);
                 
                 echo json_encode(['success' => $result, 'message' => $result ? 'Usuario actualizado correctamente.' : 'Error al actualizar el usuario.']);
@@ -40,12 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 
             case 'get':
                 $usuario = getUsuarioById((int)$_POST['id']);
-                
-                // También necesitamos los tipos de usuario para el dropdown del modal
                 $tipos = getTiposUsuario(); 
                 
                 if ($usuario) {
-                     // Devolvemos el usuario y los tipos
+                    // Devolvemos el usuario y los tipos para llenar el modal
                     echo json_encode(['usuario' => $usuario, 'tipos' => $tipos]);
                 } else {
                     echo json_encode(['success' => false, 'message' => 'Usuario no encontrado']);
@@ -58,13 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
     } catch (Exception $e) {
         error_log("Error en cont_usuarios.php (AJAX): " . $e->getMessage());
-        echo json_encode(['success' => false, 'message' => 'Error interno del servidor.']);
+        echo json_encode(['success' => false, 'message' => 'Error interno del servidor: ' . $e->getMessage()]);
     }
     exit;
 }
-// --- Fin del bloque AJAX ---
 
-// Lógica de carga de datos para la vista principal (si no es una petición AJAX)
+// Lógica de carga de datos para la vista principal
 if (!isPanelAdminLoggedIn()) {
     header('Location: panel_login.php');
     exit();
@@ -72,21 +61,22 @@ if (!isPanelAdminLoggedIn()) {
 
 renewPanelSession();
 
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $limit = 20;
+$tipos_usuario = []; // Inicializar antes del try
 
 try {
-    // También obtenemos los tipos de usuario para el modal (si no se carga por AJAX)
+    // Estas funciones son necesarias para la tabla y las estadísticas
+    $total_usuarios = getTotalUsuarios();
+    $total_admins = getTotalAdministradores();
+    $usuarios_mes = getUsuariosDelMes();
+    
+    // Función para rellenar el dropdown del modal de forma estática si no es AJAX
     $tipos_usuario = getTiposUsuario();
     
     $usuarios = getUsuarios($page, $limit);
-
     $total_usuarios_count = getTotalUsuariosCount();
     $total_pages = ceil($total_usuarios_count / $limit);
-
-    $total_usuarios = getTotalUsuarios();
-    $usuarios_mes = getUsuariosDelMes();
-    $total_admins = getTotalAdministradores();
     
 } catch (Exception $e) {
     error_log("Error en cont_usuarios.php: " . $e->getMessage());
@@ -95,6 +85,5 @@ try {
     $usuarios_mes = 0;
     $usuarios = [];
     $total_pages = 1;
-    $tipos_usuario = [];
 }
 ?>
