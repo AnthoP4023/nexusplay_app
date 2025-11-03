@@ -104,9 +104,6 @@ $total_admins = getTotalAdministradores();
                                 <td><span class="status-badge status-activo">Activo</span></td>
                                 <td>
                                     <div class="actions">
-                                        <button class="action-btn view" onclick="viewUser(<?php echo $usuario['id']; ?>)">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
                                         <button class="action-btn edit" onclick="editUser(<?php echo $usuario['id']; ?>)">
                                             <i class="fas fa-edit"></i>
                                         </button>
