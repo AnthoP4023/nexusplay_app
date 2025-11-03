@@ -9,7 +9,6 @@ if (!isPanelAdminLoggedIn()) {
 
 renewPanelSession();
 
-// Bloque de manejo de peticiones AJAX (GET_USER y EDIT_USER)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     
     header('Content-Type: application/json');
@@ -18,19 +17,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     switch($_POST['action']) {
         
         case 'get_user':
-            // Esta llamada ahora debe obtener 'nombre' y 'apellido' de la DB
             if (!isset($_POST['id'])) {
                 echo json_encode(['error' => 'ID no proporcionado']);
                 exit;
             }
             $id = (int)$_POST['id'];
-            $usuario = getUsuarioById($id); // Se asume que esta función se actualizará para incluir los campos
+            $usuario = getUsuarioById($id);
             
             echo json_encode($usuario ?? []); 
             exit; 
 
         case 'edit_user':
-            // 2. Procesar la actualización del usuario
             if (!isset($_POST['id'], $_POST['username'], $_POST['email'], $_POST['tipo_user_id'])) {
                 $response['message'] = 'Datos incompletos para la edición.';
                 echo json_encode($response);
@@ -39,16 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
             $id = (int)$_POST['id'];
             
-            // Datos a actualizar (Nuevos campos incluidos)
             $datos_a_actualizar = [
                 'username' => trim($_POST['username']),
-                'nombre' => trim($_POST['nombre']),       // Campo 'nombre'
-                'apellido' => trim($_POST['apellido']),   // Campo 'apellido'
+                'nombre' => trim($_POST['nombre']),      
+                'apellido' => trim($_POST['apellido']),  
                 'email' => trim($_POST['email']),
                 'tipo_user_id' => (int)$_POST['tipo_user_id']
             ];
             
-            // Filtramos los campos vacíos si deseas evitar actualizar a NULL o vacío si no se modificaron
             $datos_filtrados = array_filter($datos_a_actualizar, function($value) {
                 return !is_null($value) && $value !== '';
             });
@@ -68,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     }
 }
 
-// Lógica normal de carga de página (PAGINACIÓN Y ESTADÍSTICAS)
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $tipo = isset($_GET['tipo']) ? trim($_GET['tipo']) : '';
@@ -78,9 +72,6 @@ try {
     $total_usuarios = getTotalUsuarios();
     $total_admins = getTotalAdministradores();
     $usuarios_mes = getUsuariosDelMes();
-    
-    // Aquí podrías necesitar modificar getUsuarios y getTotalUsuariosCount 
-    // si quieres que consideren $search y $tipo, pero por ahora usamos la versión simple.
     $usuarios = getUsuarios($page, $limit); 
     $total_records = getTotalUsuariosCount();
     $total_pages = ceil($total_records / $limit);

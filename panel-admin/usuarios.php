@@ -2,7 +2,6 @@
 session_start();
 require_once __DIR__ . '/controlador_panel/cont_usuarios.php';
 
-// Manejo de la eliminación por POST (lo que ya tenías)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     $delete_id = (int)$_POST['delete_id'];
     deleteUsuario($delete_id);
@@ -12,14 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = 20;
-
-// Estas variables se inicializan en cont_usuarios.php
-// $usuarios = getUsuarios($page, $limit); 
-// $total_usuarios_count = getTotalUsuariosCount();
-// $total_pages = ceil($total_usuarios_count / $limit);
-// $total_usuarios = getTotalUsuarios();
-// $usuarios_mes = getUsuariosDelMes();
-// $total_admins = getTotalAdministradores();
 
 ?>
 
@@ -202,14 +193,9 @@ $limit = 20;
         document.getElementById('userModal').style.display = 'none';
     }
 
-    /**
-     * Carga los datos de un usuario en el modal para su edición.
-     * Incluye nombre y apellido.
-     */
     function editUser(id) {
         document.getElementById('modalTitle').textContent = 'Editar Usuario #' + id;
         
-        // 1. Obtener los datos del usuario por AJAX
         fetch('usuarios.php', {
             method: 'POST',
             headers: {
@@ -220,17 +206,13 @@ $limit = 20;
         .then(response => response.json())
         .then(data => {
             if (data && data.id) {
-                // 2. Rellenar el formulario del modal
                 document.getElementById('userId').value = data.id;
                 document.getElementById('username').value = data.username;
-                // Campos nuevos
-                document.getElementById('nombre').value = data.nombre || ''; // Usar '' si es null
-                document.getElementById('apellido').value = data.apellido || ''; // Usar '' si es null
-                // Fin campos nuevos
+                document.getElementById('nombre').value = data.nombre || '';
+                document.getElementById('apellido').value = data.apellido || '';
                 document.getElementById('email').value = data.email;
                 document.getElementById('tipo_user_id').value = data.tipo_user_id;
 
-                // 3. Mostrar el modal
                 document.getElementById('userModal').style.display = 'block';
             } else {
                 alert('Error: Usuario no encontrado o error en la respuesta del servidor.');
@@ -241,11 +223,7 @@ $limit = 20;
             alert('Error al cargar los datos del usuario. Verifica la consola para más detalles.');
         });
     }
-
-    // ----------------------------------------------------
-    // MANEJO DEL ENVÍO DEL FORMULARIO DE EDICIÓN
-    // (Este bloque no necesita cambios, ya que usa FormData que incluye los nuevos campos)
-    // ----------------------------------------------------
+    
     document.getElementById('userForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -280,7 +258,6 @@ $limit = 20;
         });
     });
 
-    // Cerrar modal al hacer clic fuera
     window.onclick = function(event) {
         const modal = document.getElementById('userModal');
         if (event.target == modal) {

@@ -89,7 +89,6 @@ function getTotalUsuariosCount() {
 function getUsuarioById($id) {
     global $conn;
     try {
-        // Seleccionamos solo los campos necesarios para la edición
         $stmt = $conn->prepare("SELECT id, username, email, tipo_user_id, nombre, apellido FROM usuarios WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -109,15 +108,13 @@ function updateUsuario($id, $datos) {
         $types = "";
 
         foreach ($datos as $field => $value) {
-            // Se excluyen campos críticos o sensibles si es necesario, 
-            // pero aquí aceptamos los que vienen del formulario.
             $fields[] = "$field = ?";
             $params[] = $value;
             $types .= is_int($value) ? "i" : (is_float($value) ? "d" : "s");
         }
         
         if (empty($fields)) {
-            return false; // No hay nada que actualizar
+            return false; 
         }
 
         $params[] = $id;
@@ -126,7 +123,6 @@ function updateUsuario($id, $datos) {
         $sql = "UPDATE usuarios SET " . implode(", ", $fields) . " WHERE id = ?";
         
         $stmt = $conn->prepare($sql);
-        // Usar call_user_func_array para bind_param con un array de parámetros variable
         $stmt->bind_param($types, ...$params);
 
         return $stmt->execute();
