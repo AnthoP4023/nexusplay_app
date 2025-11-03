@@ -1,8 +1,5 @@
 <?php
-// /functions_panel/fun_usuarios.php
 require_once __DIR__ . '/../../config_db/database.php';
-
-// --- Funciones de Estadística y Consulta ---
 
 function getTotalUsuarios() {
     global $conn;
@@ -49,7 +46,7 @@ function getUsuarios($page = 1, $limit = 20) {
 
     try {
         $sql = "SELECT u.id, u.username, u.email, u.tipo_user_id, u.fecha_registro, u.imagen_perfil,
-                IFNULL(c.saldo, 0) AS saldo
+               IFNULL(c.saldo, 0) AS saldo
         FROM usuarios u
         LEFT JOIN carteras c ON u.id = c.usuario_id
         ORDER BY u.fecha_registro DESC
@@ -89,46 +86,19 @@ function getTotalUsuariosCount() {
     }
 }
 
-function getTiposUsuario() {
-    global $conn;
-    try {
-        $stmt = $conn->prepare("SELECT id, nombre FROM tipo_user ORDER BY id ASC");
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        $tipos = [];
-        while ($row = $result->fetch_assoc()) {
-            $tipos[] = $row;
-        }
-        return $tipos;
-    } catch (Exception $e) {
-        error_log("Error en getTiposUsuario: " . $e->getMessage());
-        return [];
-    }
-}
-
-// --- Funciones de Edición (CRUD) ---
-
 function getUsuarioById($id) {
     global $conn;
     try {
-        $stmt = $conn->prepare("
-            SELECT 
-                u.id, u.username, u.email, u.tipo_user_id, u.imagen_perfil, u.nombre, u.apellido,
-                IFNULL(c.saldo, 0) AS saldo
-            FROM usuarios u
-            LEFT JOIN carteras c ON u.id = c.usuario_id
-            WHERE u.id = ?
-        ");
+        $stmt = $conn->prepare("SELECT * FROM usuarios WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $usuario = $result->fetch_assoc();
-            $usuario['imagen_perfil_nombre'] = $usuario['imagen_perfil'] ?? 'default-avatar.png'; 
-            unset($usuario['imagen_perfil']);
-            unset($usuario['password']); 
+            $usuario['avatar'] = !empty($usuario['imagen_perfil']) && $usuario['imagen_perfil'] !== 'default-avatar.png'
+                ? '../../images/users/' . $usuario['imagen_perfil']
+                : '../../images/users/default-avatar.png';
             return $usuario;
         }
         return null;
@@ -138,81 +108,9 @@ function getUsuarioById($id) {
     }
 }
 
-function uploadAvatar($file) {
-    try {
-        $upload_dir = __DIR__ . '/../../images/users/';
-        
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
-        }
-        
-        $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $filename = time() . '_' . rand(1000, 9999) . '.' . $extension;
-        $upload_path = $upload_dir . $filename;
-        
-        if (move_uploaded_file($file['tmp_name'], $upload_path)) {
-            return $filename;
-        }
-    } catch (Exception $e) {
-        error_log("Error en uploadAvatar: " . $e->getMessage());
-    }
-    
-    return null; 
-}
-
-function updateSaldo($usuario_id, $nuevo_saldo) {
+function updateUsuario($id, $datos) {
     global $conn;
     try {
-        // Verifica si la cartera existe
-        $stmt_check = $conn->prepare("SELECT COUNT(*) FROM carteras WHERE usuario_id = ?");
-        $stmt_check->bind_param("i", $usuario_id);
-        $stmt_check->execute();
-        $exists = $stmt_check->get_result()->fetch_row()[0];
-        $stmt_check->close();
-
-        if ($exists) {
-            $sql = "UPDATE carteras SET saldo = ? WHERE usuario_id = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("di", $nuevo_saldo, $usuario_id); 
-        } else {
-            // Si no existe, inserta. Podrías querer manejar esto mejor si la cartera siempre debe existir.
-            $sql = "INSERT INTO carteras (usuario_id, saldo) VALUES (?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("id", $usuario_id, $nuevo_saldo);
-        }
-        
-        return $stmt->execute();
-    } catch (Exception $e) {
-        error_log("Error en updateSaldo: " . $e->getMessage());
-        return false;
-    }
-}
-
-function updateUsuario($id, $datos, $file_data = null) {
-    global $conn;
-    
-    try {
-        $conn->begin_transaction();
-        
-        // 1. Manejo del Saldo (tabla `carteras`)
-        if (isset($datos['saldo'])) {
-            $saldo_actualizado = updateSaldo($id, $datos['saldo']);
-            if (!$saldo_actualizado) {
-                 $conn->rollback();
-                 return false;
-            }
-            unset($datos['saldo']); 
-        }
-
-        // 2. Manejo del Avatar (tabla `usuarios`)
-        if (isset($file_data['avatar']) && $file_data['avatar']['error'] == 0) {
-            $avatar_nombre = uploadAvatar($file_data['avatar']);
-            if ($avatar_nombre) {
-                $datos['imagen_perfil'] = $avatar_nombre; 
-            }
-        }
-        
-        // 3. Actualización de la tabla `usuarios`
         $fields = [];
         $params = [];
         $types = "";
@@ -220,48 +118,32 @@ function updateUsuario($id, $datos, $file_data = null) {
         foreach ($datos as $field => $value) {
             $fields[] = "$field = ?";
             $params[] = $value;
-            $types .= is_int($value) ? "i" : (is_float($value) ? "d" : "s");
+            $types .= is_int($value) ? "i" : "s";
         }
 
-        if (!empty($fields)) {
-            $params[] = $id;
-            $types .= "i";
+        $params[] = $id;
+        $types .= "i";
 
-            $sql = "UPDATE usuarios SET " . implode(", ", $fields) . " WHERE id = ?";
-            $stmt = $conn->prepare($sql);
-            // Usamos call_user_func_array para bind_param
-            call_user_func_array([$stmt, 'bind_param'], array_merge([$types], $params));
-            
-            if (!$stmt->execute()) {
-                 $conn->rollback();
-                 return false;
-            }
-        }
-        
-        // Si todo salió bien (incluyendo el saldo y los campos de usuario)
-        $conn->commit();
-        return true;
-
+        $sql = "UPDATE usuarios SET " . implode(", ", $fields) . " WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param($types, ...$params);
+        return $stmt->execute();
     } catch (Exception $e) {
-        $conn->rollback();
         error_log("Error en updateUsuario: " . $e->getMessage());
         return false;
     }
 }
-
-// --- Función de Eliminación (Completa) ---
 
 function deleteUsuario($id) {
     global $conn;
     try {
         $usuario = getUsuarioById($id);
         if ($usuario && $usuario['tipo_user_id'] == 2) {
-            return false; // No se permite eliminar administradores
+            return ['success' => false, 'message' => 'No se permite eliminar administradores.'];
         }
 
         $conn->begin_transaction();
 
-        // 1. Eliminar datos de tablas relacionadas
         $cartera_id = null;
         $stmt_cartera = $conn->prepare("SELECT id FROM carteras WHERE usuario_id = ?");
         $stmt_cartera->bind_param("i", $id);
@@ -273,14 +155,27 @@ function deleteUsuario($id) {
         $stmt_cartera->close();
 
         if ($cartera_id) {
-            $conn->prepare("DELETE FROM movimientos_cartera WHERE cartera_id = ?")->bind_param("i", $cartera_id)->execute();
+            $stmt_mov = $conn->prepare("DELETE FROM movimientos_cartera WHERE cartera_id = ?");
+            $stmt_mov->bind_param("i", $cartera_id);
+            $stmt_mov->execute();
+            $stmt_mov->close();
         }
         
-        $conn->prepare("DELETE FROM resenas WHERE usuario_id = ?")->bind_param("i", $id)->execute();
-        $conn->prepare("DELETE FROM carrito WHERE usuario_id = ?")->bind_param("i", $id)->execute();
-        $conn->prepare("DELETE FROM tarjetas WHERE usuario_id = ?")->bind_param("i", $id)->execute();
+        $stmt_resena = $conn->prepare("DELETE FROM resenas WHERE usuario_id = ?");
+        $stmt_resena->bind_param("i", $id);
+        $stmt_resena->execute();
+        $stmt_resena->close();
 
-        // Eliminar detalles de pedidos antes de los pedidos
+        $stmt_carrito = $conn->prepare("DELETE FROM carrito WHERE usuario_id = ?");
+        $stmt_carrito->bind_param("i", $id);
+        $stmt_carrito->execute();
+        $stmt_carrito->close();
+
+        $stmt_tarjetas = $conn->prepare("DELETE FROM tarjetas WHERE usuario_id = ?");
+        $stmt_tarjetas->bind_param("i", $id);
+        $stmt_tarjetas->execute();
+        $stmt_tarjetas->close();
+
         $pedido_ids = [];
         $stmt_pedidos_ids = $conn->prepare("SELECT id FROM pedidos WHERE usuario_id = ?");
         $stmt_pedidos_ids->bind_param("i", $id);
@@ -291,35 +186,43 @@ function deleteUsuario($id) {
         }
         $stmt_pedidos_ids->close();
 
-        if (!empty($pedido_ids)) {
+       if (!empty($pedido_ids)) {
             $in_clause = str_repeat('?,', count($pedido_ids) - 1) . '?';
             $types = str_repeat('i', count($pedido_ids));
+            
             $stmt_detalles = $conn->prepare("DELETE FROM detalles_pedido WHERE pedido_id IN ($in_clause)");
-            call_user_func_array([$stmt_detalles, 'bind_param'], array_merge([$types], $pedido_ids));
+            $stmt_detalles->bind_param($types, ...$pedido_ids);
             $stmt_detalles->execute();
+            $stmt_detalles->close();
         }
 
-        // 2. Eliminar registros principales
-        $conn->prepare("DELETE FROM carteras WHERE usuario_id = ?")->bind_param("i", $id)->execute();
-        $conn->prepare("DELETE FROM pedidos WHERE usuario_id = ?")->bind_param("i", $id)->execute();
+        $stmt_carteras = $conn->prepare("DELETE FROM carteras WHERE usuario_id = ?");
+        $stmt_carteras->bind_param("i", $id);
+        $stmt_carteras->execute();
+        $stmt_carteras->close();
         
+        $stmt_pedidos = $conn->prepare("DELETE FROM pedidos WHERE usuario_id = ?");
+        $stmt_pedidos->bind_param("i", $id);
+        $stmt_pedidos->execute();
+        $stmt_pedidos->close();
+
         $stmt_user = $conn->prepare("DELETE FROM usuarios WHERE id = ?");
         $stmt_user->bind_param("i", $id);
         
         if ($stmt_user->execute()) {
+            $stmt_user->close();
             $conn->commit();
-            return true;
+            return ['success' => true, 'message' => 'Usuario y todos los datos asociados eliminados correctamente.'];
         } else {
+            $stmt_user->close();
             $conn->rollback(); 
-            return false;
+            return ['success' => false, 'message' => 'Error al eliminar el registro principal del usuario.'];
         }
     } catch (Exception $e) {
         $conn->rollback();
-        error_log("Error en deleteUsuario: " . $e->getMessage());
-        return false;
+        return ['success' => false, 'message' => 'Error de la base de datos: ' . $e->getMessage()];
     }
 }
-
 function formatCurrency($amount) {
     return '$' . number_format($amount, 2, '.', ',');
 }
