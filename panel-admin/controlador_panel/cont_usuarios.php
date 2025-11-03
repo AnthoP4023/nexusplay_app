@@ -12,22 +12,20 @@ renewPanelSession();
 // Bloque de manejo de peticiones AJAX (GET_USER y EDIT_USER)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     
-    // Si la acción es AJAX, respondemos en JSON y detenemos la ejecución PHP
     header('Content-Type: application/json');
     $response = ['success' => false, 'message' => ''];
 
     switch($_POST['action']) {
         
         case 'get_user':
-            // 1. Obtener datos del usuario para rellenar el modal
+            // Esta llamada ahora debe obtener 'nombre' y 'apellido' de la DB
             if (!isset($_POST['id'])) {
                 echo json_encode(['error' => 'ID no proporcionado']);
                 exit;
             }
             $id = (int)$_POST['id'];
-            $usuario = getUsuarioById($id);
+            $usuario = getUsuarioById($id); // Se asume que esta función se actualizará para incluir los campos
             
-            // Devolvemos el array del usuario o un array vacío si no se encuentra
             echo json_encode($usuario ?? []); 
             exit; 
 
@@ -41,14 +39,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
             $id = (int)$_POST['id'];
             
-            // Datos a actualizar
+            // Datos a actualizar (Nuevos campos incluidos)
             $datos_a_actualizar = [
                 'username' => trim($_POST['username']),
+                'nombre' => trim($_POST['nombre']),       // Campo 'nombre'
+                'apellido' => trim($_POST['apellido']),   // Campo 'apellido'
                 'email' => trim($_POST['email']),
                 'tipo_user_id' => (int)$_POST['tipo_user_id']
             ];
-
-            // Implementar validación de datos (ej. email válido, nombre no vacío)
+            
+            // Filtramos los campos vacíos si deseas evitar actualizar a NULL o vacío si no se modificaron
+            $datos_filtrados = array_filter($datos_a_actualizar, function($value) {
+                return !is_null($value) && $value !== '';
+            });
 
             if (updateUsuario($id, $datos_a_actualizar)) {
                 $response['success'] = true;
@@ -61,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             exit;
             
         default:
-            // Si la acción no es reconocida, seguimos con el código normal.
             break;
     }
 }

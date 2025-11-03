@@ -163,6 +163,16 @@ $limit = 20;
                 </div>
                 
                 <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre">
+                </div>
+                
+                <div class="form-group">
+                    <label for="apellido">Apellido:</label>
+                    <input type="text" id="apellido" name="apellido">
+                </div>
+                
+                <div class="form-group">
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
                 </div>
@@ -194,7 +204,7 @@ $limit = 20;
 
     /**
      * Carga los datos de un usuario en el modal para su edición.
-     * @param {number} id - ID del usuario a editar.
+     * Incluye nombre y apellido.
      */
     function editUser(id) {
         document.getElementById('modalTitle').textContent = 'Editar Usuario #' + id;
@@ -213,6 +223,10 @@ $limit = 20;
                 // 2. Rellenar el formulario del modal
                 document.getElementById('userId').value = data.id;
                 document.getElementById('username').value = data.username;
+                // Campos nuevos
+                document.getElementById('nombre').value = data.nombre || ''; // Usar '' si es null
+                document.getElementById('apellido').value = data.apellido || ''; // Usar '' si es null
+                // Fin campos nuevos
                 document.getElementById('email').value = data.email;
                 document.getElementById('tipo_user_id').value = data.tipo_user_id;
 
@@ -230,6 +244,7 @@ $limit = 20;
 
     // ----------------------------------------------------
     // MANEJO DEL ENVÍO DEL FORMULARIO DE EDICIÓN
+    // (Este bloque no necesita cambios, ya que usa FormData que incluye los nuevos campos)
     // ----------------------------------------------------
     document.getElementById('userForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -239,18 +254,18 @@ $limit = 20;
         submitBtn.textContent = 'Guardando...';
         
         const formData = new FormData(this);
-        formData.append('action', 'edit_user'); // Acción para el controlador
+        formData.append('action', 'edit_user'); 
         
         fetch('usuarios.php', {
             method: 'POST',
-            body: new URLSearchParams(formData) // FormData a URLSearchParams para 'application/x-www-form-urlencoded'
+            body: new URLSearchParams(formData)
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 alert('Usuario actualizado correctamente.');
                 closeModal();
-                location.reload(); // Recargar para ver los cambios en la tabla
+                location.reload(); 
             } else {
                 alert(data.message || 'Error desconocido al actualizar el usuario.');
                 submitBtn.disabled = false;

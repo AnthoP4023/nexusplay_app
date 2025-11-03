@@ -90,7 +90,7 @@ function getUsuarioById($id) {
     global $conn;
     try {
         // Seleccionamos solo los campos necesarios para la edición
-        $stmt = $conn->prepare("SELECT id, username, email, tipo_user_id FROM usuarios WHERE id = ?");
+        $stmt = $conn->prepare("SELECT id, username, email, tipo_user_id, nombre, apellido FROM usuarios WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
