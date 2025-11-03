@@ -89,19 +89,12 @@ function getTotalUsuariosCount() {
 function getUsuarioById($id) {
     global $conn;
     try {
-        $stmt = $conn->prepare("SELECT * FROM usuarios WHERE id = ?");
+        // Seleccionamos solo los campos necesarios para la edición
+        $stmt = $conn->prepare("SELECT id, username, email, tipo_user_id FROM usuarios WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $usuario = $result->fetch_assoc();
-            $usuario['avatar'] = !empty($usuario['imagen_perfil']) && $usuario['imagen_perfil'] !== 'default-avatar.png'
-                ? '../../images/users/' . $usuario['imagen_perfil']
-                : '../../images/users/default-avatar.png';
-            return $usuario;
-        }
-        return null;
+        return $result->fetch_assoc();
     } catch (Exception $e) {
         error_log("Error en getUsuarioById: " . $e->getMessage());
         return null;
@@ -116,24 +109,32 @@ function updateUsuario($id, $datos) {
         $types = "";
 
         foreach ($datos as $field => $value) {
+            // Se excluyen campos críticos o sensibles si es necesario, 
+            // pero aquí aceptamos los que vienen del formulario.
             $fields[] = "$field = ?";
             $params[] = $value;
-            $types .= is_int($value) ? "i" : "s";
+            $types .= is_int($value) ? "i" : (is_float($value) ? "d" : "s");
+        }
+        
+        if (empty($fields)) {
+            return false; // No hay nada que actualizar
         }
 
         $params[] = $id;
         $types .= "i";
 
         $sql = "UPDATE usuarios SET " . implode(", ", $fields) . " WHERE id = ?";
+        
         $stmt = $conn->prepare($sql);
+        // Usar call_user_func_array para bind_param con un array de parámetros variable
         $stmt->bind_param($types, ...$params);
+
         return $stmt->execute();
     } catch (Exception $e) {
         error_log("Error en updateUsuario: " . $e->getMessage());
         return false;
     }
 }
-
 function deleteUsuario($id) {
     global $conn;
     try {

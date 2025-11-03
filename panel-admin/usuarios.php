@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__ . '/controlador_panel/cont_usuarios.php';
 
+// Manejo de la eliminación por POST (lo que ya tenías)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     $delete_id = (int)$_POST['delete_id'];
     deleteUsuario($delete_id);
@@ -12,14 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = 20;
 
-$usuarios = getUsuarios($page, $limit);
+// Estas variables se inicializan en cont_usuarios.php
+// $usuarios = getUsuarios($page, $limit); 
+// $total_usuarios_count = getTotalUsuariosCount();
+// $total_pages = ceil($total_usuarios_count / $limit);
+// $total_usuarios = getTotalUsuarios();
+// $usuarios_mes = getUsuariosDelMes();
+// $total_admins = getTotalAdministradores();
 
-$total_usuarios_count = getTotalUsuariosCount();
-$total_pages = ceil($total_usuarios_count / $limit);
-
-$total_usuarios = getTotalUsuarios();
-$usuarios_mes = getUsuariosDelMes();
-$total_admins = getTotalAdministradores();
 ?>
 
 <!DOCTYPE html>
@@ -107,8 +108,8 @@ $total_admins = getTotalAdministradores();
                                         <button class="action-btn edit" onclick="editUser(<?php echo $usuario['id']; ?>)">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <?php if($usuario['tipo_user_id'] != 2):  ?>
-                                        <form method="POST" style="display:inline;">
+                                        <?php if($usuario['tipo_user_id'] != 2): ?>
+                                        <form method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar a este usuario? Esto eliminará todos sus datos asociados.');">
                                             <input type="hidden" name="delete_id" value="<?php echo $usuario['id']; ?>">
                                             <button type="submit" class="action-btn delete">
                                                 <i class="fas fa-trash"></i>
@@ -148,11 +149,128 @@ $total_admins = getTotalAdministradores();
         </div>
     </main>
 
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Editar Usuario</h2>
+            
+            <form id="userForm">
+                <input type="hidden" id="userId" name="id">
+                
+                <div class="form-group">
+                    <label for="username">Nombre de Usuario:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tipo_user_id">Tipo de Usuario:</label>
+                    <select id="tipo_user_id" name="tipo_user_id" required>
+                        <option value="1">Usuario Estándar</option>
+                        <option value="2">Administrador</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="save-btn">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-    function viewUser(id) { }
-    function editUser(id) { }
     function loadPage(page) {
         window.location.href = '?page=' + page;
+    }
+
+    function closeModal() {
+        document.getElementById('userModal').style.display = 'none';
+    }
+
+    /**
+     * Carga los datos de un usuario en el modal para su edición.
+     * @param {number} id - ID del usuario a editar.
+     */
+    function editUser(id) {
+        document.getElementById('modalTitle').textContent = 'Editar Usuario #' + id;
+        
+        // 1. Obtener los datos del usuario por AJAX
+        fetch('usuarios.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=get_user&id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.id) {
+                // 2. Rellenar el formulario del modal
+                document.getElementById('userId').value = data.id;
+                document.getElementById('username').value = data.username;
+                document.getElementById('email').value = data.email;
+                document.getElementById('tipo_user_id').value = data.tipo_user_id;
+
+                // 3. Mostrar el modal
+                document.getElementById('userModal').style.display = 'block';
+            } else {
+                alert('Error: Usuario no encontrado o error en la respuesta del servidor.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al cargar los datos del usuario. Verifica la consola para más detalles.');
+        });
+    }
+
+    // ----------------------------------------------------
+    // MANEJO DEL ENVÍO DEL FORMULARIO DE EDICIÓN
+    // ----------------------------------------------------
+    document.getElementById('userForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const submitBtn = this.querySelector('.save-btn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Guardando...';
+        
+        const formData = new FormData(this);
+        formData.append('action', 'edit_user'); // Acción para el controlador
+        
+        fetch('usuarios.php', {
+            method: 'POST',
+            body: new URLSearchParams(formData) // FormData a URLSearchParams para 'application/x-www-form-urlencoded'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Usuario actualizado correctamente.');
+                closeModal();
+                location.reload(); // Recargar para ver los cambios en la tabla
+            } else {
+                alert(data.message || 'Error desconocido al actualizar el usuario.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Guardar Cambios';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error de conexión al servidor al intentar actualizar.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Guardar Cambios';
+        });
+    });
+
+    // Cerrar modal al hacer clic fuera
+    window.onclick = function(event) {
+        const modal = document.getElementById('userModal');
+        if (event.target == modal) {
+            closeModal();
+        }
     }
     </script>
 </body>
