@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../config_db/database.php';
-
 if (!function_exists('checkLoginCredentials')) {
     function checkLoginCredentials($conn, $username, $password) {
         $username = trim($username);
@@ -8,14 +7,12 @@ if (!function_exists('checkLoginCredentials')) {
         if (empty($username) || empty($password)) {
             return ['success' => false, 'message' => 'Complete todos los campos'];
         }
-
         $password_hash = md5($password);
         $sql = "SELECT u.*, t.nombre as tipo_usuario
                 FROM usuarios u
                 INNER JOIN tipo_user t ON u.tipo_user_id = t.id
                 WHERE u.username = '$username' AND u.password = '$password_hash'
                 ORDER BY u.tipo_user_id ASC, u.id ASC";
-
         try {
             $result = $conn->query($sql);
             if ($result && $result->num_rows > 0) {

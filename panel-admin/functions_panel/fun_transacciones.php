@@ -9,13 +9,10 @@ require_once '../config_db/database.php';
 function getTransacciones($pagina = 1, $por_pagina = 20, $tipo = '', $fecha = '', $busqueda = '') {
     global $conn;
     $offset = ($pagina - 1) * $por_pagina;
-
     $where = "WHERE 1=1";
-
     if (!empty($tipo)) {
         $where .= " AND mc.tipo = '$tipo'";
     }
-
     if (!empty($fecha)) {
         switch ($fecha) {
             case 'hoy': $where .= " AND DATE(mc.fecha) = CURDATE()"; break;
@@ -23,11 +20,9 @@ function getTransacciones($pagina = 1, $por_pagina = 20, $tipo = '', $fecha = ''
             case 'mes': $where .= " AND mc.fecha >= DATE_SUB(NOW(), INTERVAL 30 DAY)"; break;
         }
     }
-
     if (!empty($busqueda)) {
         $where .= " AND (u.username LIKE '%$busqueda%' OR mc.descripcion LIKE '%$busqueda%')";
     }
-
     $sql = "SELECT mc.id, mc.tipo, mc.monto, mc.descripcion, mc.fecha, u.username as usuario
             FROM movimientos_cartera mc
             JOIN carteras c ON mc.cartera_id = c.id
@@ -35,7 +30,6 @@ function getTransacciones($pagina = 1, $por_pagina = 20, $tipo = '', $fecha = ''
             $where
             ORDER BY mc.fecha ASC
             LIMIT $por_pagina OFFSET $offset";
-
     $result = $conn->query($sql); 
     return $result->fetch_all(MYSQLI_ASSOC);
 }

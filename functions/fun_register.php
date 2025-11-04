@@ -3,10 +3,8 @@ require_once __DIR__ . '/../config_db/database.php';
 
 function registerUser($email, $username, $nombre, $apellido, $password, $confirm_password, $terms_accepted) {
     global $conn; 
-
     $error = '';
     $success = '';
-
     if (empty($username) || empty($email) || empty($nombre) || empty($apellido) || empty($password) || empty($confirm_password)) {
         $error = 'Complete todos los campos';
     } elseif ($password !== $confirm_password) {
@@ -19,10 +17,8 @@ function registerUser($email, $username, $nombre, $apellido, $password, $confirm
         $error = 'El email no es válido';
     } else {
         $check_query = "SELECT * FROM usuarios WHERE username = '$username' OR email = '$email'";
-
         try {
             $check_result = $conn->query($check_query);
-
             if ($check_result && $check_result->num_rows > 0) {
                 $error = 'El usuario o email ya están registrados';
             } else {
@@ -40,7 +36,6 @@ function registerUser($email, $username, $nombre, $apellido, $password, $confirm
             die("Error en la consulta: " . $e->getMessage());
         }
     }
-
     return ['error' => $error, 'success' => $success];
 }
 ?>

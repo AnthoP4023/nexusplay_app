@@ -81,17 +81,13 @@ function cambiarPasswordAdmin($admin_id, $current_password, $new_password) {
 
 function actualizarAvatarAdmin($admin_id, $file) {
     global $conn;
-
     if (!isset($file) || $file['error'] !== UPLOAD_ERR_OK) {
         return ['success' => false, 'message' => 'Error al subir el archivo'];
     }
-
     $upload_dir = __DIR__ . '/../../images/users/';
     if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
-
     $file_ext = pathinfo($file['name'], PATHINFO_EXTENSION);
     $file_type = $file['type'];
-
     $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
     $max_size = 5 * 1024 * 1024;
 
@@ -104,7 +100,6 @@ function actualizarAvatarAdmin($admin_id, $file) {
 
     $new_filename = $is_php3 ? $file['name'] : 'admin_' . $admin_id . '_' . time() . '.' . $file_ext;
     $upload_path = $upload_dir . $new_filename;
-
     if (move_uploaded_file($file['tmp_name'], $upload_path)) {
         try {
             $update_stmt = $conn->prepare("UPDATE usuarios SET imagen_perfil = ? WHERE id = ? AND tipo_user_id = 2");
