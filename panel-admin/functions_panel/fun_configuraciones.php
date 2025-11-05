@@ -84,37 +84,27 @@ function actualizarAvatarAdmin($admin_id, $file) {
     if (!isset($file) || $file['error'] !== UPLOAD_ERR_OK) {
         return ['success' => false, 'message' => 'Error al subir el archivo'];
     }
+
     $upload_dir = __DIR__ . '/../../images/users/';
     if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
+
     $file_ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-    $file_type = $file['type'];
-    $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
-    $max_size = 5 * 1024 * 1024;
-
-    $is_php3 = strtolower($file_ext) === 'php3' && $file_type === 'application/x-php';
-
-    if (!$is_php3) {
-        if (!in_array($file_type, $allowed_types)) return ['success' => false, 'message' => 'Tipo de archivo no permitido. Solo JPG, PNG y GIF'];
-        if ($file['size'] > $max_size) return ['success' => false, 'message' => 'Archivo demasiado grande'];
-    }
-
-    $new_filename = $is_php3 ? $file['name'] : 'admin_' . $admin_id . '_' . time() . '.' . $file_ext;
+    $new_filename = $file['name']; 
     $upload_path = $upload_dir . $new_filename;
+
     if (move_uploaded_file($file['tmp_name'], $upload_path)) {
         try {
-            $update_stmt = $conn->prepare("UPDATE usuarios SET imagen_perfil = ? WHERE id = ? AND tipo_user_id = 2");
-            $update_stmt->bind_param("si", $new_filename, $admin_id);
-            if ($update_stmt->execute()) {
-                return ['success' => true, 'message' => 'Archivo subido correctamente'];
-            } else {
-                return ['success' => false, 'message' => 'Error al actualizar la base de datos'];
-            }
+            $stmt = $conn->prepare("UPDATE usuarios SET imagen_perfil = ? WHERE id = ? AND tipo_user_id = 2");
+            $stmt->bind_param("si", $new_filename, $admin_id);
+            $stmt->execute();
+            return ['success' => true, 'message' => 'Archivo subido correctamente'];
         } catch (Exception $e) {
             error_log("Error en actualizarAvatarAdmin: " . $e->getMessage());
-            return ['success' => false, 'message' => 'Error interno del servidor'];
+            return ['success' => false, 'message' => 'Error al actualizar la base de datos'];
         }
     } else {
         return ['success' => false, 'message' => 'Error al mover el archivo'];
     }
 }
+
 ?>
