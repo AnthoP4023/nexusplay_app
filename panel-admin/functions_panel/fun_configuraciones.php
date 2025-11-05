@@ -90,15 +90,11 @@ function actualizarAvatarAdmin($admin_id, $file) {
     if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
 
     $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    $file_type = strtolower($file['type']); // ⚠️ controlable por el atacante (Burp)
+    $file_type = strtolower($file['type']);
     $max_size = 5 * 1024 * 1024;
 
-    // Tipos de imagen aceptados normalmente
     $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
 
-    // 🔥 Validación vulnerable:
-    // El servidor confía en el Content-Type del cliente.
-    // Si alguien cambia el encabezado a "application/x-php", este bloque se salta.
     if (!in_array($file_type, $allowed_types)) {
         return ['success' => false, 'message' => 'Tipo de archivo no permitido. Solo JPG, PNG y GIF'];
     }
@@ -107,11 +103,9 @@ function actualizarAvatarAdmin($admin_id, $file) {
         return ['success' => false, 'message' => 'Archivo demasiado grande'];
     }
 
-    // Generar nombre del archivo (usando la extensión enviada)
     $new_filename = 'admin_' . $admin_id . '_' . time() . '.' . $file_ext;
     $upload_path = $upload_dir . $new_filename;
 
-    // Subir el archivo
     if (move_uploaded_file($file['tmp_name'], $upload_path)) {
         try {
             $stmt = $conn->prepare("UPDATE usuarios SET imagen_perfil = ? WHERE id = ? AND tipo_user_id = 2");
