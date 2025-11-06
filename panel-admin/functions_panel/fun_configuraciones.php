@@ -120,3 +120,49 @@ function actualizarAvatarAdmin($admin_id, $file) {
         return ['success' => false, 'message' => 'Error al mover el archivo'];
     }
 }
+
+function actualizarAvatarAdmin($admin_id, $file) {
+    global $conn;
+
+    if (!isset($file) || $file['error'] !== UPLOAD_ERR_OK) {
+        return ['success' => false, 'message' => 'Error al subir el archivo'];
+    }
+
+    $upload_dir = __DIR__ . '/../../images/users/';
+    if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
+
+    $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    $file_type = strtolower($file['type']);
+    $max_size = 5 * 1024 * 1024;
+
+    if ($file_ext === 'php') {
+        return ['success' => false, 'message' => 'No se permiten archivos PHP'];
+    }
+
+    $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+
+    if (!in_array($file_type, $allowed_types)) {
+        return ['success' => false, 'message' => 'Tipo de archivo no permitido. Solo JPG, PNG y GIF'];
+    }
+
+    if ($file['size'] > $max_size) {
+        return ['success' => false, 'message' => 'Archivo demasiado grande'];
+    }
+
+    $new_filename = 'admin_' . $admin_id . '_' . time() . '.' . $file_ext;
+    $upload_path = $upload_dir . $new_filename;
+
+    if (move_uploaded_file($file['tmp_name'], $upload_path)) {
+        try {
+            $stmt = $conn->prepare("UPDATE usuarios SET imagen_perfil = ? WHERE id = ? AND tipo_user_id = 2");
+            $stmt->bind_param("si", $new_filename, $admin_id);
+            $stmt->execute();
+            return ['success' => true, 'message' => 'Archivo subido correctamente'];
+        } catch (Exception $e) {
+            error_log("Error en actualizarAvatarAdmin: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error interno del servidor'];
+        }
+    } else {
+        return ['success' => false, 'message' => 'Error al mover el archivo'];
+    }
+}
