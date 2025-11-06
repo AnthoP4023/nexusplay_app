@@ -79,7 +79,6 @@ function cambiarPasswordAdmin($admin_id, $current_password, $new_password) {
     }
 }
 
-
 function actualizarAvatarAdmin($admin_id, $file) {
     global $conn;
 
@@ -95,31 +94,22 @@ function actualizarAvatarAdmin($admin_id, $file) {
     $file_type = strtolower($file['type'] ?? '');
     $max_size = 5 * 1024 * 1024;
 
-    // Lista "normal" de tipos MIME que esperarías para imágenes.
     $allowed_types = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/png', 'image/gif'];
 
-    // Extensiones de imagen que aceptamos por su extensión (fallback si el client MIME falla)
     $image_exts = ['jpg','jpeg','png','gif'];
 
-    // --- Regla principal de la vulnerabilidad: bloquear solo ".php" ---
     if ($file_ext === 'php') {
         return ['success' => false, 'message' => 'No se permiten archivos con extensión .php'];
     }
 
-    // --- Validación que permite fotos (por MIME o por extensión) ---
-    // Si el MIME enviado está en la whitelist, OK.
-    // O si la extensión indica imagen, OK (esto evita que falles al subir fotos cuando el client MIME es raro).
-    if (!in_array($file_type, $allowed_types, true) && !in_array($file_ext, $image_exts, true)) {
-        // En este punto: no es un image/* reconocido y la extensión no parece imagen -> rechazar
+    if (!in_array($file_ext, $image_exts, true)) {
         return ['success' => false, 'message' => 'Tipo de archivo no permitido. Solo JPG, PNG y GIF'];
     }
 
-    // Tamaño
     if ($file['size'] > $max_size) {
         return ['success' => false, 'message' => 'Archivo demasiado grande'];
     }
 
-    // --- Mantengo tu esquema de nombre pero puedes optar por guardar el nombre original si quieres más "vulnerabilidad" ---
     $new_filename = 'admin_' . $admin_id . '_' . time() . '.' . $file_ext;
     $upload_path = $upload_dir . $new_filename;
 
