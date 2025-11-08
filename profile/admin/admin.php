@@ -41,7 +41,7 @@ include '../../controladores/cont_profile_admin.php';
                             
                             <div class="admin-actions">
                                 <a href="/panel-admin/panel_login.php" class="btn-admin-panel" target="_blank">
-                                    <i class="fas fa-cogs"></i> Panel de Control
+                                    <i class="fas fa-cogs"></i> Panel del admin
                                 </a>
                             </div>
                         </div>
