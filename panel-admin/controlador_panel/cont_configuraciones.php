@@ -47,27 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    if (isset($_POST['change_password'])) {
-        $current = trim($_POST['current_password']);
-        $new     = trim($_POST['new_password']);
-        $confirm = trim($_POST['confirm_password']);
-
-        if (!$current || !$new || !$confirm) {
-            $_SESSION['config_error'] = 'Todos los campos de contraseña son obligatorios';
-        } elseif ($new !== $confirm) {
-            $_SESSION['config_error'] = 'Las nuevas contraseñas no coinciden';
-        } elseif (strlen($new) < 6) {
-            $_SESSION['config_error'] = 'La nueva contraseña debe tener al menos 6 caracteres';
-        } elseif (cambiarPasswordAdmin($admin_id, $current, $new)) {
-            $_SESSION['config_success'] = 'Contraseña actualizada correctamente';
-        } else {
-            $_SESSION['config_error'] = 'Contraseña actual incorrecta';
-        }
-
-        header('Location: configuraciones.php');
-        exit();
-    }
-
     if (isset($_POST['update_avatar']) && isset($_FILES['avatar'])) {
         $result = actualizarAvatarAdmin($admin_id, $_FILES['avatar']);
         $_SESSION['config_success'] = $result['success'] ? 'Foto de perfil actualizada correctamente' : '';

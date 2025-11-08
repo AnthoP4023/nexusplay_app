@@ -114,41 +114,6 @@ require_once __DIR__ . '/controlador_panel/cont_configuraciones.php';
                 <div class="config-section">
                     <div class="section-header">
                         <div class="section-icon">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <h2>Cambiar Contraseña</h2>
-                    </div>
-                    
-                    <form method="POST" action="">
-                        <div class="password-grid">
-                            <div class="form-group">
-                                <label for="current_password">Contraseña Actual</label>
-                                <input type="password" id="current_password" name="current_password" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="new_password">Nueva Contraseña</label>
-                                <input type="password" id="new_password" name="new_password" required minlength="6">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="confirm_password">Confirmar Nueva Contraseña</label>
-                                <input type="password" id="confirm_password" name="confirm_password" required minlength="6">
-                            </div>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button type="submit" name="change_password" class="btn">
-                                <i class="fas fa-key"></i>
-                                Cambiar Contraseña
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                
-                <div class="config-section">
-                    <div class="section-header">
-                        <div class="section-icon">
                             <i class="fas fa-info-circle"></i>
                         </div>
                         <h2>Información de la Cuenta</h2>
